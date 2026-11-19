@@ -34,11 +34,148 @@
   }
 
   /* ---------- the little title that teaches ---------- */
+  /* it sits under the Mark when it fits; if the moon, the title or another control is in the way it
+     reflows and moves so the words stay readable — and it keeps out of the way if the moon is dragged. */
   var tip = document.createElement('div'); tip.id = 'mark-tip'; tip.setAttribute('aria-live', 'polite'); document.body.appendChild(tip);
   var tipT = 0, seen = {}; try { seen = JSON.parse(localStorage.getItem('gj-marktips') || '{}'); } catch (e) {}
-  var LESSON = 'tap · out   double-tap · home   hold · places — then drag for the compass   swipe down · every choice   ↑ · put away   ← → · previous / next';
-  function say(t, ms) { tip.textContent = t; tip.classList.add('on'); clearTimeout(tipT); tipT = setTimeout(function () { tip.classList.remove('on'); }, ms || 2600); }
+  var LESSON = 'tap · out   double-tap · home\nhold · places — then drag for the compass\nswipe down · every choice\n↑ · put away   ← → · previous / next';
+  var layR = 0, GAP = 10, MINW = 160;
+  function visBox(el, pad) {
+    if (!el || el.hidden) return null;
+    var cs = getComputedStyle(el);
+    if (cs.display === 'none' || cs.visibility === 'hidden' || parseFloat(cs.opacity) === 0) return null;
+    var r = el.getBoundingClientRect();
+    if (r.width < 1 || r.height < 1) return null;
+    pad = pad == null ? 8 : pad;
+    return { left: r.left - pad, top: r.top - pad, right: r.right + pad, bottom: r.bottom + pad };
+  }
+  function obstacles() {
+    var out = [], b;
+    function add(el, pad) { b = visBox(el, pad); if (b) out.push(b); }
+    add($('mark'), 6);
+    add($('disc'), 8);
+    add($('lightbtn'), 8);
+    if (html.classList.contains('np-on')) add($('np'), 8);
+    var t = $('title'); if (t && !t.classList.contains('out')) add(t, 6);
+    var s = $('sub'); if (s && s.classList.contains('on')) add(s, 6);
+    var poem = $('poem');
+    if (poem && !html.classList.contains('inroom')) {
+      var pr = poem.getBoundingClientRect();
+      if (pr.height > 0) out.push({ left: 0, top: pr.top - 8, right: G.innerWidth, bottom: pr.bottom + 8 });
+    }
+    if (!html.classList.contains('inroom') && GJ.sky && GJ.sky.mark && GJ.sky.mark.screen) {
+      var mk = GJ.sky.mark, rr = (mk.r || 52) + 12;
+      out.push({ left: mk.screen.x - rr, top: mk.screen.y - rr, right: mk.screen.x + rr, bottom: mk.screen.y + rr });
+    }
+    if (!html.classList.contains('inroom') && GJ.sky && GJ.sky.nodes) {
+      var i, n, nx, ny;
+      for (i = 0; i < GJ.sky.nodes.length; i++) {
+        n = GJ.sky.nodes[i];
+        nx = G.innerWidth / 2 + n.x; ny = G.innerHeight * .44 + n.y;
+        out.push({ left: nx - 72, top: ny - 56, right: nx + 72, bottom: ny + 78 });
+      }
+    }
+    add($('master'), 8);
+    if (GJ.sky && GJ.sky.moonXY && GJ.sky.moonA > .15) {
+      var m = GJ.sky.moonXY, rr = 35;
+      out.push({ left: m[0] - rr, top: m[1] - rr, right: m[0] + rr, bottom: m[1] + rr });
+    }
+    var moon = $('moon');
+    if (moon && !moon.hidden && !moon.classList.contains('gone')) {
+      var btn = moon.querySelector('.mn-m');
+      if (btn && !(moon.classList.contains('insky') && moon.classList.contains('dot'))) add(btn, 10);
+    }
+    add($('moonhold'), 10);
+    // tree line and dark ground (sky.js drawTrees): ridge at 84.5 %, the hill rises to the left, conifers poke above
+    var vh = G.innerHeight, vw = G.innerWidth, k = vh / 844, y0 = vh * .845;
+    out.push({ left: 0, top: y0 - 6, right: vw, bottom: vh });
+    out.push({ left: 0, top: y0 - 56 * k - 6, right: vw * .4, bottom: y0 });
+    return out;
+  }
+  function overlaps(a, c) { return a.left < c.right && a.right > c.left && a.top < c.bottom && a.bottom > c.top; }
+  function hitOf(r, boxes) { for (var i = 0; i < boxes.length; i++) if (overlaps(r, boxes[i])) return boxes[i]; return null; }
+  function measure(left, top, maxW) {
+    tip.style.left = Math.round(left) + 'px';
+    tip.style.top = Math.round(top) + 'px';
+    tip.style.maxWidth = Math.max(80, Math.round(maxW)) + 'px';
+    tip.style.right = 'auto';
+    var r = tip.getBoundingClientRect();
+    return { left: r.left, top: r.top, right: r.right, bottom: r.bottom, width: r.width, height: r.height };
+  }
+  function fitWidth(left, top, minW, maxW, boxes) {
+    var vw = G.innerWidth, edge = parseFloat(getComputedStyle(html).getPropertyValue('--edge')) || 8;
+    if (left < edge) left = edge;
+    if (maxW > vw - left - edge) maxW = vw - left - edge;
+    if (maxW < minW) maxW = Math.max(80, vw - left - edge);
+    var r = measure(left, top, maxW), b = hitOf(r, boxes), guard = 0;
+    while (b && guard++ < 6) {
+      var room = b.left - GAP - left;
+      if (room >= minW && b.left < r.right) { r = measure(left, top, room); b = hitOf(r, boxes); continue; }
+      break;
+    }
+    return r;
+  }
+  function layoutTip() {
+    if (!tip.classList.contains('on')) return;
+    var root = getComputedStyle(html);
+    var edge = parseFloat(root.getPropertyValue('--edge')) || 8;
+    var topv = parseFloat(root.getPropertyValue('--top')) || 8;
+    var vw = G.innerWidth, vh = G.innerHeight;
+    var left0 = edge, top0 = topv + 52;
+    if (html.classList.contains('np-on')) top0 = topv + 92;
+    var boxes = obstacles();
+    var r = fitWidth(left0, top0, MINW, vw - edge - left0, boxes);
+    var b = hitOf(r, boxes), guard = 0;
+    while (b && guard++ < 10) {
+      var rTry, ok = null;
+      if (b.right + GAP + MINW < vw - edge) {
+        rTry = fitWidth(b.right + GAP, top0, MINW, vw - edge - (b.right + GAP), boxes);
+        if (!hitOf(rTry, boxes)) ok = rTry;
+      }
+      if (!ok && b.left - GAP - edge >= MINW) {
+        rTry = fitWidth(edge, top0, MINW, b.left - GAP - edge, boxes);
+        if (!hitOf(rTry, boxes)) ok = rTry;
+      }
+      if (ok) { r = ok; break; }
+      top0 = b.bottom + GAP;
+      left0 = edge;
+      r = fitWidth(left0, top0, MINW, vw - edge - left0, boxes);
+      b = hitOf(r, boxes);
+    }
+    var treeTop = vh * .845 - 6;
+    function fits(box) { return box && !hitOf(box, boxes) && box.bottom <= treeTop && box.left >= 4 && box.right <= vw - 4; }
+    if (!fits(r)) {
+      var ys = [top0], xs = [edge], i, ob;
+      for (i = 0; i < boxes.length; i++) { ob = boxes[i]; ys.push(ob.bottom + GAP); xs.push(ob.right + GAP); }
+      [16, 47, 62, 77, 93, 108].forEach(function (h) { ys.push(treeTop - h); });
+      ys.sort(function (a, c) { return a - c; }); xs.sort(function (a, c) { return a - c; });
+      r = null;
+      for (i = 0; i < ys.length && !r; i++) {
+        if (ys[i] < 8 || ys[i] > treeTop - 20) continue;
+        var j;
+        for (j = 0; j < xs.length; j++) {
+          if (xs[j] < edge || xs[j] > vw - edge - MINW) continue;
+          var cand = fitWidth(xs[j], ys[i], MINW, vw - edge - xs[j], boxes);
+          if (fits(cand)) { r = cand; break; }
+        }
+      }
+      if (!r) r = measure(edge, Math.max(8, treeTop - 62), Math.min(280, vw - 2 * edge));
+    }
+    if (r.bottom > treeTop) measure(parseFloat(tip.style.left) || edge, Math.max(8, treeTop - r.height), parseFloat(tip.style.maxWidth));
+    else if (r.right > vw - 4) measure(Math.max(edge, vw - 4 - r.width), parseFloat(tip.style.top) || top0, parseFloat(tip.style.maxWidth));
+  }
+  function watchTip() {
+    if (layR) return;
+    function tick() {
+      if (!tip.classList.contains('on')) { layR = 0; return; }
+      layoutTip();
+      layR = G.requestAnimationFrame(tick);
+    }
+    layR = G.requestAnimationFrame(tick);
+  }
+  function say(t, ms) { tip.textContent = t; tip.classList.add('on'); layoutTip(); watchTip(); clearTimeout(tipT); tipT = setTimeout(function () { tip.classList.remove('on'); }, ms || 2600); }
   function teach(force) { if (!force && (seen.one || 0) >= 3) return; seen.one = (seen.one || 0) + 1; try { localStorage.setItem('gj-marktips', JSON.stringify(seen)); } catch (e) {} say(LESSON, 4200); }
+  G.addEventListener('resize', function () { if (tip.classList.contains('on')) layoutTip(); });
 
   /* ---------- the places: a board under the Mark (its hold) ---------- */
   var pl = document.createElement('nav'); pl.id = 'places'; pl.setAttribute('aria-label', 'places'); document.body.appendChild(pl);
@@ -122,5 +259,5 @@
 
   function setMode() { teach(true); }   // no ways left to switch between: asking only shows the lesson again
   setTimeout(function () { teach(false); }, 1400);
-  GJ.mark = { say: say, home: home, prevNext: prevNext, mode: mode, setMode: setMode, places: openPlaces, closePlaces: closePlaces, go: go, teach: teach, MODES: MODES };
+  GJ.mark = { say: say, home: home, prevNext: prevNext, mode: mode, setMode: setMode, places: openPlaces, closePlaces: closePlaces, go: go, teach: teach, layout: layoutTip, MODES: MODES };
 })(window);
