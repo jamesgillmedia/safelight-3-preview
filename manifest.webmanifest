@@ -1,0 +1,15 @@
+{
+  "name": "safelight",
+  "short_name": "safelight",
+  "description": "Tools for the set, in a sky: red mode and a timer, golden hour, loops, a sound sky, the archive.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#04070b",
+  "theme_color": "#04070b",
+  "icons": [
+    { "src": "icons/mark-180.png", "sizes": "180x180", "type": "image/png", "purpose": "any" },
+    { "src": "icons/mark-1024.png", "sizes": "1024x1024", "type": "image/png", "purpose": "any" }
+  ]
+}
