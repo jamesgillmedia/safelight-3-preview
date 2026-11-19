@@ -1,0 +1,15 @@
+{
+  "name": "good weather",
+  "short_name": "good weather",
+  "description": "Every kind of weather is a kind of light.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#04070b",
+  "theme_color": "#04070b",
+  "icons": [
+    { "src": "icons/placeholder-180.png", "sizes": "180x180", "type": "image/png", "purpose": "any" },
+    { "src": "icons/placeholder-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+  ]
+}
