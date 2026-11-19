@@ -16,7 +16,7 @@
     fill.style.height = (f * 100).toFixed(1) + '%'; knob.style.bottom = 'calc(' + (f * 100).toFixed(1) + '% - 6.5px)';
     val.textContent = Math.round(l * 100) + '%'; el.setAttribute('aria-valuenow', Math.round(l * 100));
     html.style.setProperty('--red-light', l.toFixed(3));
-    html.classList.toggle('dimmer', !!store.get().red); var full = !!store.get().red && !!store.get().fullSafe; html.classList.toggle('fullsafe', full); html.classList.toggle('photored', full && store.get().photoRed !== false);   // photographs lose their colour only in Full Safelight, by choice
+    html.classList.toggle('dimmer', !!store.get().red); var full = !!store.get().red && !!store.get().fullSafe; html.classList.toggle('fullsafe', full); html.classList.toggle('photored', full && store.get().photoRed !== false);   // class may stay for Tune; photographs themselves are never tinted
   }
   function setFrom(y) {
     var r = el.querySelector('.dm-track').getBoundingClientRect(), f = clamp((r.bottom - y) / r.height, 0, 1), l = Math.round((MIN + f * (1 - MIN)) * 100) / 100;

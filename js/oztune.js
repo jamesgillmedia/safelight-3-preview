@@ -27,7 +27,7 @@
   var GJ = G.GJ, html = document.documentElement, clamp = GJ.clamp, PI = Math.PI, RAD = PI / 180;
   var KEY = 'gj-oz', W = 1024, HZ = 628, DIST = 2200, EYE = HZ - 512;     // the eye sits where the reference's centre is
   var REF = { o: [338, 486, 156, 30], zt: 352, zb: 610, zl: 578, zr: 806, bar: 8, diag: 12 };
-  var PAL = { night: { bg: ['#0a0f18', '#03060a'], ink: [238, 243, 245], glow: [143, 169, 207] }, red: { bg: ['#140405', '#050101'], ink: [255, 90, 74], glow: [192, 57, 43] }, rose: { bg: ['#150a0d', '#060304'], ink: [242, 196, 200], glow: [201, 138, 146] } };
+  var PAL = { night: { bg: ['#0a0f18', '#03060a'], ink: [232, 228, 220], glow: [143, 169, 207] }, red: { bg: ['#140405', '#050101'], ink: [255, 90, 74], glow: [192, 57, 43] }, rose: { bg: ['#150a0d', '#060304'], ink: [242, 196, 200], glow: [201, 138, 146] } };
   var MINT = [62, 230, 176];                                              // #3ee6b0 — the brief's
   var DEF = { depth: 0, keep: true, size: 1, glow: 1, spacing: 1, wobble: 6, refl: .18, ripple: 0, tilt: 0, lines: 0, drift: true };
   var CAM0 = { az: -26, el: 30, zoom: 1 }, FRONT = { az: 0, el: 0, zoom: 1 };

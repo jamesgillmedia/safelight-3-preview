@@ -171,7 +171,7 @@
   store.on(apply);
 
   /* ---------- travel: sstep glide in and out (W_GLIDE 4.8) ---------- */
-  var roomT = 0;
+  var roomT = 0, histPop = false, histPending = null;
   function enter(id, opts) {
     if (!rooms[id] || app.room === id) return;
     var n = sky.nodes.filter(function (k) { return k.id === id; })[0];
@@ -191,7 +191,15 @@
     if (bd && n) { var sc0 = n.screen || sky.toScreen(n.x, n.y, n.depth); bd.style.setProperty('--ox', Math.round(sc0.x - bd.offsetLeft) + 'px'); bd.style.setProperty('--oy', Math.round(sc0.y - bd.offsetTop) + 'px'); }
     R.enter(); dial.config(R.rings()); rail.config(R.rail ? R.rail() : null);
     store.set({ room: id });
-    if (!opts || !opts.noHistory) try { history.pushState({ room: id }, ''); } catch (e) {}
+    if (!opts || !opts.noHistory) {
+      if (histPop) histPending = id;   // a leave's popstate is still in flight; push once it has landed
+      else {
+        try {
+          if (history.state && history.state.room) history.replaceState({ room: id }, '');
+          else history.pushState({ room: id }, '');
+        } catch (e) {}
+      }
+    }
   }
   function leaveRoom(swap) {
     var id = app.room; if (!id) return;
@@ -206,12 +214,19 @@
       clearTimeout(roomT);
       roomT = setTimeout(function () { $('title').textContent = 'safelight'; $('title').classList.remove('out'); }, GJ.reduced() ? 0 : 300);
       store.set({ room: null });
+      // drop this room's history entry so the Mark and the browser Back stay in step.
+      // popstate is a queued task (not always sync), so keep histPop set until it fires —
+      // otherwise a follow-up enter() is undone by the leftover pop.
+      if (!histPop && history.state && history.state.room === id) {
+        histPop = true;
+        try { history.back(); } catch (e) { histPop = false; }
+      }
     }
   }
   app.enter = enter;
   app.back = function () { if (app.room && rooms[app.room].back && rooms[app.room].back()) return; if (app.room) { leaveRoom(false); } else if (app.mode === 'chap') toSky(); };
   // the word `tools` always goes home (Back, below, steps out of Full Safelight first)
-  $('back').addEventListener('click', function () { app.back(); try { history.replaceState({ room: null }, ''); } catch (e) {} });
+  $('back').addEventListener('click', function () { app.back(); });
   /* ---------- the camera: Previews / site-v3 (constellation-unfold.md) on the site spring ----------
      L0 sky (z = fitS = 1) · L1 chap (a tool's constellation, z = CHAP) · L2 the tool.
      Pinch / wheel / FLY zoom continuously; release is non-locking:
@@ -397,9 +412,19 @@
     // listeners first on window; where listeners run in the order they were added, this one ran first and left the tool.)
     if (G.GJ_MASTER && (G.GJ_MASTER.isOpen() || (G.GJ_MASTER.popping && G.GJ_MASTER.popping()))) return;
     if (G.GJ_CAMDIAL && (G.GJ_CAMDIAL.isOpen() || (G.GJ_CAMDIAL.popping && G.GJ_CAMDIAL.popping()))) return;
+    if (histPop) {
+      histPop = false;
+      if (histPending) {
+        try { history.pushState({ room: histPending }, ''); } catch (e) {}
+        histPending = null;
+      }
+      return;
+    }
     // Back: closes the Tune drawer first, then steps out of the tool
     if (html.classList.contains('tune')) { tune(false); try { history.pushState({ room: app.room }, ''); } catch (e) {} return; }
+    histPop = true;
     app.back();
+    histPop = false;
   });
 
   /* ---------- the red-mode disc: one tap ---------- */
@@ -446,6 +471,7 @@
   app.tune = function (o) { tune(o == null ? !html.classList.contains('tune') : o); };
   app.tuneOpen = function () { return html.classList.contains('tune'); };
   app.closeAny = function () {   // the Mark closes whatever is open first, in every way of working
+    if (html.classList.contains('places') && GJ.mark && GJ.mark.closePlaces) { GJ.mark.closePlaces(); return true; }
     if (html.classList.contains('tune')) { tune(false); return true; }
     if (GJ.cons && GJ.cons.isOpen()) { GJ.cons.close(); return true; }
     if (GJ.moonOrbit && GJ.moonOrbit.isOpen()) { GJ.moonOrbit.close(); return true; }
@@ -634,7 +660,7 @@
 
   G.addEventListener('keydown', function (e) {
     if (e.target && /^(TEXTAREA|INPUT)$/.test(e.target.tagName) && e.key !== 'Escape') return;   // typing (notes, a frame's note) is typing
-    if (e.key === 'Escape') { if (html.classList.contains('tune')) tune(false); else if (dial.open) dial.close(); else app.back(); }
+    if (e.key === 'Escape') { if (app.closeAny()) return; if (dial.open) dial.close(); else app.back(); }
     if (!app.room) return;
     if (e.key === 'ArrowUp') dial.nudge(1, e.altKey);
     if (e.key === 'ArrowDown') dial.nudge(-1, e.altKey);

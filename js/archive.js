@@ -94,6 +94,7 @@
 
   /* ---------- one page: blocks (a film, a group, or the whole) in rows, the tile the largest that still fits ---------- */
   var AREA = { cx: 0, cy: 0, w: 0, h: 0 }, BX = new Float32Array(N), BY = new Float32Array(N), TW = 8, TH = 4.5, LAB = [], ORDER = [];
+  var ABOUT = { x: 0, y: 0, on: false };   // pinch / zoom origin: the watch's lens grows around the fingers, not the field's middle
   function area() {
     var W = G.innerWidth, H = G.innerHeight, tt = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--title-top')) || 112;
     var top = tt + 106, bot = H * .75 - 10, l = 15, r = W - 51;   // inside the board's frame
@@ -158,6 +159,7 @@
     if (!dirty && still(ZM, 1e-4) && still(PAN.x, .05) && still(PAN.y, .05) && still(B, 1e-3)) return;
     dirty = false; draws++;
     var sc = ZM.x, ox = AREA.cx + PAN.x.x, oy = AREA.cy + PAN.y.x, wv = clamp((sc - 1.15) / .9, 0, 1), LR = Math.min(AREA.w, AREA.h) * .55, b = B.x;
+    var lx = ABOUT.on ? ABOUT.x : AREA.cx, ly = ABOUT.on ? ABOUT.y : AREA.cy;
     g.setTransform(DPR, 0, 0, DPR, 0, 0); g.clearRect(0, 0, CW, CH);
     g.save(); g.beginPath(); g.rect(AREA.fl, AREA.ft, AREA.fr - AREA.fl, AREA.fb - AREA.ft); g.clip();
     var ink = red ? '255,68,87' : '232,228,220', nk = mode === 0 ? 1 - b : mode === 1 ? 1 - .82 * b : Math.max(0, 1 - 1.6 * b), boxes = [];
@@ -166,8 +168,8 @@
       var i = ORDER[q]; if (i === undefined) continue;
       var X = ox + BX[i] * sc, Y = oy + BY[i] * sc, lens = 1, fade = 1;
       if (wv > 0) {   // the watch's lens: near the middle full size; toward the rim smaller, gathered in, fainter
-        var dx = X - AREA.cx, dy = Y - AREA.cy, d = Math.hypot(dx, dy) / LR;
-        if (d > .6) { var nd = .6 + .55 * (1 - Math.exp(-(d - .6) / .55)), r2 = 1 + (nd / d - 1) * wv; X = AREA.cx + dx * r2; Y = AREA.cy + dy * r2;
+        var dx = X - lx, dy = Y - ly, d = Math.hypot(dx, dy) / LR;
+        if (d > .6) { var nd = .6 + .55 * (1 - Math.exp(-(d - .6) / .55)), r2 = 1 + (nd / d - 1) * wv; X = lx + dx * r2; Y = ly + dy * r2;
           lens = 1 + (clamp(1 - (d - .6) * 1.1, .2, 1) - 1) * wv; fade = 1 - wv * clamp((nd - 1.05) / .12, 0, 1); }
       }
       var w = TW * sc * lens, h = TH * sc * lens;
@@ -183,7 +185,7 @@
       else { g.fillStyle = '#0d1016'; g.fillRect(X - w / 2, Y - h / 2, w, h); }
     }
     g.globalAlpha = 1;
-    // Safelight, by choice, the frames lose their colour (a filter on this canvas alone: css, html.red.photored)
+    // frames stay true colour; the chrome may go red (standing rule: photographs are never tinted)
     // review marks: a small star on a favourite, a hairline on a frame with a note
     g.fillStyle = 'rgba(' + ink + ',.95)';
     for (var q2 = 0; q2 < N; q2++) { var rr = RV[F[q2].id]; if (!rr || !HV[q2] || HW[q2] < 5) continue;
@@ -214,6 +216,7 @@
     z1 = clamp(z1, 1, ZMAX); var z0 = ZM.t, ux = (mx - AREA.cx - PAN.x.t) / z0, uy = (my - AREA.cy - PAN.y.t) / z0;
     var q = z1 <= 1.001 ? [0, 0] : clampPan(mx - AREA.cx - ux * z1, my - AREA.cy - uy * z1, z1);
     GJ.aim(ZM, z1, !!instant); GJ.aim(PAN.x, q[0], !!instant); GJ.aim(PAN.y, q[1], !!instant); dirty = true;
+    ABOUT.x = mx; ABOUT.y = my; ABOUT.on = z1 > 1.001;
   }
   function closeOn(i) { var z = clamp(96 / TW, 1, ZMAX); GJ.aim(ZM, z); GJ.aim(PAN.x, -BX[i] * z); GJ.aim(PAN.y, -BY[i] * z); }   // come close enough to see it
   function caption() {
@@ -386,12 +389,18 @@
   $('r-archive').addEventListener('pointerdown', function (e) {
     if (open != null || e.target.closest(sel('#ar-open, #ar-cap-row, #ar-ctl, #ar-by'))) return;
     fp[e.pointerId] = { x: e.clientX, y: e.clientY };
-    var ids = Object.keys(fp); if (ids.length === 2) { var a = fp[ids[0]], b = fp[ids[1]]; fpin = { d: Math.hypot(a.x - b.x, a.y - b.y), z: ZM.t }; drag = null; return; }
+    var ids = Object.keys(fp); if (ids.length === 2) { var a = fp[ids[0]], b = fp[ids[1]]; fpin = { d: Math.hypot(a.x - b.x, a.y - b.y), z: ZM.t, mx: (a.x + b.x) / 2, my: (a.y + b.y) / 2, px: PAN.x.t, py: PAN.y.t }; drag = null; return; }
     drag = { x: e.clientX, y: e.clientY, px: PAN.x.t, py: PAN.y.t, t: GJ.now(), vx: 0, vy: 0, lx: e.clientX, ly: e.clientY, lt: GJ.now() }; moved = false;
   });
   G.addEventListener('pointermove', function (e) {
     if (fp[e.pointerId]) { fp[e.pointerId].x = e.clientX; fp[e.pointerId].y = e.clientY; }
-    var ids = Object.keys(fp); if (fpin && ids.length === 2) { var a = fp[ids[0]], b = fp[ids[1]]; zoomAbout(fpin.z * Math.hypot(a.x - b.x, a.y - b.y) / fpin.d, (a.x + b.x) / 2, (a.y + b.y) / 2, true); moved = true; return; }
+    var ids = Object.keys(fp); if (fpin && ids.length === 2) {
+      var a = fp[ids[0]], b = fp[ids[1]], mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2, z1 = clamp(fpin.z * Math.hypot(a.x - b.x, a.y - b.y) / fpin.d, 1, ZMAX);
+      var ux = (fpin.mx - AREA.cx - fpin.px) / fpin.z, uy = (fpin.my - AREA.cy - fpin.py) / fpin.z;
+      var q = z1 <= 1.001 ? [0, 0] : clampPan(mx - AREA.cx - ux * z1, my - AREA.cy - uy * z1, z1);
+      GJ.aim(ZM, z1, true); GJ.aim(PAN.x, q[0], true); GJ.aim(PAN.y, q[1], true);
+      ABOUT.x = mx; ABOUT.y = my; ABOUT.on = z1 > 1.001; dirty = true; moved = true; return;
+    }
     if (!drag) return; var dx = e.clientX - drag.x, dy = e.clientY - drag.y;
     if (!moved && Math.hypot(dx, dy) > 8) moved = true;
     if (moved) {
@@ -413,10 +422,8 @@
       GJ.app.lookUser = 0; GJ.app.lookUserY = 0; setTimeout(function () { moved = false; }, 0);
     } else if (drag && !fpin && open == null && GJ.app.room === ID) {
       var i = hit(e.clientX, e.clientY);
-      if (i >= 0) {   // a tap: from the whole field, come close on it · closer, bring it to the middle · on it, open it
-        if (ZM.t < 1.6) { setFocus(i); closeOn(i); }
-        else if (i === focus) openStill(i);
-        else setFocus(i, true);
+      if (i >= 0) {   // a tap on a visible tile opens that frame
+        setFocus(i); openStill(i);
         lastTapF = 0;
       } else if (GJ.now() - lastTapF < 320) { if (ZM.t > 1.05) zoomAbout(1, AREA.cx, AREA.cy); else zoomAbout(4, e.clientX, e.clientY); GJ.haptic.tick(); lastTapF = 0; }
       else lastTapF = GJ.now();
@@ -608,6 +615,7 @@
     setMode: function (m) { mode = m; dirty = true; caption(); }, setOrder: function (o) { ord = o; layout(); rekin(); caption(); },
     state: function () { return { n: N, films: D.films.length, focus: focus, title: D.films[F[focus].f].title, axis: AX[axis], beyond: beyond, front: front, open: open, tag: tagSel, mode: MODE[mode], order: ORD[ord], zoom: Math.max(ZM.t, fpin ? fpin.z : 0) }; },
     focus: function (i) { setFocus(i, true); }, zoomTo: function (z, x, y) { zoomAbout(z, x == null ? AREA.cx : x, y == null ? AREA.cy : y, true); }, pan: function () { return [PAN.x.t, PAN.y.t]; },
+    hit: hit, about: function () { return ABOUT.on ? [ABOUT.x, ABOUT.y] : [AREA.cx, AREA.cy]; },
     screen: function (i) { return HV[i] ? [HX[i], HY[i], HW[i]] : null; }, visible: function () { var n = 0; for (var i = 0; i < N; i++) n += HV[i]; return n; },
     // for the tools built on the archive's frames (picks, markup, decision sheets, the player): a frame drawn into any canvas — exact pixels, only scaled —
     // and what it is; the sets they can be given; the review records themselves
