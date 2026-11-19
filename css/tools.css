@@ -1,10 +1,10 @@
 /* Safelight (tools-02) · site language only: m4 stage wash, chrome glass, quiet type. Fonts are the site's own files.
-   Tokens: #04070b #121c2e #eef3f5 #c9d3d6 #e8e4dc paper · #f3ecdf moon · #55DAA1 disc only · #FF4457 #FFB0B8 · red page #060304 */
+   Tokens: #04070b #121c2e #e8e4dc #c9d3d6 #e8e4dc paper · #f3ecdf moon · #55DAA1 disc only · #FF4457 #FFB0B8 · red page #060304 */
 @font-face { font-family: Poppins; font-weight: 300; font-display: swap; src: url("../fonts/poppins-300.woff2") format("woff2"); }
 @font-face { font-family: "Julius Sans One"; font-display: swap; src: url("../fonts/julius-sans-one.woff2") format("woff2"); }
 @font-face { font-family: Syl; font-weight: 700; font-display: block; src: url("../fonts/noto-canadian-aboriginal-subset.woff2") format("woff2"); unicode-range: U+1400-167F; }
 :root {
-  --ink: #eef3f5; --dim: #c9d3d6; --meta: #93a1a6; --paper: #e8e4dc;
+  --ink: #e8e4dc; --dim: #c9d3d6; --meta: #93a1a6; --paper: #e8e4dc;
   --hair: rgba(200,225,255,.22); --glass: rgba(6,10,18,.62);
   --mint: #55DAA1; --rose: #FFB0B8; --crimson: #FF4457; --redpage: #060304;
   --red-ink: #FF4457; --red-hair: rgba(255,68,87,.34); --red-glass: rgba(6,3,4,.66);
@@ -44,8 +44,11 @@ html.red .mpath { background: linear-gradient(180deg, rgba(255,68,87,.22), rgba(
 html.red #poem { color: var(--red-ink); text-shadow: none; }
 html.red .horizon { background: linear-gradient(90deg, transparent, var(--red-ink), transparent); }
 
-/* photographs, film and video are never tinted (hard rule) */
-img, video { filter: none !important; mix-blend-mode: normal !important; }
+/* photographs, film and video are never tinted (hard rule), including Full Safelight / photored */
+img, video,
+#ar-big, #ar-threads,
+.pk-im, #picks-cmp canvas, .ds-o canvas, #ap .ap-l,
+#pl img, #lp-img, #about .ab-bg img, #ob .ob-c { filter: none !important; mix-blend-mode: normal !important; }
 
 /* ---------- chrome: the Mark and the disc. Visible pill 32 px inside a 44 px hit. ---------- */
 #chrome { position: fixed; inset: 0; z-index: 9; pointer-events: none; }
@@ -58,7 +61,7 @@ img, video { filter: none !important; mix-blend-mode: normal !important; }
 html.inroom #mark .chev { width: 7px; opacity: 1; }
 /* the Mark: chrome.js "‹ <b lang=cr>ᑕᐣᓯ</b>", 700 18px Syl (chrome.css L14). The fringe (cyan + red, offset) is the
    site's (sky.css .gj: 10,189,240 / 254,1,1), reserved for the Mark and his name. */
-#mark .glyph { font: 700 18px/1 Syl, "Noto Sans Canadian Aboriginal", sans-serif; color: #f4f7fb; letter-spacing: 0;
+#mark .glyph { font: 700 18px/1 Syl, "Noto Sans Canadian Aboriginal", sans-serif; color: var(--ink); letter-spacing: 0;
   text-shadow: 1px 0 0 rgba(10,189,240,.85), -1px 0 0 rgba(254,1,1,.75), 0 0 10px rgba(10,189,240,.22); transition: text-shadow .9s ease, color .9s ease; }
 /* Mark lift (chrome.css L57–59): .9 s ease, once, no pulse — while the red mode timer runs */
 #mark.lift .vis, #mark.playing .vis { border-color: rgba(200,225,255,.42); box-shadow: 0 0 10px rgba(232,228,220,.16); }
@@ -148,9 +151,9 @@ html.red #sp-modes button { color: var(--red-ink); }
 /* the sound room, truer to the site (17 Nov): the board — the song stars with their titles — over the horizon; under it the
    hint, VOL / FLASH, then the player bar: a round play button, TITLE  ARTIST, the time, the waveform */
 #sp-hint { position: absolute; left: 24px; right: 24px; top: calc(47% + 106px); text-align: center; font-size: 12px; letter-spacing: .14em; color: var(--meta); transition: opacity .4s; }
-#sp-sliders { position: absolute; left: 24px; right: 56px; top: calc(61% + 16px); display: flex; gap: 22px; }
+#sp-sliders { position: absolute; left: 24px; right: 56px; top: calc(61% + 8px); display: flex; align-items: center; gap: 22px; }
 #sp-sliders label { flex: 1; display: flex; align-items: center; gap: 10px; font: 400 12px "Julius Sans One", Poppins, sans-serif; letter-spacing: .2em; text-transform: uppercase; color: var(--ink); }
-#sp-sliders input { flex: 1; -webkit-appearance: none; appearance: none; height: 28px; background: transparent; }
+#sp-sliders input { flex: 1; -webkit-appearance: none; appearance: none; height: 44px; background: transparent; }
 #sp-sliders input::-webkit-slider-runnable-track { height: 1px; background: linear-gradient(90deg, rgba(232,228,220,.8) var(--f, 50%), rgba(232,228,220,.2) var(--f, 50%)); }
 #sp-sliders input::-webkit-slider-thumb { -webkit-appearance: none; width: 16px; height: 16px; margin-top: -8px; border-radius: 50%; background: #e8e4dc; box-shadow: 0 0 10px rgba(232,228,220,.35); }
 #sp-sliders input::-moz-range-track { height: 1px; background: rgba(232,228,220,.3); } #sp-sliders input::-moz-range-thumb { width: 16px; height: 16px; border: 0; border-radius: 50%; background: #e8e4dc; }
@@ -195,7 +198,7 @@ html.red .ar-f .ar-name { color: var(--red-ink); }
 #ar-ctl { position: absolute; left: 0; right: 0; top: calc(var(--title-top) + 42px); display: flex; flex-direction: column; align-items: center; z-index: 3000; }
 #ar-ctl > div { display: flex; justify-content: center; }
 #ar-ctl > div + div { margin-top: -10px; }
-#ar-ctl button { padding: 12px 7px; font-size: 10px; letter-spacing: .16em; color: var(--meta); opacity: .55; }
+#ar-ctl button { position: relative; display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; padding: 0 7px; margin: -3px 0; font-size: 10px; letter-spacing: .16em; color: var(--meta); opacity: .55; }
 #ar-ctl button.on { opacity: 1; color: var(--ink); }
 #ar-ctl i { width: 1px; height: 10px; background: var(--hair); margin: 0 8px; }
 html.red #ar-ctl button { color: var(--red-ink); }
@@ -248,7 +251,7 @@ html.red #lp-state, html.red #lp-act button, html.red #lp-note { color: var(--re
 #rm-ring { position: absolute; left: 50%; top: calc(36% + 15px); width: 200px; height: 200px; margin: -100px 0 0 -100px; pointer-events: none; transform: rotate(-90deg); }
 #rm-ring circle { fill: none; stroke-width: 1; }
 #rm-ring .trk { stroke: rgba(200,225,255,.12); }
-#rm-ring .prg { stroke: rgba(238,243,245,.55); stroke-linecap: round; transition: stroke .5s; }
+#rm-ring .prg { stroke: rgba(232,228,220,.55); stroke-linecap: round; transition: stroke .5s; }
 html.red #rm-ring .trk { stroke: var(--red-hair); } html.red #rm-ring .prg { stroke: var(--rose); }
 @media (min-width: 700px) { #rm-ring { top: calc(34% + 15px); } }
 
@@ -311,11 +314,11 @@ html.red .gzone svg { stroke: var(--red-hair); }
 .gdial .arc.on { stroke: rgba(200,225,255,.42); }
 .gdial .tick { stroke: rgba(200,225,255,.32); stroke-width: 1; }
 .gdial .tick.end { stroke: rgba(200,225,255,.5); }
-.gdial .tick.def { stroke: rgba(238,243,245,.75); }
+.gdial .tick.def { stroke: rgba(232,228,220,.75); }
 .gdial .tick.notch { stroke: rgba(232,228,220,.55); }
-.gdial .mark { fill: #eef3f5; }
+.gdial .mark { fill: var(--ink); }
 .gdial .lab { fill: #93a1a6; font: 400 9.5px "Julius Sans One", Poppins, sans-serif; letter-spacing: .2em; text-anchor: end; text-transform: uppercase; }
-.gdial .fill { fill: none; stroke: rgba(238,243,245,.55); stroke-width: 2.2; stroke-linecap: round; }
+.gdial .fill { fill: none; stroke: rgba(232,228,220,.55); stroke-width: 2.2; stroke-linecap: round; }
 .gdial .meter { fill: none; stroke: rgba(232,228,220,.7); stroke-width: 1.5; stroke-linecap: round; filter: drop-shadow(0 0 3px rgba(232,228,220,.6)); }
 html.red .gdial .fill { stroke: var(--red-ink); }
 html.red .gdial .meter { stroke: var(--rose); filter: none; }
@@ -335,9 +338,9 @@ html.red .gdial .lab { fill: var(--red-ink); }
 /* ---------- the camera rail: the site's level dots (3D camera control) ---------- */
 #rail { position: fixed; z-index: 7; right: 2px; bottom: calc(64px + env(safe-area-inset-bottom, 0px)); width: 44px; display: none; touch-action: none; }
 #rail.on { display: block; }
-#rail .rl-dot { position: absolute; left: 0; width: 44px; height: 26px; display: flex; align-items: center; justify-content: center; }
+#rail .rl-dot { position: absolute; left: 0; width: 44px; height: 44px; margin-top: -9px; display: flex; align-items: center; justify-content: center; }
 #rail .rl-dot i { display: block; width: 5px; height: 5px; border-radius: 50%; border: 1px solid rgba(200,225,255,.45); transition: background .3s, border-color .3s, transform .3s; }
-#rail .rl-dot.fill i { background: rgba(238,243,245,.85); border-color: rgba(238,243,245,.85); }
+#rail .rl-dot.fill i { background: rgba(232,228,220,.85); border-color: rgba(232,228,220,.85); }
 #rail .rl-dot.cur i { transform: scale(1.35); }
 #rail .rl-lab { position: absolute; right: 40px; white-space: nowrap; font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: var(--dim);
   transition: top .35s ease; pointer-events: none; }
@@ -502,7 +505,7 @@ html.fanning #fan { opacity: 1; }
 html.fanning #fan span { transform: translate(-4px,-50%); }
 #fan span i { width: 7px; height: 7px; border-radius: 50%; background: #e8e4dc; box-shadow: 0 0 10px rgba(232,228,220,.5); opacity: .7; }
 #fan span em { font-style: normal; font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: rgba(232,228,220,.75); white-space: nowrap; text-shadow: 0 0 8px #03050b; }
-#fan span.on i { transform: scale(1.8); opacity: 1; } #fan span.on em { color: #fff; }
+#fan span.on i { transform: scale(1.8); opacity: 1; } #fan span.on em { color: var(--ink); }
 html.fanning #mark-tip { opacity: 0; }
 html.fanning::after { content: ''; position: fixed; inset: 0; z-index: 68; background: radial-gradient(circle at 30px 40px, rgba(3,5,11,.2), rgba(3,5,11,.72) 60%); pointer-events: none; }
 html.red #mark-tip, html.red #places button span, html.red #places > b, html.red #fan span em { color: var(--red-ink); } html.red #places { border-color: rgba(255,68,87,.3); background: rgba(8,2,3,.8); }
@@ -519,8 +522,7 @@ html.dimmer #dimmer { opacity: 1; pointer-events: auto; transform: none; }
 #dimmer b { position: absolute; left: 0; right: 4px; bottom: 7px; text-align: center; font-weight: 400; font-size: 9px; letter-spacing: .2em; color: #FF4457; }
 #dimmer .dm-v { position: absolute; left: 40px; top: 50%; transform: translateY(-50%); font: 300 12px Poppins, sans-serif; color: #FF4457; opacity: 0; transition: opacity .3s; white-space: nowrap; }
 #dimmer.live .dm-v { opacity: 1; }
-/* Safelight, by choice: photographs lose their colour (black, white and red) — never otherwise */
-html.red.photored #ar-big, html.red.photored #ar-threads { filter: grayscale(1) sepia(1) saturate(5) hue-rotate(-38deg) brightness(.85); }
+/* photographs stay true colour even in Full Safelight (the chrome may go red; the frames never tint) */
 .room.on #ar-threads { pointer-events: auto; touch-action: none; }
 
 /* shrink a clip (17 Nov): a board-style sheet; the clip plays once, silently, into a smaller recording */
@@ -568,7 +570,7 @@ html.aropen #master2 { opacity: 0 !important; pointer-events: none !important; }
 #fdial .fd-track { stroke: rgba(232,228,220,.22); } #fdial .fd-val { stroke: rgba(232,228,220,.9); }
 #fdial .fd-knob { fill: #e8e4dc; filter: drop-shadow(0 0 6px rgba(232,228,220,.6)); }
 #fdial b { position: absolute; left: 0; right: 0; top: -26px; text-align: center; font-weight: 400; font-size: 11px; letter-spacing: .26em; color: rgba(232,228,220,.85); text-shadow: 0 0 8px #03050b; }
-#fdial span { position: absolute; left: 0; right: 0; top: -10px; text-align: center; font: 300 15px Poppins, sans-serif; color: #fff; text-shadow: 0 0 8px #03050b; }
+#fdial span { position: absolute; left: 0; right: 0; top: -10px; text-align: center; font: 300 15px Poppins, sans-serif; color: var(--ink); text-shadow: 0 0 8px #03050b; }
 html.red #fdial .fd-val, html.red #fdial .fd-knob { stroke: #FF4457; fill: #FF4457; } html.red #fdial .fd-val { fill: none; } html.red #fdial .fd-track { stroke: rgba(255,68,87,.25); } html.red #fdial b, html.red #fdial span { color: #FF4457; }
 .room.on #gh-chart { pointer-events: auto; cursor: pointer; }
 
@@ -623,7 +625,7 @@ html.locked #redveil { opacity: calc((1 - var(--red-light, 1)) * .85); z-index: 
 html.readout #readout { opacity: .86; transform: translate(-50%, 0) perspective(320px) rotateX(14deg); pointer-events: auto; }
 #readout .ro-main svg { display: block; width: 116px; height: auto; overflow: visible; }
 #readout path, #readout .ro-dot { fill: rgba(232,228,220,.06); transition: fill .08s; }
-#readout path.on, #readout .ro-dot { fill: rgba(246,243,236,.9); filter: drop-shadow(0 0 1.6px rgba(246,243,236,.7)) drop-shadow(0 0 5px rgba(246,243,236,.25)); }
+#readout path.on, #readout .ro-dot { fill: rgba(232,228,220,.9); filter: drop-shadow(0 0 1.6px rgba(232,228,220,.7)) drop-shadow(0 0 5px rgba(232,228,220,.25)); }
 #readout .ro-sub { display: none; justify-content: space-between; margin-top: 4px; gap: 10px; }
 #readout[data-l="1"] .ro-l1, #readout[data-l="2"] .ro-l1, #readout[data-l="2"] .ro-l2 { display: flex; }
 #readout .ro-sub span { display: flex; align-items: center; gap: 4px; }

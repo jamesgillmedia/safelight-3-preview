@@ -70,7 +70,7 @@
     clock: '12',           // the clock, everywhere a time of day is shown (Golden Hour, the hub's lines, the slate): '12' hour with am / pm, or '24' (Tune → Golden hour → Clock)
     slateLight: .86, slateGlow: .5, slateShows: 0, slateSize: 1,   // the slate (the timer's readout): its light, its glow, what it shows (0 timer · 1 + time, sunset · 2 + ends, next light), its size (0 small · 1 mid · 2 large)
     fullSafe: false,       // Full Safelight (the second step beyond red mode)
-    photoRed: true,        // photos in Full Safelight: shown black/white/red (display only) or true colour
+    photoRed: false,       // photos stay true colour (standing rule); kept as a Tune flag only
     redLight: 1,           // the master dimmer / the red dot's lightness
     sunUp: 'heading',      // Golden Hour's sun chart: 'heading' up or 'north' up
     wxlive: true,          // live weather on the sky

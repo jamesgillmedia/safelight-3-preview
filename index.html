@@ -49,7 +49,7 @@ html.mindexing #mindex { opacity: 1; visibility: visible; transform: none; trans
 html.red #mindex { border-color: rgba(255,68,87,.3); background: rgba(8,2,3,.92); } html.red #mindex > b, html.red #mindex .mi-pick, html.red #mindex .mi-out, html.red #mindex .mi-act .mi-go, html.red #mindex .mi-act .mi-s { color: var(--red-ink); }
 /* the open frame's tools take a second row (in · out · the review marks), and the rail shows a film's in and out as hairlines (js/archive.js, js/rail.js) */
 #ar-tools .brk { flex-basis: 100%; height: 0; }
-#rail .rl-mark { position: absolute; left: 3px; width: 13px; height: 1px; background: rgba(238,243,245,.9); pointer-events: none; }
+#rail .rl-mark { position: absolute; left: 3px; width: 13px; height: 1px; background: rgba(232,228,220,.9); pointer-events: none; }
 #rail .rl-mark::before { content: attr(data-l); position: absolute; right: 17px; top: -6px; font: 400 8px "Julius Sans One", Poppins, sans-serif; letter-spacing: .18em; text-transform: uppercase; color: var(--meta); white-space: nowrap; }
 html.red #rail .rl-mark { background: var(--red-ink); } html.red #rail .rl-mark::before { color: var(--red-ink); }
 /* White Noise, in the Sound room beside "open the file" (js/noise.js): one word starts it; on, a line says what it is and its timers sit under it */
@@ -66,7 +66,7 @@ html.red #wn button { color: var(--red-ink); }
    The board's edge takes the room's light with the reading — the sky's own sunset and day colours, the page's dark. */
 #ar-by { position: absolute; left: 8px; right: 44px; top: calc(74% + 72px); display: flex; justify-content: center; align-items: center; z-index: 3000; }
 #ar-by b { font-weight: 400; font-size: 9px; letter-spacing: .26em; text-transform: uppercase; color: var(--meta); opacity: .6; margin-right: 4px; }
-#ar-by button { padding: 12px 9px; font-size: 10px; letter-spacing: .16em; color: var(--meta); opacity: .55; }
+#ar-by button { position: relative; display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; padding: 0 9px; margin: -3px 0; font-size: 10px; letter-spacing: .16em; color: var(--meta); opacity: .55; }
 #ar-by button.on { opacity: 1; color: var(--ink); }
 html.red #ar-by b, html.red #ar-by button { color: var(--red-ink); }
 html.aropen #ar-by { display: none; }
@@ -146,19 +146,18 @@ html.ap-present #chrome, html.ap-present #rail, html.ap-present #master, html.ap
 html.red .gpanel { border-color: rgba(255,68,87,.3); background: rgba(8,2,3,.94); } html.red .gpanel > b, html.red .gpanel button.on, html.red .gpanel .gp-act [data-a="close"], html.red .pk-cap b, html.red .gpanel input, html.red #mk-bar button.on, html.red #mk-bar [data-a="done"], html.red #ap button.on, html.red #ap .ap-ctl [data-a="play"], html.red #ap .ap-next, html.red #ap .ap-cap, html.red #ap .ap-note { color: var(--red-ink); }
 html.red .gpanel button, html.red #mk-bar button, html.red #ap button, html.red .gp-say, html.red .pk-cap, html.red .ds-o em { color: rgba(255,68,87,.6); } html.red .pk.on .pk-im, html.red .gpanel .ds-o.on { outline-color: var(--red-ink); border-color: var(--red-ink); }
 html.red .mk-pin { border-color: var(--red-ink); color: var(--red-ink); } html.red .mk-pin.on { background: var(--red-ink); color: #060304; }
-/* Safelight, by choice (Tune → photos in full safelight): these frames follow the open frame — black, white and red — and never otherwise */
-html.red.photored .pk-im, html.red.photored #picks-cmp canvas, html.red.photored .ds-o canvas, html.red.photored #ap .ap-l { filter: grayscale(1) sepia(1) saturate(5) hue-rotate(-38deg) brightness(.85); }
+/* photographs stay true colour even in Full Safelight */
 /* ---- batch three (18 Nov): the About, the Demo Room, Objects, Photo Lab ---- */
 /* the tap-through About (js/about.js): a still, one line of words on it; the glitch is in the words, the move is the camera's — the picture is never altered */
 #about { position: fixed; inset: 0; z-index: 85; background: #05090f; overflow: hidden; opacity: 0; visibility: hidden; transition: opacity .4s, visibility 0s linear .4s; user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; }
 html.abouting #about { opacity: 1; visibility: visible; transition: opacity .4s; }
 #about .ab-bg { position: absolute; inset: 0; } #about .ab-bg img { display: block; width: 100%; height: 100%; object-fit: cover; transform-origin: 50% 46%; transition: transform .8s cubic-bezier(.2,.7,.2,1); will-change: transform; }
-#about .ab-line { position: absolute; left: 22px; right: 22px; top: 58%; margin: 0; text-align: center; font: 400 clamp(20px, 6.4vw, 32px)/1.25 "Julius Sans One", Poppins, sans-serif; letter-spacing: .16em; text-transform: uppercase; color: #f4f7fb; text-shadow: 0 2px 18px rgba(0,0,0,.8), 0 0 3px rgba(0,0,0,.7); opacity: 0; transition: opacity .18s; }
+#about .ab-line { position: absolute; left: 22px; right: 22px; top: 58%; margin: 0; text-align: center; font: 400 clamp(20px, 6.4vw, 32px)/1.25 "Julius Sans One", Poppins, sans-serif; letter-spacing: .16em; text-transform: uppercase; color: var(--ink); text-shadow: 0 2px 18px rgba(0,0,0,.8), 0 0 3px rgba(0,0,0,.7); opacity: 0; transition: opacity .18s; }
 #about .ab-line.on { opacity: 1; transition: opacity .3s; } #about .ab-line.glitch { animation: abg .45s steps(1) 1; }
 @keyframes abg { 0% { clip-path: inset(0 0 62% 0); transform: translateX(-7px); text-shadow: 3px 0 0 rgba(10,189,240,.85), -3px 0 0 rgba(254,1,1,.75); } 22% { clip-path: inset(38% 0 20% 0); transform: translateX(6px); text-shadow: -2px 0 0 rgba(10,189,240,.85), 2px 0 0 rgba(254,1,1,.75); } 44% { clip-path: inset(70% 0 0 0); transform: translateX(-3px); } 66% { clip-path: inset(10% 0 45% 0); transform: translateX(2px); text-shadow: 1px 0 0 rgba(10,189,240,.85), -1px 0 0 rgba(254,1,1,.75); } 88%, 100% { clip-path: none; transform: none; } }
-#about .ab-n { position: absolute; left: 0; right: 0; bottom: calc(66px + env(safe-area-inset-bottom, 0px)); margin: 0; text-align: center; font-size: 10px; letter-spacing: .2em; color: rgba(238,243,245,.7); text-shadow: 0 1px 6px rgba(0,0,0,.8); }
+#about .ab-n { position: absolute; left: 0; right: 0; bottom: calc(66px + env(safe-area-inset-bottom, 0px)); margin: 0; text-align: center; font-size: 10px; letter-spacing: .2em; color: rgba(232,228,220,.7); text-shadow: 0 1px 6px rgba(0,0,0,.8); }
 #about .ab-ui { position: absolute; left: 50%; transform: translateX(-50%); bottom: calc(14px + env(safe-area-inset-bottom, 0px)); display: flex; justify-content: center; align-items: center; padding: 0 6px; border-radius: 24px; background: rgba(5,9,18,.5); white-space: nowrap; }
-#about button { padding: 12px 10px; font: 300 12px Poppins, sans-serif; letter-spacing: .14em; color: rgba(238,243,245,.86); text-shadow: 0 1px 8px rgba(0,0,0,.85); }
+#about button { padding: 12px 10px; font: 300 12px Poppins, sans-serif; letter-spacing: .14em; color: rgba(232,228,220,.86); text-shadow: 0 1px 8px rgba(0,0,0,.85); }
 #about .ab-ui [data-a="back"], #about .ab-ui [data-a="skip"], #about .ab-edit [data-a="prevbg"], #about .ab-edit [data-a="nextbg"] { font-size: 22px; padding: 4px 14px; }
 #about .ab-edit { position: absolute; left: 12px; right: 12px; bottom: calc(92px + env(safe-area-inset-bottom, 0px)); padding: 12px 12px 8px; background: rgba(5,9,18,.92); border: 1px solid rgba(232,228,220,.18); } #about .ab-edit[hidden] { display: none; }
 #about textarea { display: block; width: 100%; box-sizing: border-box; padding: 8px 10px; background: none; border: 1px solid rgba(232,228,220,.2); border-radius: 0; color: var(--ink); font: 300 15px/1.5 Poppins, sans-serif; resize: none; user-select: text; -webkit-user-select: text; }
@@ -181,7 +180,7 @@ html.demoing #demos { opacity: 1; visibility: visible; transform: none; transiti
 #ob { position: absolute; inset: 0; user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; }
 #ob .ob-sky { position: absolute; left: 14px; right: 54px; top: calc(var(--top, 8px) + 96px); bottom: 170px; } #ob .ob-sky[hidden], #ob .ob-one[hidden], #ob .ob-edit[hidden], #ob [hidden] { display: none; }
 #ob .ob-star { position: absolute; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 10px; }
-#ob .ob-star i { font-style: normal; font-size: 18px; color: #f4f7fb; text-shadow: 0 0 12px rgba(232,228,220,.7); animation: obtw 3.4s ease-in-out infinite; } @keyframes obtw { 50% { opacity: .62; } } #ob.still .ob-star i { animation: none; }
+#ob .ob-star i { font-style: normal; font-size: 18px; color: var(--ink); text-shadow: 0 0 12px rgba(232,228,220,.7); animation: obtw 3.4s ease-in-out infinite; } @keyframes obtw { 50% { opacity: .62; } } #ob.still .ob-star i { animation: none; }
 #ob .ob-star.on i { font-size: 24px; } #ob .ob-star.on span { color: var(--ink); }
 #ob .ob-star span { max-width: 130px; font-size: 10px; line-height: 1.3; letter-spacing: .14em; text-transform: uppercase; color: var(--dim); text-align: center; }
 #ob .ob-say { position: absolute; left: 22px; right: 62px; bottom: calc(74px + env(safe-area-inset-bottom, 0px)); margin: 0; text-align: center; font-size: 11px; line-height: 1.45; letter-spacing: .04em; color: var(--meta); text-shadow: 0 1px 6px rgba(0,0,0,.6); }
@@ -214,7 +213,7 @@ html.shelving #pl { display: flex; } html.shelving #lp-view, html.shelving #lp-e
 #pl .pl-seq { margin: auto 0 0; } #pl .pl-row { display: flex; align-items: center; gap: 6px; min-height: 42px; margin: 0 52px 0 12px; overflow-x: auto; scrollbar-width: none; } #pl .pl-row::-webkit-scrollbar { display: none; }
 #pl .pl-row span { font-size: 11px; letter-spacing: .06em; color: var(--meta); } #pl .pl-s { flex: 0 0 auto; padding: 0; opacity: .7; outline: 1px solid transparent; outline-offset: 2px; } #pl .pl-s.on { opacity: 1; outline-color: var(--paper); }
 html.red #pl button, html.red #pl .pl-name, html.red #pl .pl-say, html.red #pl .pl-row span { color: var(--red-ink); }
-html.red.photored #pl img, html.red.photored #lp-img, html.red.photored #about .ab-bg img, html.red.photored #ob .ob-c { filter: grayscale(1) sepia(1) saturate(5) hue-rotate(-38deg) brightness(.85); }
+/* photo lab, about, objects: never tinted (hard rule; see tools.css) */
 #places { max-height: calc(100vh - var(--top, 8px) - 66px); overflow-y: auto; scrollbar-width: none; }
 /* ---- batch four (18 Nov): the Shot Planner, Knowledge Keeper, the map of the app, Tune by tier ---- */
 html.planning #plan { opacity: 1; visibility: visible; transform: none; transition: opacity .3s, transform .45s cubic-bezier(.2,.85,.25,1); }
@@ -234,7 +233,7 @@ html.planning #plan { opacity: 1; visibility: visible; transform: none; transiti
 #kk { position: fixed; inset: 0; z-index: 86; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0 30px 60px; box-sizing: border-box; text-align: center; background: rgba(4,7,11,.42); opacity: 0; visibility: hidden; transition: opacity .6s, visibility 0s linear .6s; user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; }
 html.welcoming #kk { opacity: 1; visibility: visible; transition: opacity .6s; } html.welcoming #title, html.welcoming #poem, html.welcoming #chrome, html.welcoming #rail, html.welcoming #master, html.welcoming #master2 { opacity: 0 !important; pointer-events: none !important; }
 #kk p { margin: 0; } #kk .kk-kind { min-height: 16px; font-size: 10px; letter-spacing: .3em; text-transform: uppercase; color: var(--meta); } #kk .kk-sub { min-height: 20px; margin-top: 12px; max-width: 300px; font-size: 14px; line-height: 1.5; letter-spacing: .03em; color: var(--dim); text-shadow: 0 1px 8px rgba(0,0,0,.7); }
-#kk .kk-line { margin-top: 10px; font: 400 clamp(21px, 6.2vw, 32px)/1.3 "Julius Sans One", Poppins, sans-serif; letter-spacing: .12em; color: #f4f7fb; text-shadow: 0 2px 18px rgba(0,0,0,.8); }
+#kk .kk-line { margin-top: 10px; font: 400 clamp(21px, 6.2vw, 32px)/1.3 "Julius Sans One", Poppins, sans-serif; letter-spacing: .12em; color: var(--ink); text-shadow: 0 2px 18px rgba(0,0,0,.8); }
 #kk .kk-kind, #kk .kk-line, #kk .kk-sub { opacity: 0; transform: translateY(6px); transition: opacity .25s, transform .25s; } #kk.in .kk-kind, #kk.in .kk-line, #kk.in .kk-sub { opacity: 1; transform: none; transition: opacity .6s, transform .8s cubic-bezier(.2,.7,.2,1); }
 #kk.work .kk-line { font-size: clamp(18px, 5.2vw, 26px); text-transform: uppercase; letter-spacing: .2em; }
 #kk .kk-ui { position: absolute; left: 0; right: 0; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); display: flex; justify-content: center; } #kk button { padding: 12px 9px; font: 300 12px Poppins, sans-serif; letter-spacing: .14em; color: var(--meta); } #kk .kk-ui [data-a="skip"] { color: var(--ink); }
@@ -250,7 +249,7 @@ html.mapping #nm { opacity: 1; visibility: visible; transition: opacity .35s; }
 #nm button { font: 300 12px Poppins, sans-serif; letter-spacing: .14em; color: var(--meta); }
 #nm .nm-n { position: absolute; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 7px 6px; }
 #nm .nm-n i { font-style: normal; font-size: 12px; line-height: 1; color: rgba(232,228,220,.5); transition: color .3s, font-size .3s; } #nm .nm-n span { font-size: 9px; letter-spacing: .12em; text-transform: uppercase; color: var(--meta); white-space: nowrap; transition: opacity .4s, color .3s; }
-#nm .nm-n.been i { color: rgba(232,228,220,.86); } #nm .nm-n.home i { font-size: 15px; } #nm .nm-n.here i { color: #fff; font-size: 21px; text-shadow: 0 0 14px rgba(232,228,220,.95); } #nm .nm-n.here span, #nm .nm-n.lit span { color: var(--ink); } #nm .nm-n.lit span { box-shadow: 0 1px 0 currentColor; }
+#nm .nm-n.been i { color: rgba(232,228,220,.86); } #nm .nm-n.home i { font-size: 15px; } #nm .nm-n.here i { color: var(--ink); font-size: 21px; text-shadow: 0 0 14px rgba(232,228,220,.95); } #nm .nm-n.here span, #nm .nm-n.lit span { color: var(--ink); } #nm .nm-n.lit span { box-shadow: 0 1px 0 currentColor; }
 #nm .nm-n.wait i { animation: nmp 1.8s ease-in-out infinite; } @keyframes nmp { 50% { transform: scale(1.55); opacity: .55; } }
 #nm .nm-cl { position: absolute; transform: translate(-50%, -50%); font-size: 10px; letter-spacing: .3em; text-transform: uppercase; color: rgba(232,228,220,.36); pointer-events: none; white-space: nowrap; } #nm .nm-cl.none { color: rgba(232,228,220,.2); }
 #nm.teach .nm-n span { opacity: 0; } #nm.teach .nm-n.lit span, #nm.teach .nm-n.here span { opacity: 1; }
@@ -291,9 +290,9 @@ html.mark2 #mk2 .m2-hit { pointer-events: auto; }
 #mk2 svg { position: absolute; left: -300px; top: -300px; width: 600px; height: 600px; overflow: visible; pointer-events: none; }
 #mk2 .m2-o, #mk2 .m2-t, #mk2 .m2-s { fill: none; stroke: rgba(232,228,220,.22); stroke-width: 1; } #mk2 .m2-t { stroke-width: 3; stroke-linecap: round; }
 #mk2 .m2-v { fill: none; stroke: rgba(232,228,220,.9); stroke-width: 3; stroke-linecap: round; } #mk2 .m2-k { fill: #e8e4dc; filter: drop-shadow(0 0 5px rgba(232,228,220,.7)); }
-#mk2 .m2-p { fill: rgba(232,228,220,.6); } #mk2 .m2-p.here { fill: #e8e4dc; } #mk2 .m2-p.on { fill: #fff; r: 7px; filter: drop-shadow(0 0 6px rgba(255,255,255,.8)); }
+#mk2 .m2-p { fill: rgba(232,228,220,.6); } #mk2 .m2-p.here { fill: #e8e4dc; } #mk2 .m2-p.on { fill: #e8e4dc; r: 7px; filter: drop-shadow(0 0 6px rgba(232,228,220,.8)); }
 #mk2 .m2-n { position: absolute; transform: translate(calc(-100% - 11px), -50%); font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: rgba(232,228,220,.7); white-space: nowrap; pointer-events: none; text-shadow: 0 0 8px #03050b, 0 0 3px #03050b; }
-#mk2 .m2-n.here { color: #e8e4dc; } #mk2 .m2-n.on { color: #fff; }
+#mk2 .m2-n.here { color: #e8e4dc; } #mk2 .m2-n.on { color: var(--ink); }
 #mk2 .m2-lab { position: absolute; transform: translate(-50%,-50%); display: flex; flex-direction: column; align-items: center; gap: 3px; pointer-events: none; text-shadow: 0 0 8px #03050b; }
 #mk2 .m2-l { font-weight: 400; font-size: 8px; letter-spacing: .24em; text-transform: uppercase; color: rgba(232,228,220,.6); } #mk2 .m2-r { font-style: normal; font-size: 13px; letter-spacing: .06em; color: #e8e4dc; font-variant-numeric: tabular-nums; }
 html.red #mk2 .m2-hit { background: radial-gradient(circle, rgba(22,3,5,.92) 0, rgba(22,3,5,.88) 236px, rgba(22,3,5,.62) 264px); } html.mark2 #mark-tip { opacity: 0; }

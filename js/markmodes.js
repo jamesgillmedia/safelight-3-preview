@@ -115,8 +115,10 @@
     }
     return r;
   }
+  function onSky() { return !html.classList.contains('inroom') && !(GJ.app && GJ.app.room); }
   function layoutTip() {
     if (!tip.classList.contains('on')) return;
+    if (tip.textContent === LESSON && !onSky()) { tip.classList.remove('on'); return; }
     var root = getComputedStyle(html);
     var edge = parseFloat(root.getPropertyValue('--edge')) || 8;
     var topv = parseFloat(root.getPropertyValue('--top')) || 8;
@@ -173,8 +175,11 @@
     }
     layR = G.requestAnimationFrame(tick);
   }
-  function say(t, ms) { tip.textContent = t; tip.classList.add('on'); layoutTip(); watchTip(); clearTimeout(tipT); tipT = setTimeout(function () { tip.classList.remove('on'); }, ms || 2600); }
-  function teach(force) { if (!force && (seen.one || 0) >= 3) return; seen.one = (seen.one || 0) + 1; try { localStorage.setItem('gj-marktips', JSON.stringify(seen)); } catch (e) {} say(LESSON, 4200); }
+  function say(t, ms) {
+    if (t === LESSON && !onSky()) { tip.classList.remove('on'); return; }
+    tip.textContent = t; tip.classList.add('on'); layoutTip(); watchTip(); clearTimeout(tipT); tipT = setTimeout(function () { tip.classList.remove('on'); }, ms || 2600);
+  }
+  function teach(force) { if (!onSky()) return; if (!force && (seen.one || 0) >= 3) return; seen.one = (seen.one || 0) + 1; try { localStorage.setItem('gj-marktips', JSON.stringify(seen)); } catch (e) {} say(LESSON, 4200); }
   G.addEventListener('resize', function () { if (tip.classList.contains('on')) layoutTip(); });
 
   /* ---------- the places: a board under the Mark (its hold) ---------- */
