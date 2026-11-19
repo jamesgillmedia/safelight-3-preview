@@ -482,7 +482,8 @@ html.red .board { border-color: rgba(255,68,87,.28); background: rgba(0,0,0,.35)
 @media (prefers-reduced-motion: reduce) { .board { transition: opacity .2s; transform: none; } }
 
 /* the Mark, three ways (17 Nov): its teaching title, the places board, the compass fan */
-#mark-tip { position: fixed; z-index: 70; left: var(--edge, 8px); top: calc(var(--top, 8px) + 52px); max-width: 78vw; font: 300 11px/1.4 Poppins, sans-serif; letter-spacing: .08em;
+/* markmodes.js places #mark-tip so it never runs under the moon, the title, or the other chrome */
+#mark-tip { position: fixed; z-index: 70; left: var(--edge, 8px); top: calc(var(--top, 8px) + 52px); max-width: min(280px, calc(100vw - 2 * var(--edge, 8px))); font: 300 11px/1.4 Poppins, sans-serif; letter-spacing: .08em;
   color: rgba(232,228,220,.78); pointer-events: none; opacity: 0; transform: translateY(-4px); transition: opacity .35s, transform .45s cubic-bezier(.2,.85,.25,1); text-shadow: 0 0 8px #03050b; white-space: pre-wrap; }
 #mark-tip.on { opacity: 1; transform: none; }
 #places { position: fixed; z-index: 69; left: 8px; top: calc(var(--top, 8px) + 50px); width: min(280px, 74vw); padding: 14px 6px 8px; border: 1px solid rgba(232,228,220,.17); background: rgba(5,9,18,.72);
