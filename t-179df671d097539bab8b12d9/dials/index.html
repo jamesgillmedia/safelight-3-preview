@@ -7,6 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#000000">
 <title>oz · nine dials</title>
+<link rel="icon" href="data:,">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Canadian+Aboriginal:wght@400&text=%E1%91%95%E1%90%A3%E1%93%AF&display=swap">
 <style>
@@ -457,7 +458,7 @@ def({
     c.fillStyle = tone(ph.c, 1); c.beginPath(); c.arc(cx + Math.cos(a) * R * .84, cy + Math.sin(a) * R * .84, 2.6, 0, TAU); c.fill();
     if (ph.n === 'Night' || ph.n === 'Blue') drawCrescent(c, cx + Math.cos(this.th(0)) * R * .58, cy + Math.sin(this.th(0)) * R * .58, 9, { a: .9 });
     c.beginPath(); c.arc(cx, cy, 3.5, 0, TAU); c.fillStyle = GLASS(); c.fill(); c.strokeStyle = ink(.8); c.lineWidth = 1; c.stroke(); c.lineCap = 'butt';
-    const off = h - n; text(c, hm(hh), cx, cy + R * .42, JUL(22), ink(.95));
+    const off = ((h - n) % 24 + 36) % 24 - 12; text(c, hm(hh), cx, cy + R * .42, JUL(22), ink(.95));
     text(c, Math.abs(off) < .02 ? 'NOW' : (off > 0 ? '+' : '−') + dur(Math.abs(off)), cx, cy + R * .42 + 22, JUL(8.5), ink(.55));
     text(c, ph.n.toUpperCase(), cx, cy - R * .38, JUL(12), tone(ph.c, .95));
     const nxt = PHASES[(pi + 1) % PHASES.length], left = ((nb - hh) + 24) % 24;
@@ -1034,7 +1035,7 @@ const MD = (() => {
       g.globalAlpha = 1; }
     if (dt_ > .02) { const cx = st.edge < 0 ? 42 : st.edge > 0 ? 54 : 48; g.globalAlpha = dt_; glow(g, cx, 48, 11, a => RED.on ? `rgba(255,92,98,${a})` : `rgba(255,236,200,${a})`, .55); g.beginPath(); g.arc(cx, 48, 4, 0, TAU); g.fillStyle = RED.on ? '#FF5C62' : '#fff1cf'; g.fill(); g.globalAlpha = 1; }
     rg.setTransform(d0, 0, 0, d0, 0, 0); rg.clearRect(0, 0, 220, 220); const f = st.ring.x; hits = [];
-    if (f > .01) { const mx = 110, my = 110, yaw = st.yaw.x, pit = st.pit.x;
+    if (f > .01) { const mx = 110, my = 110, yaw = st.yaw.x, pit = st.pit.x; glow(rg, mx, my, 108, a => RED.on ? `rgba(6,3,4,${a})` : `rgba(3,5,11,${a})`, .82 * f);
       const pr = (x, y) => { const y1 = y * Math.cos(pit), z1 = y * Math.sin(pit), x2 = x * Math.cos(yaw) + z1 * Math.sin(yaw), z2 = -x * Math.sin(yaw) + z1 * Math.cos(yaw), q = 420 / (420 + z2); return [mx + x2 * q, my + y1 * q, q]; };
       rg.beginPath(); for (let j = 0; j <= 72; j++) { const a = j / 72 * TAU, q = pr(Math.cos(a) * 70 * f, Math.sin(a) * 70 * f); j ? rg.lineTo(q[0], q[1]) : rg.moveTo(q[0], q[1]); }
       rg.strokeStyle = `rgba(232,228,220,${.3 * f})`; rg.lineWidth = 1.1; rg.stroke();
