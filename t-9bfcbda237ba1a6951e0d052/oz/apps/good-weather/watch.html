@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script src="../../core/teal.js"></script>
+<base href="../../">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>good weather · watch</title>
+<style>
+@font-face { font-family: Poppins; font-weight: 300; src: local("Poppins Light"), url("fonts/Poppins-Light.ttf"); }
+html, body { margin: 0; height: 100%; background: #0b0f14; display: flex; align-items: center; justify-content: center; font: 300 13px Poppins, sans-serif; color: #dfe7ec; user-select: none; }
+.case { position: relative; border-radius: 46px; padding: 14px; background: #15191f; box-shadow: 0 0 0 1px #262b33, 0 20px 60px rgba(0,0,0,.6); }
+.face { position: relative; width: var(--w); height: var(--h); border-radius: 36px; overflow: hidden; background: #000; }
+.cap { position: absolute; top: 12px; left: 0; right: 0; text-align: center; font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: #93a1a6; }
+.time { position: absolute; left: 0; right: 0; top: 34%; text-align: center; font-size: calc(var(--w) * .2); letter-spacing: .06em; font-variant-numeric: tabular-nums; }
+.time button { font: inherit; color: inherit; background: none; border: 0; padding: 6px 10px; letter-spacing: inherit; cursor: pointer; }
+.word { position: absolute; left: 0; right: 0; top: 60%; text-align: center; font-size: 10px; letter-spacing: .2em; color: #93a1a6; }
+.stop { position: absolute; left: 50%; bottom: 12px; transform: translateX(-50%); min-width: 44px; height: 32px; padding: 0 14px; border-radius: 16px;
+  border: 1px solid rgba(200,225,255,.22); background: rgba(6,10,18,.62); color: #c9d3d6; font: 300 10px Poppins; letter-spacing: .16em; text-transform: uppercase; cursor: pointer; }
+.comp { position: absolute; left: 0; right: 0; top: 72%; text-align: center; font-size: 10px; letter-spacing: .1em; color: #93a1a6; }
+.dot { position: absolute; right: 18px; top: 14px; width: 8px; height: 8px; border-radius: 50%; border: 1px solid #93a1a6; opacity: .5; }
+html.red .face { background: #060304; }
+html.red .time { color: #FFB0B8 !important; }
+html.red .cap, html.red .word, html.red .comp, html.red .time { color: #FF4457; }
+html.red .stop { border-color: rgba(255,68,87,.34); background: rgba(6,3,4,.66); color: #FF4457; }
+html.red .dot { background: var(--mint,#55DAA1); border-color: var(--mint,#55DAA1); opacity: 1; box-shadow: 0 0 7px 1px rgba(85,218,161,.7); }
+.label { position: fixed; bottom: 18px; left: 0; right: 0; text-align: center; font-size: 11px; color: #5d6870; letter-spacing: .08em; }
+</style>
+</head>
+<body>
+<div class="case"><div class="face">
+  <div class="cap">timer</div><div class="dot"></div>
+  <div class="time"><button id="t" aria-label="tap to start or stop">25:00</button></div>
+  <div class="word" id="w">tap the time</div>
+  <div class="comp" id="c"></div>
+  <button class="stop" id="s">stop</button>
+</div></div>
+<div class="label" id="lab">good weather · watch mock · one store (rev) with the phone</div>
+<script src="core/settings.js"></script>
+<script src="core/core.js"></script>
+<script src="core/sun.js"></script>
+<script>
+(function () {
+  var Q = new URLSearchParams(location.search), size = Q.get('size') || '45';
+  var dims = { '41': [176, 215], '45': [198, 242], '49': [205, 251] }[size] || [198, 242];
+  document.documentElement.style.setProperty('--w', dims[0] + 'px'); document.documentElement.style.setProperty('--h', dims[1] + 'px');
+  document.getElementById('lab').textContent = size + ' mm good weather · watch mock · one store (rev) with the phone';
+  var GJ = window.GJ, S = window.GJSun, $ = function (i) { return document.getElementById(i); };
+  function apply(s) {
+    document.documentElement.classList.toggle('red', !!s.red);
+  }
+  GJ.store.on(apply); apply(GJ.store.get());
+  $('t').onclick = function () { if (!GJ.store.get().timer.running && !GJ.store.get().red) GJ.store.set({ red: true }); GJ.timer.toggle(); };   // tap the time to start and stop
+  $('s').onclick = function () { GJ.timer.stop(); };
+  // complication: the next Golden Hour event for the chosen city
+  function next() {
+    var c = S.CITIES[GJ.store.get().city] || S.CITIES.vancouver, now = Date.now(), N = { dawn: 'dawn', sunrise: 'sunrise', noon: 'noon', goldenPmStart: 'golden hour', sunset: 'sunset', dusk: 'dusk' };
+    for (var d = 0; d < 2; d++) {
+      var e = S.events(now + d * 86400000, c);
+      for (var k in N) if (e[k] && e[k] > now) return N[k] + ' ' + S.fmt12(e[k], c);
+    }
+    return '';
+  }
+  (function tick() {
+    var s = GJ.store.get();
+    if (s.timer.running && GJ.timer.remaining() <= 0) { GJ.haptic.alarm(); GJ.timer.expire(); }
+    $('t').textContent = GJ.fmtMs(GJ.timer.remaining());
+    $('w').textContent = s.timer.running ? 'running' : 'tap the time';
+    $('c').textContent = next();
+    requestAnimationFrame(tick);
+  })();
+})();
+</script>
+</body>
+</html>

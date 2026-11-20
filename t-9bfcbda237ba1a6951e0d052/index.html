@@ -188,11 +188,34 @@ html:not(.red) .leftlist li{color:#c9d3d6}
 .leftlist figure img{width:100%;display:block;border-radius:12px;border:1px solid var(--hair)}
 .leftlist figcaption{font:400 8px "Julius Sans One",Poppins,sans-serif;letter-spacing:.2em;text-transform:uppercase;color:rgba(var(--ink),.6);margin-top:6px;text-align:center}
 .cnote{font-size:10.5px;line-height:1.45;color:rgba(var(--ink),.6);margin-top:6px}
+/* settings: a reset on every row, per section, and Reset all in System */
+.trow .ctl{display:flex;align-items:center;gap:6px;flex:none}
+.trow output{min-width:34px;text-align:right;font:300 10px Poppins,sans-serif;color:rgba(var(--ink),.6)}
+.rs{flex:none;min-width:30px;min-height:30px;border:0;background:none;color:rgba(var(--ink),.3);font:300 14px Poppins,sans-serif;cursor:pointer;border-radius:15px}
+.rs.dirty{color:rgb(var(--ink));text-shadow:0 0 8px rgba(255,110,90,.5)}
+.rs.sec{border:1px solid var(--hair);font:400 8px "Julius Sans One",Poppins,sans-serif;letter-spacing:.16em;text-transform:uppercase;padding:0 10px;color:rgba(var(--ink),.8)}
+.rs.sysopen{display:block;width:100%;margin:16px 0 4px;min-height:38px}
+.sechd{display:flex;align-items:center;justify-content:space-between;margin-top:18px;padding-bottom:4px}
+.sechd h4{margin:0!important;font-size:10px!important}
+.trow.all{margin-top:18px;border-top:1px solid rgba(var(--ink),.2)}
+.seg.picks{flex-wrap:wrap;max-width:200px;justify-content:flex-end}
+.trow .rg{width:110px}
+html.no-inoz .inoz{display:none}
+html.no-f1 #f1{visibility:hidden}
+#moon canvas{scale:var(--moonsz,1)}
+html:not(.show-parked) #tabs .parked{opacity:.42}
+#f1{position:absolute;right:50px;top:calc(var(--sat) + 16px);width:34px;height:18px;pointer-events:none}
+#boot{position:fixed;inset:0;z-index:90;width:100vw;height:100dvh;background:#000;display:block;transition:opacity .7s ease}
+#boot.out{opacity:0;pointer-events:none}
+html.rose{--hair:rgba(244,176,188,.2)}
+html.rose .sheet{background:#0b0607eb}
+#osfull{position:fixed;inset:0;z-index:80;width:100vw;height:100dvh;background:#000;display:none;touch-action:none}
+#osfull.on{display:block}
 
 </style>
 </head>
 <body>
-<div id="top"><button id="mark" aria-label="Back">ᑕᐣᓯ</button><div id="title">every dial<small id="priv">For Gill&#39;s eyes only. Private.</small></div><button id="dot" aria-label="Red mode"><span><i></i></span></button></div>
+<div id="top"><button id="mark" aria-label="Back">ᑕᐣᓯ</button><div id="title">every dial<small id="priv">For Gill&#39;s eyes only. Private.</small></div><canvas id="f1" aria-label="F1 · on device"></canvas><button id="dot" aria-label="Red mode"><span><i></i></span></button></div>
 <div id="teach"></div>
 <nav id="tabs" role="tablist"></nav>
 <div id="track"></div>
@@ -203,7 +226,9 @@ html:not(.red) .leftlist li{color:#c9d3d6}
 <div id="moon" aria-label="Moon dial"><canvas></canvas></div>
 <div id="dim" aria-label="Dimmer"><i></i><b></b></div>
 <section id="ctx" class="sheet" aria-label="where it fits"><button class="grab" aria-label="Close"></button><h3>where it fits in oz</h3><h4></h4><div class="rooms"></div><div class="ctxwrap"><canvas></canvas><dl class="fit"></dl></div></section>
-<section id="tune" class="sheet" aria-label="Tune"><button class="grab" aria-label="Close"></button><h3>tune</h3><h4>the crescent · icons · watermark</h4><div class="tprev"><canvas class="tmoon"></canvas><div class="ticons"></div></div><div class="trows"></div><h4 style="margin-top:18px">watermark</h4><div class="wmrows"></div></section>
+<section id="tune" class="sheet" aria-label="Tune"><button class="grab" aria-label="Close"></button><h3>tune</h3><h4>the crescent · icons · Water Mark</h4><div class="tprev"><canvas class="tmoon"></canvas><div class="ticons"></div></div><div class="trows"></div><div class="wmrows"></div></section>
+<section id="sys" class="sheet" aria-label="System"><button class="grab" aria-label="Close"></button><h3>system</h3><h4>every setting · saved on this device</h4><div class="sysrows"></div></section>
+<canvas id="boot" aria-label="oz is starting"></canvas>
 <canvas id="wm" aria-hidden="true"></canvas>
 <script>
 (() => {
@@ -223,12 +248,13 @@ function step(s, dt, k, c) {
   for (let i = 0; i < n; i++) { s.v += ((s.t - s.x) * k - s.v * c) * h; s.x += s.v * h; }
   return s.x;
 }
-const buzz = p => { try { if (navigator.vibrate) navigator.vibrate(p); } catch (e) {} };
+const buzz = p => { if (window.__ozHap === false) return; try { if (navigator.vibrate) navigator.vibrate(p); } catch (e) {} };
 const rnd = seed => { let s = seed >>> 0; return () => ((s = (s * 1664525 + 1013904223) >>> 0) / 4294967296); };
 
 // red mode — the dot is one tap. Photos never go through ink().
-const RED = { on: false, depth: 0, dim: 0 };
+const RED = { on: false, rose: false, depth: 0, dim: 0 };
 function redRGB() { const d = RED.depth, k = 1 - RED.dim * .42;
+  if (RED.rose) return [Math.round(lerp(244, 186, d) * k), Math.round(lerp(176, 104, d) * k), Math.round(lerp(188, 118, d) * k)];
   return [Math.round(lerp(255, 150, d) * k), Math.round(lerp(68, 14, d) * k), Math.round(lerp(87, 22, d) * k)]; }
 function ink(a) { if (!RED.on) return `rgba(232,228,220,${a})`; const c = redRGB(); return `rgba(${c[0]},${c[1]},${c[2]},${a})`; }
 function tone(rgb, a) { if (!RED.on) return `rgba(${rgb[0]},${rgb[1]},${rgb[2]},${a})`;
@@ -848,14 +874,14 @@ def({
 // MOON DIAL card: its states drawn large, the live one is free on the screen
 def({
   name: 'Moon dial', key: 'moon', ownMoonOff: true, from: 'The Moon dial: separate from the camera dial, free on the screen.',
-  does: 'Drag it anywhere; at an edge it rests as a glowing dot. Touched, it wakes as a full moon; after 5 s it wanes to the crescent. Tap for its six shortcuts.',
+  does: 'Drag it anywhere; at an edge it rests as a glowing dot. Touched, it wakes as a full moon; after 5 s it wanes to the crescent. Tap for its seven shortcuts.',
   rl: 'Moon dial', hint: 'tap a moon · drag the small one anywhere',
   init(k) { k.s = { pick: -1 }; },
   down(k, x, y) { const xs = [W * .2, W * .5, W * .8]; xs.forEach((xx, i) => { if (Math.hypot(x - xx, y - H * .5) < 50) { k.s.pick = i; HAP.commit(); if (i === 1) MD.openRing(); } }); }, move() {}, up() {},
   draw(k, c, dt, t) { drawSky(c, t); const y = H * .5;
     drawFullMoon(c, W * .2, y, 11, { t }); drawCrescent(c, W * .5, y, 26, { t }); glow(c, W * .8, y, 18, a => RED.on ? `rgba(255,92,98,${a})` : `rgba(255,236,200,${a})`, .55); c.beginPath(); c.arc(W * .8, y, 5, 0, TAU); c.fillStyle = RED.on ? '#FF5C62' : '#fff1cf'; c.fill();
     ['AWAKE · FULL', 'REST · CRESCENT', 'EDGE · DOT'].forEach((s, i) => text(c, s, [W * .2, W * .5, W * .8][i], y + 52, JUL(8), ink(k.s.pick === i ? .95 : .55)));
-    const st = MD.state(); k.read(MD.ringOpen() ? 'six shortcuts open' : st.dot > .5 ? 'resting as a dot' : st.awake > .5 ? 'awake · full moon' : 'crescent', MD.ringOpen() ? 'drag across them to orbit · tap one' : this.hint); }
+    const st = MD.state(); k.read(MD.ringOpen() ? 'seven shortcuts open' : st.dot > .5 ? 'resting as a dot' : st.awake > .5 ? 'awake · full moon' : 'crescent', MD.ringOpen() ? 'drag across them to orbit · tap one' : this.hint); }
 });
 // ✨ ENVIRONMENT dial
 const ENV = { first: [['atmosphere', ['still', 'calm', 'living'], 1], ['stars', ['few', 'some', 'all'], 1], ['fog', ['off', 'light', 'full'], 0], ['water', ['off', 'still', 'ripples'], 2], ['wind', ['still', 'breezy', 'strong'], 1], ['wind from', ['live', 'by hand'], 0], ['grain', ['off', 'fine', 'full'], 0]],
@@ -942,7 +968,7 @@ def({
       c.strokeStyle = ink(.3 * f); c.beginPath(); c.moveTo(g.x, g.y - (g.R - 6) * f); c.lineTo(g.x, g.y + (g.R - 6) * f); c.moveTo(g.x - (g.R - 6) * f, g.y); c.lineTo(g.x + (g.R - 6) * f, g.y); c.stroke();
       this.TONES.forEach((tt, i) => { const yy = g.y - 54 * f + i * 36 * f; ozDot(c, g.x, yy, i === s.tone ? 3 : 1.6, f); text(c, tt[0].toUpperCase(), g.x - 14, yy, JUL(7), ink((i === s.tone ? 1 : .5) * f), 'right'); });
       ozDot(c, g.x - (g.R - 10) * f + s.light * 2 * (g.R - 10) * f, g.y, 3, f); text(c, 'LIGHTNESS', g.x + 12, g.y + 12, JUL(7), ink(.6 * f), 'left'); }
-    c.beginPath(); c.arc(g.x, g.y, 16, 0, TAU); c.fillStyle = GLASS(); c.fill(); c.strokeStyle = ink(.3); c.lineWidth = 1; c.stroke(); c.beginPath(); c.arc(g.x, g.y, 4, 0, TAU); c.fillStyle = '#55DAA1'; c.fill();
+    c.beginPath(); c.arc(g.x, g.y, 16, 0, TAU); c.fillStyle = GLASS(); c.fill(); c.strokeStyle = ink(.3); c.lineWidth = 1; c.stroke(); c.beginPath(); c.arc(g.x, g.y, 4, 0, TAU); c.fillStyle = MINT(); c.fill();
     k.read(this.TONES[s.tone][0] + ' · lightness ' + Math.round(s.light * 100) + (s.day ? ' · day mode' : ''), f > .5 ? 'up / down tone · left / right lightness' : RED.on ? this.hint : 'tap it for red mode · hold for the pad'); }
 });
 // GHOST AND FINGER DIALS
@@ -1127,19 +1153,213 @@ def({
   draw(k, c, dt, t) { drawSky(c, t, { bright: .6 }); k.read(CONS.length - 1 + ' captured in oz', this.hint); }
 });
 
+// ---------------- oz OS feel: shared drawing (modes, dotted phone, the oz dot, F1 local arch, F3 reaching arc) ----------------
+const MINTS = { a: '#55DAA1', b: '#3EE6B0' };
+const tealKey = () => { try { return localStorage.getItem('oz-teal') === 'b' ? 'b' : 'a'; } catch (e) { return 'a'; } };
+const MINT = () => MINTS[tealKey()];
+const hexRGB = h => [parseInt(h.slice(1, 3), 16), parseInt(h.slice(3, 5), 16), parseInt(h.slice(5, 7), 16)];
+const MODEC = { night: { ink: [226, 224, 220], glow: [205, 210, 220], tile: ['#141c27', '#06090e'] }, red: { ink: [255, 84, 96], glow: [235, 70, 70], tile: ['#2a0709', '#090203'] }, rose: { ink: [244, 184, 192], glow: [230, 150, 165], tile: ['#26161a', '#0a0607'] } };
+const curMode = () => RED.on ? (RED.rose ? 'rose' : 'red') : 'night';
+const rgba = (c, a) => `rgba(${c[0]},${c[1]},${c[2]},${a})`;
+// the oz dot: the mint light (teal toggle) or the cream m4 SKY dot, always with the warm safelight glow under it
+function ozLight(c, x, y, r, a, style, t) { a = a == null ? 1 : a; const br = .85 + .15 * Math.sin((t || 0) * 1.1);
+  glow(c, x, y, r * 7, q => `rgba(255,120,95,${q})`, .1 * a * br);
+  if (style === 'cream') { glow(c, x, y, r * 4.2, q => `rgba(255,236,200,${q})`, .38 * a * br); c.beginPath(); c.arc(x, y, r, 0, TAU); c.fillStyle = `rgba(255,241,207,${a})`; c.fill(); }
+  else { const m = hexRGB(MINT()); glow(c, x, y, r * 4, q => rgba(m, q), .42 * a * br); c.beginPath(); c.arc(x, y, r, 0, TAU); c.fillStyle = rgba(m, a); c.fill(); c.beginPath(); c.arc(x - r * .25, y - r * .25, r * .45, 0, TAU); c.fillStyle = `rgba(255,255,255,${.25 * a})`; c.fill(); } }
+// points along a rounded rect (for a dotted phone outline)
+function rrPts(x, y, w, h, r, step) { const P = [], seg = [[x + r, y, x + w - r, y], [x + w, y + r, x + w, y + h - r], [x + w - r, y + h, x + r, y + h], [x, y + h - r, x, y + r]];
+  const cor = [[x + w - r, y + r, -PI / 2], [x + w - r, y + h - r, 0], [x + r, y + h - r, PI / 2], [x + r, y + r, PI]];
+  for (let i = 0; i < 4; i++) { const [a, b, c2, d] = seg[i], L = Math.hypot(c2 - a, d - b), n = Math.max(1, Math.round(L / step)); for (let k = 0; k < n; k++) P.push([a + (c2 - a) * k / n, b + (d - b) * k / n]);
+    const [cx, cy, a0] = cor[i], n2 = Math.max(2, Math.round(r * PI / 2 / step)); for (let k = 0; k < n2; k++) { const an = a0 + k / n2 * PI / 2; P.push([cx + Math.cos(an) * r, cy + Math.sin(an) * r]); } }
+  return P; }
+function dottedPhone(c, x, y, w, h, col, a, prog, t, dotSz) { const r = w * .2, P = rrPts(x, y, w, h, r, Math.max(3.2, w / 16)), n = Math.floor(P.length * (prog == null ? 1 : prog)), z = dotSz || Math.max(1, w / 40);
+  for (let i = 0; i < n; i++) { const tw = .82 + .18 * Math.sin((t || 0) * 1.6 + i * .7); c.fillStyle = rgba(col, a * tw); c.beginPath(); c.arc(P[i][0], P[i][1], z, 0, TAU); c.fill(); }
+  // side buttons, as dots
+  if ((prog == null ? 1 : prog) > .98) { c.fillStyle = rgba(col, a * .8); [[.2, .08], [.32, .06], [.42, .06]].forEach(([f, l]) => { for (let k = 0; k < 3; k++) { c.beginPath(); c.arc(x - z * 2.6, y + h * (f + k * l / 3), z * .8, 0, TAU); c.fill(); } });
+    for (let k = 0; k < 5; k++) { c.beginPath(); c.arc(x + w + z * 2.6, y + h * (.28 + k * .03), z * .8, 0, TAU); c.fill(); } }
+  return P; }
+function water(c, x0, x1, y, h, col, t, a) { a = a == null ? 1 : a; const g = c.createLinearGradient(0, y, 0, y + h); g.addColorStop(0, `rgba(0,0,0,${.0})`); g.addColorStop(1, `rgba(0,0,0,${.35 * a})`); c.fillStyle = g; c.fillRect(x0, y, x1 - x0, h);
+  c.strokeStyle = rgba(col, .16 * a); c.lineWidth = .8; c.beginPath(); c.moveTo(x0, y); c.lineTo(x1, y); c.stroke();
+  for (let i = 0; i < 9; i++) { const yy = y + 6 + i * (h - 8) / 9, ph = t * (.6 + i * .07) + i * 1.7, xx = x0 + ((Math.sin(ph) * .5 + .5) * (x1 - x0) * .7), L = 10 + 14 * ((i * 37) % 5) / 5; c.strokeStyle = rgba(col, .07 * a); c.beginPath(); c.moveTo(xx, yy); c.lineTo(xx + L, yy); c.stroke(); } }
+// reflection of a set of points in water at waterline y: mirrored, compressed, shimmering
+function reflectPts(c, P, y, col, a, t, z) { for (let i = 0; i < P.length; i++) { const [px, py] = P[i]; if (py > y) continue; const ry = y + (y - py) * .72; if (ry > y + 200) continue;
+  const sh = .45 + .55 * Math.sin(t * 3.1 + i * 1.3 + py * .05), wob = Math.sin(t * 2.2 + ry * .12) * 1.6; c.fillStyle = rgba(col, a * .28 * sh * Math.max(0, 1 - (ry - y) / 160)); c.fillRect(px + wob - z, ry, z * 2.2, z * .9); } }
+// F1 · local, on device: a dotted arch of soft stars, half-sunk in rippling water, with its reflection
+function drawF1(c, cx, cy, R, col, t, prog, a, small) { a = a == null ? 1 : a; const N = small ? 9 : 24, A0 = PI * .97, A1 = PI * 2.03, P = [];
+  for (let i = 0; i < N; i++) { const an = A0 + (A1 - A0) * i / (N - 1); P.push([cx + Math.cos(an) * R, cy + Math.sin(an) * R * .92]); }
+  const lit = i => clamp((prog * (N + 3) - i) / 3, 0, 1);
+  if (!small) water(c, cx - R * 1.9, cx + R * 1.9, cy, R * 1.25, col, t, a * clamp(prog * 3, 0, 1));
+  const z = small ? .9 : Math.max(1.3, R / 26);
+  P.forEach((p, i) => { const l = lit(i); if (l <= 0) return; const fl = small ? 0 : Math.max(0, 1 - Math.abs(prog * (N + 3) - i - 1.5) / 1.5);
+    if (!small) glow(c, p[0], p[1], z * (5 + 6 * fl), q => rgba(MODEC[curMode()].glow, q), .25 * l * a);
+    c.fillStyle = rgba(col, a * l * (small ? .95 : .92)); c.beginPath(); c.arc(p[0], p[1], z * (1 + .5 * fl), 0, TAU); c.fill(); });
+  if (!small) reflectPts(c, P.filter((p, i) => lit(i) > 0), cy, col, a, t, z); else { c.strokeStyle = rgba(col, .35 * a); c.lineWidth = .6; c.beginPath(); c.moveTo(cx - R * 1.4, cy + .5); c.lineTo(cx + R * 1.4, cy + .5); c.stroke(); }
+  return P; }
+// F3 · reaching out (Ask, mesh, connected): an arc of dots rising to a star; travel = 0..1 animates a message along it
+function drawF3(c, x, y, s, col, t, travel, a) { a = a == null ? 1 : a; const N = 7, P = []; for (let i = 0; i < N; i++) { const u = i / (N - 1); P.push([x + u * s, y - Math.sin(u * PI * .5) * s * .9 - u * s * .1]); }
+  P.forEach((p, i) => { c.fillStyle = rgba(col, a * (.45 + .35 * i / N)); c.beginPath(); c.arc(p[0], p[1], .8, 0, TAU); c.fill(); });
+  const e = P[N - 1]; ozLight(c, e[0], e[1], 1.6, a, 'cream', t);
+  if (travel != null && travel >= 0) { const u = travel % 1, f = u * (N - 1), i = Math.floor(f), q = f - i, p0 = P[i], p1 = P[Math.min(N - 1, i + 1)]; const mx = p0[0] + (p1[0] - p0[0]) * q, my = p0[1] + (p1[1] - p0[1]) * q; glow(c, mx, my, 5, q2 => rgba(col, q2), .5 * a); c.fillStyle = rgba(col, a); c.beginPath(); c.arc(mx, my, 1.2, 0, TAU); c.fill(); } }
+// the boot: the red-mode dot alone on black, then F1 lights round its arch, holds, and settles up into the status strip
+function drawBoot(c, w, h, t, mode, len, sx, sy, dotX, dotY) { const M = MODEC[mode], L = len || 2.4; c.fillStyle = '#000'; c.fillRect(0, 0, w, h);
+  const T1 = .35, T2 = 1.25, T3 = T2 + L, T4 = T3 + .6; // dot on · F1 lit · fly up · done
+  const da = clamp((t - T1) / .5, 0, 1), dot = 1 - Math.pow(1 - da, 3);
+  if (dot > 0) { const sw = t < T2 ? 1 + .6 * Math.sin(clamp((t - T1) / .9, 0, 1) * PI) : 1; ozLight(c, dotX, dotY, 4 * sw, dot, 'mint', t); }
+  if (t > T2 - .1) { const fly = clamp((t - T3) / .6, 0, 1), e = fly * fly * (3 - 2 * fly), prog = clamp((t - T2) / (L * .62), 0, 1);
+    const cx = w / 2 + (sx - w / 2) * e, cy = h * .5 + (sy - h * .5) * e, R = Math.min(w, h) * .16 * (1 - e) + 5 * e;
+    if (e < .98) drawF1(c, cx, cy, R, M.ink, t, prog, 1 - e * .3, false); else drawF1(c, sx, sy, 5, M.ink, t, 1, 1, true); }
+  return t > T4; }
+// ---------------- MODES: night / red / rose, dotted phones on water (icon and mode-picker visuals, not the boot) ----------------
+def({
+  name: 'Modes', key: 'modes', from: 'The main icon refs: “a · dot phone” (dotted outline, mint light, on water) and the site look (night / red / rose).',
+  does: 'Three ways oz can look: night (soft white), red (red mode, the default) and rose (pink). Each is the dotted phone with the mint light, standing on water with its reflection. Tap one to switch.',
+  rl: 'Mode', hint: 'tap night, red or rose',
+  init(k) { k.s = { hit: -1 }; },
+  geo() { const tw = Math.min(112, (W - 44) / 3), th = tw * 1.42, y = H * .5 - th / 2 + 20; return { tw, th, y, xs: [0, 1, 2].map(i => W / 2 + (i - 1) * (tw + 10) - tw / 2) }; },
+  down(k, x, y) { const g = this.geo(); g.xs.forEach((tx, i) => { if (x > tx && x < tx + g.tw && y > g.y && y < g.y + g.th + 30) k.s.hit = i; }); },
+  move() {}, up(k) { if (k.s.hit >= 0) { setMode(['night', 'red', 'rose'][k.s.hit]); HAP.commit(); } k.s.hit = -1; },
+  draw(k, c, dt, t) { c.fillStyle = '#000'; c.fillRect(0, 0, W, H); const g = this.geo(), cm = curMode();
+    ['night', 'red', 'rose'].forEach((m, i) => drawModeTile(c, g.xs[i], g.y, g.tw, g.th, m, t, m === cm, 'mint'));
+    k.read(cm + (cm === 'red' ? ' · the default' : ''), this.hint); }
+});
+function drawModeTile(c, x, y, w, h, m, t, on, dotStyle) { const M = MODEC[m], r = w * .22;
+  c.save(); c.beginPath(); c.roundRect ? c.roundRect(x, y, w, h, r) : c.rect(x, y, w, h); const g = c.createRadialGradient(x + w / 2, y + h * .42, 4, x + w / 2, y + h * .5, h * .75); g.addColorStop(0, M.tile[0]); g.addColorStop(1, M.tile[1]); c.fillStyle = g; c.fill();
+  c.strokeStyle = rgba(M.ink, on ? .38 : .12); c.lineWidth = 1; c.stroke(); c.clip();
+  const pw = w * .3, ph = pw * 1.9, px = x + w / 2 - pw / 2, py = y + h * .2, wl = py + ph + h * .05, br = .85 + .15 * Math.sin(t * 1.1 + x);
+  glow(c, x + w / 2, py + ph / 2, w * .6, q => rgba(M.glow, q), (on ? .16 : .08) * br);
+  water(c, x, x + w, wl, h - (wl - y), M.ink, t, .9);
+  const P = dottedPhone(c, px, py, pw, ph, M.ink, .9, 1, t, Math.max(.8, w / 110)); reflectPts(c, P, wl, M.ink, .9, t, Math.max(.8, w / 110));
+  ozLight(c, px + pw * .74, py + pw * .24, Math.max(1.6, w / 46), 1, dotStyle, t); c.restore();
+  text(c, m, x + w / 2, y + h + 16, POP(11), rgba(M.ink, on ? .95 : .55)); if (on) { c.fillStyle = rgba(M.ink, .8); c.fillRect(x + w / 2 - 9, y + h + 26, 18, 1); } }
+// ---------------- ARC TO DOT: the F3 arc rising inside the phone to the light (icon / transition, not the boot) ----------------
+def({
+  name: 'Arc to dot', key: 'arc', from: 'Your arc-to-dot concept (20 Nov): the F3 arc, rising inside the phone to the light. An icon and transition, not the boot.',
+  does: 'Dots appear one by one up an arc inside the dotted phone and travel to the top right, landing as the light, which then glows. The phone stands on water and its dotted reflection shimmers. Tap to play it again.',
+  rl: 'Arc to dot', hint: 'tap to replay · pick a mode and a dot', chips: ['night', 'red', 'rose', 'cream dot', 'mint light'],
+  init(k) { k.s = { m: 'rose', dot: 'cream', t0: 0 }; }, chip(k, v) { if (v.endsWith('dot') || v.endsWith('light')) k.s.dot = v.startsWith('cream') ? 'cream' : 'mint'; else k.s.m = v; k.s.t0 = k.now; },
+  chipOn(k, v) { return v === k.s.m || (v === 'cream dot' && k.s.dot === 'cream') || (v === 'mint light' && k.s.dot === 'mint'); },
+  down(k) { k.s.t0 = k.now; HAP.tick(); }, move() {}, up() {},
+  draw(k, c, dt, t) { c.fillStyle = '#000'; c.fillRect(0, 0, W, H); const tw = Math.min(260, W * .66), th = tw * 1.15, x = W / 2 - tw / 2, y = H * .58 - th / 2;
+    drawArcTile(c, x, y, tw, th, k.s.m, (k.now || t) - k.s.t0, t, k.s.dot); k.read(k.s.m + ' · ' + (k.s.dot === 'cream' ? 'cream SKY dot' : 'mint light'), this.hint); }
+});
+function drawArcTile(c, x, y, w, h, m, at, t, dotStyle) { const M = MODEC[m], r = w * .18; at = ((at % 6.4) + 6.4) % 6.4;
+  c.save(); c.beginPath(); c.roundRect ? c.roundRect(x, y, w, h, r) : c.rect(x, y, w, h); const g = c.createRadialGradient(x + w / 2, y + h * .45, 4, x + w / 2, y + h * .5, h * .8); g.addColorStop(0, M.tile[0]); g.addColorStop(1, M.tile[1]); c.fillStyle = g; c.fill(); c.clip();
+  const pw = w * .36, ph = pw * 1.95, px = x + w / 2 - pw / 2, py = y + h * .13, wl = py + ph + 8, fade = clamp(at / .4, 0, 1) * clamp((6.4 - at) / .4, 0, 1);
+  glow(c, x + w / 2, py + ph / 2, w * .55, q => rgba(M.glow, q), .1 * fade);
+  water(c, x, x + w, wl, h - (wl - y), M.ink, t, fade);
+  const P = dottedPhone(c, px, py, pw, ph, M.ink, .85 * fade, 1, t, Math.max(.9, w / 140));
+  // the arc: lower left inside the phone up to the light at top right
+  const L = [px + pw * .74, py + pw * .24], S0 = [px + pw * .22, py + ph * .78], N = 14, arcAt = u => { const cx = S0[0] + (L[0] - S0[0]) * u, cy = S0[1] + (L[1] - S0[1]) * u; const bow = Math.sin(u * PI) * pw * .16; return [cx - bow * .6, cy + bow * .2 - Math.sin(u * PI * .5) * 0]; };
+  const AP = [];
+  for (let i = 0; i < N; i++) { const s0 = i / N, born = .45 + i * .11; if (at < born) continue; const u = clamp((at - 2.1) / 1.0, 0, 1), e = u * u * (3 - 2 * u), s = s0 + (1 - s0) * e, p = arcAt(s); const a = clamp((at - born) / .18, 0, 1) * (1 - e * .9) * fade;
+    AP.push(p); glow(c, p[0], p[1], 5, q => rgba(M.glow, q), .18 * a); c.fillStyle = rgba(M.ink, a); c.beginPath(); c.arc(p[0], p[1], Math.max(1, w / 150) * (1 + .4 * (1 - s0)), 0, TAU); c.fill(); }
+  // after landing, the arc stays as a faint trace
+  if (at > 3.1) for (let i = 0; i < N; i++) { const p = arcAt(i / N); c.fillStyle = rgba(M.ink, .28 * clamp((at - 3.1) / .6, 0, 1) * fade); c.beginPath(); c.arc(p[0], p[1], Math.max(.8, w / 190), 0, TAU); c.fill(); AP.push(p); }
+  const land = clamp((at - 2.9) / .5, 0, 1); ozLight(c, L[0], L[1], Math.max(2.2, w / 40) * (1 + .5 * Math.sin(land * PI)), land * fade, dotStyle, t);
+  reflectPts(c, P.concat(AP), wl, M.ink, .9 * fade, t, Math.max(.9, w / 140)); c.restore(); }
+// ---------------- OS FEEL: the walkthrough, in a phone, red mode by default ----------------
+let OSTOP = 300;
+const OSN = ['boot', 'lock', 'status', 'dock', 'switcher', 'alerts', 'system'], OSD = [4.6, 4.6, 3.6, 4, 4.6, 6.6, 4.2];
+def({
+  name: 'OS feel', key: 'os', from: 'Your ask (20 Nov, 11:15): “make it feel even more like an OS.” App-level feel, inside oz.',
+  does: 'Seven moments: boot, lock, status strip (F1 local · F3 reaching out), the hidden dock (Messages a default pick), switcher, alerts and Control Centre, System. Full screen plays it on the whole phone.',
+  rl: 'OS feel', hint: 'tap a moment · or play all · full screen', chips: ['play all', 'full screen', '1', '2', '3', '4', '5', '6', '7'],
+  init(k) { k.s = { sc: 0, t0: 0, all: false, closed: -1, wake: 0, drag: null }; },
+  chip(k, v) { if (v === 'full screen') { OSFULL.open(true); return; } if (v === 'play all') { k.s.all = true; k.s.sc = 0; } else { k.s.all = false; k.s.sc = +v - 1; } k.s.t0 = k.now; k.s.closed = -1; k.s.wake = 0; },
+  chipOn(k, v) { return k.s.all ? v === 'play all' : v === String(k.s.sc + 1); },
+  geo() { const top = Math.max(300, OSTOP), pw = Math.min(250, W - 90, (H - top - 120) / 2.05), ph = pw * 2.05; return { x: (W - pw) / 2, y: top, w: pw, h: ph }; },
+  down(k, x, y) { k.s.drag = { x, y, t: k.now }; },
+  move(k, x, y) { const d = k.s.drag; if (!d) return; d.dy = y - d.y; },
+  up(k, x, y) { const d = k.s.drag, g = this.geo(); k.s.drag = null; if (!d) return; const lx = x - g.x, ly = y - g.y;
+    if (k.s.sc === 1 && (d.dy || 0) < -40) { k.s.wake = k.now; HAP.commit(); }
+    else if (k.s.sc === 4 && (d.dy || 0) < -30) { k.s.closed = k.now; HAP.tick(); }
+    else if (k.s.sc === 6 && lx > 0 && lx < g.w && ly > g.h * .74 && ly < g.h * .84) { setSetting('teal', tealKey() === 'a' ? 'b' : 'a'); HAP.commit(); }
+    else if (Math.abs(d.dy || 0) < 8) { k.s.t0 = k.now; } },
+  draw(k, c, dt, t) { const s = k.s, g = this.geo(); drawSky(c, t, { bright: .35 }); let at = (k.now || t) - s.t0;
+    if (s.all) { let i = 0, acc = 0; while (i < OSN.length - 1 && at > acc + OSD[i]) { acc += OSD[i]; i++; } if (at > OSD.reduce((a, b) => a + b, 0)) { s.t0 = k.now; at = 0; i = 0; acc = 0; } if (i !== s.sc) { s.sc = i; s.closed = -1; s.wake = 0; if (k.ch) k.ch.querySelectorAll('button').forEach(b => b.classList.toggle('on', b.textContent === 'play all')); } at -= acc; }
+    // the phone
+    c.save(); c.beginPath(); c.roundRect ? c.roundRect(g.x - 6, g.y - 6, g.w + 12, g.h + 12, 34) : c.rect(g.x - 6, g.y - 6, g.w + 12, g.h + 12); c.strokeStyle = ink(.22); c.lineWidth = 1; c.stroke();
+    c.beginPath(); c.roundRect ? c.roundRect(g.x, g.y, g.w, g.h, 28) : c.rect(g.x, g.y, g.w, g.h); c.clip(); c.translate(g.x, g.y); const sc = g.w / 390; c.scale(sc, sc);
+    osScene(c, 390, g.h / sc, s.sc, at, t, s, k); c.restore();
+    text(c, (s.sc + 1) + ' · ' + OSN[s.sc].toUpperCase(), W / 2, g.y + g.h + 22, JUL(8), ink(.7));
+    k.read(OS_LINES[s.sc], s.sc === 1 ? 'swipe up on the phone to wake' : s.sc === 4 ? 'flick a star up to close it' : s.sc === 6 ? 'tap the teal row to switch A / B' : this.hint); }
+});
+const OS_LINES = ['the dot comes on alone, then F1 lights and settles up', 'the live sky, the time, the day’s light, the moon', 'mode · sun and moon · F1 local / F3 reaching out · battery · Water Mark', 'the hidden dock: pull up from the bottom · Messages is a default pick', 'pinch out: open rooms float as stars', 'a notification falls into the water · Control Centre from the dot', 'the System room: every setting, the Water Mark, the developer teals'];
+function osSky(c, w, h, t, b) { const M = MODEC[curMode()], gr = c.createLinearGradient(0, 0, 0, h); if (RED.on) { gr.addColorStop(0, '#000'); gr.addColorStop(1, RED.rose ? '#140a0c' : '#160304'); } else { gr.addColorStop(0, '#000'); gr.addColorStop(.6, '#04070f'); gr.addColorStop(1, '#0b1626'); } c.fillStyle = gr; c.fillRect(0, 0, w, h);
+  for (let i = 0; i < 120; i++) { const s = STARS[i]; c.fillStyle = rgba(M.ink, (.12 + .6 * s.m) * (.8 + .2 * Math.sin(t * 1.2 + s.tw)) * (b == null ? 1 : b)); const z = .5 + s.m; c.fillRect(s.x * w, s.y * h * .8, z, z); }
+  c.fillStyle = '#010101'; c.beginPath(); c.moveTo(0, h); c.lineTo(0, h * .93); for (const [x, hh, tall] of TREES) { const X = x * w, Y = h * .93 - hh * h * .3; if (tall) { c.lineTo(X - 1.5, h * .93 - 1); c.lineTo(X, Y); c.lineTo(X + 1.5, h * .93 - 1); } else c.lineTo(X, Y); } c.lineTo(w, h * .93); c.lineTo(w, h); c.fill(); }
+function osStatus(c, w, t, f3, a) { a = a == null ? 1 : a; const M = MODEC[curMode()], y = 17;
+  text(c, curMode().toUpperCase(), 16, y, JUL(6.5), rgba(M.ink, .8 * a), 'left');
+  drawCrescent(c, w * .3, y, 3.2, { a: a, t }); text(c, Math.round(REALMOON.illum * 100) + '%', w * .3 + 7, y, JUL(6), rgba(M.ink, .7 * a), 'left');
+  c.beginPath(); c.arc(w * .46, y, 2.2, 0, TAU); c.strokeStyle = rgba(M.ink, .7 * a); c.lineWidth = .8; c.stroke(); text(c, '4:20', w * .46 + 5, y, JUL(6), rgba(M.ink, .7 * a), 'left');
+  // F1 local / F3 reaching out, where the signal bars sit
+  if (f3 != null) drawF3(c, w - 66, y + 4, 9, M.ink, t, f3, a); else drawF1(c, w - 61, y + 3, 5, M.ink, t, 1, a, true);
+  c.strokeStyle = rgba(M.ink, .7 * a); c.lineWidth = .8; c.strokeRect(w - 44, y - 3.5, 15, 7); c.fillStyle = rgba(M.ink, .7 * a); c.fillRect(w - 42.5, y - 2, 10, 4); c.fillRect(w - 28.5, y - 1.5, 1.2, 3);
+  c.save(); c.font = '400 8px "Noto Sans Canadian Aboriginal", sans-serif'; c.textAlign = 'right'; c.textBaseline = 'middle'; c.shadowColor = 'rgba(255,110,90,.6)'; c.shadowBlur = 6 * DPR; c.fillStyle = rgba(M.ink, .55 * a); c.fillText('ᑕᐣᓯ', w - 12, y); c.restore(); }
+const DOCKI = ['home', 'back', 'map', 'ask', 'messages', 'notes', 'red mode'];
+function osDock(c, w, h, t, a, sz) { a = a == null ? 1 : a; sz = sz || 1; const M = MODEC[curMode()], PK = getSetting('dockpicks'), n = PK.length, dw = Math.min(w - 24, (34 * n + 6) * sz), dh = 38 * sz, x = (w - dw) / 2, y = h - dh - 16;
+  c.beginPath(); c.roundRect ? c.roundRect(x, y, dw, dh, dh / 2) : c.rect(x, y, dw, dh); c.fillStyle = `rgba(6,3,4,${.66 * a})`; c.fill(); c.strokeStyle = rgba(M.ink, .22 * a); c.lineWidth = .8; c.stroke();
+  PK.forEach((l, i) => { const I = DOCKI.indexOf(l); const cx = x + dw * (i + .5) / n, cy = y + dh / 2; c.strokeStyle = rgba(M.ink, .85 * a); c.fillStyle = rgba(M.ink, .85 * a); c.lineWidth = 1;
+    c.beginPath(); if (I === 0) { c.moveTo(cx - 5, cy + 1); c.lineTo(cx, cy - 5); c.lineTo(cx + 5, cy + 1); c.moveTo(cx - 3.5, cy); c.lineTo(cx - 3.5, cy + 5); c.lineTo(cx + 3.5, cy + 5); c.lineTo(cx + 3.5, cy); c.stroke(); }
+    else if (I === 1) { c.moveTo(cx + 3, cy - 5); c.lineTo(cx - 3, cy); c.lineTo(cx + 3, cy + 5); c.stroke(); }
+    else if (I === 2) { [[-4, -3], [0, 2], [4, -4], [2, 5]].forEach(([dx, dy]) => { c.beginPath(); c.arc(cx + dx, cy + dy, 1, 0, TAU); c.fill(); }); c.beginPath(); c.moveTo(cx - 4, cy - 3); c.lineTo(cx, cy + 2); c.lineTo(cx + 4, cy - 4); c.stroke(); }
+    else if (I === 3) { c.arc(cx, cy - 1, 4.5, PI * .1, PI * 1.9); c.stroke(); c.beginPath(); c.arc(cx + 3, cy + 4, .9, 0, TAU); c.fill(); }
+    else if (I === 5) { c.strokeRect(cx - 4, cy - 5, 8, 10); c.beginPath(); c.moveTo(cx - 2, cy - 2); c.lineTo(cx + 2, cy - 2); c.moveTo(cx - 2, cy + 1); c.lineTo(cx + 2, cy + 1); c.stroke(); }
+    else if (I === 4) { c.beginPath(); c.roundRect ? c.roundRect(cx - 5.5, cy - 4.5, 11, 8, 3) : c.rect(cx - 5.5, cy - 4.5, 11, 8); c.moveTo(cx - 2, cy + 3.5); c.lineTo(cx - 3.5, cy + 6); c.lineTo(cx + .5, cy + 3.5); c.stroke(); [-2.5, 0, 2.5].forEach(dx => { c.beginPath(); c.arc(cx + dx, cy - .5, .7, 0, TAU); c.fill(); }); }
+    else { ozLight(c, cx, cy, 2.6, a, 'mint', t); }
+    if (getSetting('docklabels') || l === 'messages') text(c, l.toUpperCase(), cx, cy + dh / 2 + 7, JUL(5), rgba(M.ink, .5 * a)); }); }
+function osHome(c, w, h, t, a) { osSky(c, w, h, t, a); const M = MODEC[curMode()]; drawFig(c, ROOMS[1], w * .3, h * .3, 13, .8 * a); drawFig(c, ROOMS[0], w * .7, h * .38, 11, .8 * a); drawFig(c, ROOMS[3], w * .4, h * .55, 12, .8 * a); drawFig(c, ROOMS[2], w * .72, h * .64, 10, .8 * a);
+  [['GOLDEN HOUR', .3, .3], ['TIMER', .7, .38], ['SKY PLAYER', .4, .55], ['LOOPS', .72, .64]].forEach(([n, x, y]) => text(c, n, w * x, h * y + 22, JUL(5.5), rgba(M.ink, .55 * a))); }
+function osScene(c, w, h, sc, at, t, s, k) { const M = MODEC[curMode()];
+  if (sc === 0) { const done = drawBoot(c, w, h, at, curMode(), getSetting('f1len'), w - 61, 20, w - 20, 17); if (at > 1.25 + getSetting('f1len') + .3) { c.globalAlpha = clamp((at - 1.25 - getSetting('f1len') - .3) / .8, 0, 1); osHome(c, w, h, t); osStatus(c, w, t); c.globalAlpha = 1; } return; }
+  if (sc === 1) { const wk = s.wake ? clamp(((k.now || t) - s.wake) / .7, 0, 1) : (s.all && at > 3.2 ? clamp((at - 3.2) / .7, 0, 1) : 0), e = wk * wk * (3 - 2 * wk);
+    osHome(c, w, h, t); osStatus(c, w, t); c.save(); c.translate(0, -h * e); osSky(c, w, h, t); osStatus(c, w, t);
+    const d = new Date(), hh = d.getHours() % 12 || 12, mm = String(d.getMinutes()).padStart(2, '0');
+    text(c, hh + ':' + mm, w / 2, h * .25, POP(48), rgba(M.ink, .95)); text(c, d.toLocaleDateString('en', { weekday: 'long', month: 'long', day: 'numeric' }).toLowerCase(), w / 2, h * .25 + 36, POP(10), rgba(M.ink, .7));
+    drawCrescent(c, w / 2 - 36, h * .43, 9, { t }); text(c, 'the moon ' + Math.round(REALMOON.illum * 100) + '%', w / 2 - 20, h * .43, POP(9.5), rgba(M.ink, .75), 'left');
+    text(c, 'golden hour from 3:40 · sunset 4:20 pm', w / 2, h * .5, POP(9.5), rgba(M.ink, .75));
+    const ay = h * .86 - 4 * Math.sin(t * 2); c.strokeStyle = rgba(M.ink, .6); c.lineWidth = 1; c.beginPath(); c.moveTo(w / 2 - 7, ay); c.lineTo(w / 2, ay - 6); c.lineTo(w / 2 + 7, ay); c.stroke(); text(c, 'SWIPE UP TO WAKE', w / 2, h * .86 + 14, JUL(6), rgba(M.ink, .6)); c.restore(); return; }
+  if (sc === 2) { osHome(c, w, h, t); const f3 = at > 1.6 ? (at - 1.6) * .7 : null; osStatus(c, w, t, f3);
+    const lab = [['MODE', 26], ['MOON · SUN', w * .36], [f3 != null ? 'F3 · REACHING OUT' : 'F1 · ON DEVICE', w - 60], ['WATER MARK', w - 16]]; lab.forEach(([n, x], i) => { const yy = 40 + i * 13; c.strokeStyle = rgba(M.ink, .3); c.lineWidth = .6; c.beginPath(); c.moveTo(x, 25); c.lineTo(x, yy - 4); c.stroke(); text(c, n, x, yy, JUL(5.5), rgba(M.ink, .7), i > 1 ? 'right' : i === 0 ? 'left' : 'center'); }); return; }
+  if (sc === 3) { const inRoom = at > 2; if (!inRoom) osHome(c, w, h, t); else { osSky(c, w, h, t, .5); text(c, 'TIMER', w / 2, h * .2, JUL(8), rgba(M.ink, .8)); text(c, '25:00', w / 2, h * .36, POP(34), rgba(M.ink, .95)); text(c, 'RED MODE · PRODUCTION TIMER', w / 2, h * .36 + 26, JUL(5.5), rgba(M.ink, .55)); }
+    osStatus(c, w, t); const hid = getSetting('dock') === 'hidden', up = hid ? clamp((at - .5) / .5, 0, 1) : 1; if (hid && at < 1.2) { const hy = h - 8 - 30 * clamp(at / .9, 0, 1); c.fillStyle = rgba(M.ink, .5); c.fillRect(w / 2 - 16, h - 7, 32, 1.4); glow(c, w / 2, hy, 12, q => rgba(M.ink, q), .25); } c.save(); c.translate(0, (1 - up) * 50); osDock(c, w, h, t, up, getSetting('docksize')); c.restore(); text(c, (getSetting('dock') === 'hidden' ? 'PULL UP · ' : '') + (inRoom ? 'IN EVERY ROOM' : 'ON THE SKY'), w / 2, h - 66, JUL(5.5), rgba(M.ink, .55)); return; }
+  if (sc === 4) { const z = clamp(at / .8, 0, 1), e = z * z * (3 - 2 * z); osSky(c, w, h, t, .6); osStatus(c, w, t);
+    const R = [['Timer', 0], ['Golden Hour', 1], ['Sky Player', 3], ['Archive', 4], ['Loops', 2]], cl = s.closed > 0 ? clamp(((k.now || t) - s.closed) / .6, 0, 1) : (s.all && at > 2.8 ? clamp((at - 2.8) / .6, 0, 1) : 0);
+    R.forEach(([n, ri], i) => { const an = i / R.length * TAU + t * .12, rx = w / 2 + Math.cos(an) * w * .3 * e, ry = h * .45 + Math.sin(an) * h * .2 * e + Math.sin(t + i) * 3; let a = e, yy = ry;
+      if (i === 0) { yy = ry - cl * h * .5; a = e * (1 - cl); } glow(c, rx, yy, 26, q => rgba(M.glow, q), .12 * a); drawFig(c, ROOMS[ri], rx, yy, 9 * (.6 + .4 * e), .85 * a); text(c, n.toUpperCase(), rx, yy + 18, JUL(5.5), rgba(M.ink, .65 * a)); });
+    text(c, 'PINCH OUT · OPEN ROOMS AS STARS', w / 2, h * .82, JUL(5.5), rgba(M.ink, .55)); if (cl > 0) text(c, 'TIMER CLOSED', w / 2, h * .86, JUL(5.5), rgba(M.ink, .6 * cl)); return; }
+  if (sc === 5) { osHome(c, w, h, t, .7); const wl = h * .8; water(c, 0, w, wl, h - wl, M.ink, t, .9);
+    // a star falls into the water: the notification
+    const fall = clamp(at / 1.3, 0, 1), fx = w * .2 + fall * w * .45, fy = 40 + fall * fall * (wl - 40); if (fall < 1) { glow(c, fx, fy, 14, q => rgba(M.glow, q), .3); ozLight(c, fx, fy, 2.2, 1, 'cream', t); for (let i = 1; i < 6; i++) { const u = Math.max(0, fall - i * .03); c.fillStyle = rgba(M.ink, .3 * (1 - i / 6)); c.fillRect(w * .2 + u * w * .45, 40 + u * u * (wl - 40), 1.2, 1.2); } }
+    const sp = clamp((at - 1.3) / 1.6, 0, 1); if (sp > 0 && sp < 1) for (let i = 0; i < 3; i++) { const rr = (sp * 50 + i * 12); c.strokeStyle = rgba(M.ink, .3 * (1 - sp)); c.lineWidth = .8; c.beginPath(); c.ellipse(w * .65, wl + 8, rr, rr * .22, 0, 0, TAU); c.stroke(); }
+    const na = clamp((at - 1.4) / .4, 0, 1) * clamp((3.4 - at) / .4, 0, 1); if (na > 0) { c.beginPath(); c.roundRect ? c.roundRect(16, 34, w - 32, 34, 12) : c.rect(16, 34, w - 32, 34); c.fillStyle = `rgba(6,3,4,${.75 * na})`; c.fill(); c.strokeStyle = rgba(M.ink, .25 * na); c.stroke(); text(c, 'TIMER', 28, 45, JUL(5.5), rgba(M.ink, .6 * na), 'left'); text(c, '25:00 is done · the slate is up', 28, 58, POP(9), rgba(M.ink, .9 * na), 'left'); }
+    // F3 animates while a message travels (Ask)
+    const f3 = at > 2.4 && at < 4.2 ? (at - 2.4) * .9 : null; osStatus(c, w, t, f3);
+    if (f3 != null) { c.beginPath(); c.roundRect ? c.roundRect(w - 128, 30, 112, 20, 10) : c.rect(w - 128, 30, 112, 20); c.fillStyle = 'rgba(6,3,4,.7)'; c.fill(); text(c, 'ASK · SENDING TO THE MESH', w - 72, 40, JUL(5), rgba(M.ink, .75)); }
+    // Control Centre, pulled down from the dot
+    const cc = clamp((at - 4.2) / .6, 0, 1), e = cc * cc * (3 - 2 * cc); if (cc > 0) { const ph = h * .52; c.save(); c.translate(0, -ph * (1 - e)); c.beginPath(); c.roundRect ? c.roundRect(10, 8, w - 20, ph, 20) : c.rect(10, 8, w - 20, ph); c.fillStyle = 'rgba(8,3,4,.92)'; c.fill(); c.strokeStyle = rgba(M.ink, .2); c.stroke();
+      text(c, 'CONTROL CENTRE', w / 2, 26, JUL(6), rgba(M.ink, .6)); const tw = (w - 60) / 3; ['night', 'red', 'rose'].forEach((m, i) => drawModeTile(c, 20 + i * (tw + 10), 40, tw, tw * 1.25, m, t, m === curMode(), 'mint'));
+      const yy = 40 + tw * 1.25 + 34; [['LIGHT', .62], ['SOUND', .4]].forEach(([n, v], i) => { const y2 = yy + i * 26; text(c, n, 22, y2, JUL(5.5), rgba(M.ink, .6), 'left'); c.strokeStyle = rgba(M.ink, .3); c.beginPath(); c.moveTo(70, y2); c.lineTo(w - 24, y2); c.stroke(); ozDot(c, 70 + (w - 94) * v, y2, 3); });
+      text(c, 'WATER MARK · ALWAYS ON', 22, yy + 54, JUL(5.5), rgba(M.ink, .6), 'left'); drawF1(c, w - 36, yy + 56, 5, M.ink, t, 1, 1, true); c.restore(); ozLight(c, w - 20, 17, 2.6, 1, 'mint', t); }
+    return; }
+  if (sc === 6) { osSky(c, w, h, t, .3); osStatus(c, w, t); text(c, 'SYSTEM', w / 2, 46, JUL(8), rgba(M.ink, .85)); text(c, 'every setting is saved on this phone', w / 2, 62, POP(8.5), rgba(M.ink, .6));
+    const rows = [['Privacy & F3', 'local first · F1 / F3'], ['Phone', 'haptics · Face ID on owner rooms'], ['Watch', 'not paired'], ['Mac', 'Private Relay · not set'], ['Storage', 'saved on this phone'], ['Water Mark', 'always on · tones down to a floor'], ['Developer · teal', tealKey() === 'a' ? 'A · #55DAA1 (default)' : 'B · #3EE6B0'], ['Reset all', 'every setting to its default, within its limits']];
+    rows.forEach(([n, v], i) => { const y = h * .16 + i * h * .085, ap = clamp((at - i * .12) / .3, 0, 1); c.strokeStyle = rgba(M.ink, .1 * ap); c.beginPath(); c.moveTo(16, y - 12); c.lineTo(w - 16, y - 12); c.stroke(); text(c, n, 18, y, POP(10), rgba(M.ink, .92 * ap), 'left'); text(c, v, 18, y + 12, POP(7.5), rgba(M.ink, .55 * ap), 'left');
+      if (n.startsWith('Developer')) { const m = hexRGB(MINT()); c.beginPath(); c.arc(w - 30, y + 4, 5, 0, TAU); c.fillStyle = rgba(m, 1); c.fill(); glow(c, w - 30, y + 4, 16, q => rgba(m, q), .3); } else text(c, '↺', w - 26, y + 4, POP(10), rgba(M.ink, .45 * ap)); }); return; } }
+
 // ---------------- everything: order, status, open decisions ----------------
 DEFS.forEach((d, i) => { if (i < 9) d.ix = i; });
-const NAMES = ['Dial A', 'Moon dial', '✨ Environment dial', 'Light-tide clock', 'Mark II', 'The dot’s pad', 'Ghost and finger dials', 'Camera rail', 'Sound and the sliders', 'Crown', 'Orrery', 'Focus ring', 'Film winder', 'Sextant sight', 'Sundial shadow', 'Lean', 'Draw the figure', 'Constellations', 'Still to consider'];
+const NAMES = ['Dial A', 'Moon dial', '✨ Environment dial', 'Light-tide clock', 'Mark II', 'The dot’s pad', 'Ghost and finger dials', 'Camera rail', 'Sound and the sliders', 'Crown', 'Orrery', 'Focus ring', 'Film winder', 'Sextant sight', 'Sundial shadow', 'Lean', 'Draw the figure', 'Constellations', 'OS feel', 'Modes', 'Arc to dot', 'Still to consider'];
 const ORDER = NAMES.map(n => { const d = DEFS.find(q => q.name === n); if (!d) throw new Error('missing dial ' + n); return d; });
 const FITSN = {
   dialA: { line: 'the right edge of every room · the one camera dial', rooms: ['Sky', 'Golden Hour', 'Archive', 'Sky Player'],
     a: 'It is dial A. Slide turns the value of the plane in focus · tap unfolds the 3D constellation (place · camera · sky · safelight · beyond) · drag orbits it, let go and it springs back. The sky stays still.',
-    m: 'Separate. The Moon dial never repeats a camera-dial job; its shortcuts are home · back · map · ask · notes · red mode.',
+    m: 'Separate. The Moon dial never repeats a camera-dial job; its shortcuts are home · back · map · ask · messages · notes · red mode.',
     sl: 'Folds in the stacked second ring (Sky Player, Archive), the finger dial’s values (volume, flash) and FRAME · SPEED (1–24 fps, starts at 4) as rings. The now-playing pill, timer lock and dimmer stay sliders.',
     rp: 'side dials · stacked dials · the finger dial’s values · the earlier master-dial variants' },
   moon: { line: 'free on every screen · rests at an edge as a dot', rooms: ['Sky', 'Timer', 'Map'],
     a: 'Separate from dial A and never on the right edge with it. Touching one never wakes the other.',
-    m: 'It is the Moon dial. Drag it anywhere; at an edge it rests as a cream dot. Touched it wakes as a full moon, after 5 s it wanes to the crescent. Tap: six shortcuts.',
+    m: 'It is the Moon dial. Drag it anywhere; at an edge it rests as a cream dot. Touched it wakes as a full moon, after 5 s it wanes to the crescent. Tap: seven shortcuts.',
     sl: 'Floats above the now-playing pill and the dimmer and never covers them. The red mode shortcut is the same one tap as the dot.',
     rp: 'the earlier Moon dial with light rings (parked; its rings move to the ✨ dial) · Mark II · the Mark’s quarter dial' },
   env: { line: 'the sky, from a small ✨ · the same ✨ on the Moon dial’s rest face', rooms: ['Sky', 'Golden Hour', 'Sky Player'],
@@ -1168,6 +1388,11 @@ const FITSN = {
     sl: 'Sits below the now-playing pill.',
     rp: 'pinch-through-levels (second way) · the Film winder idea' },
   cons: { line: 'every room, the sky, the Icon board, the Map · captured in oz', rooms: ['Sky', 'Icon board', 'Map'], a: 'Dial A’s sky plane shows the stars; the camera orbits them.', m: 'The Moon dial’s map shortcut opens the Map of constellations.', sl: 'In Sky Player each song is a star.', rp: '—' },
+  os: { line: 'the whole app: boot, lock, status strip, the hidden dock, the switcher, alerts, System', rooms: ['Sky', 'Timer', 'Map'],
+    a: 'Dial A stays on the right edge in every room; the dock never covers it.', m: 'The Moon dial’s seven shortcuts (home · back · map · ask · messages · notes · red mode); Messages is now one tap, next to Ask.',
+    sl: 'The status strip sits above the now-playing pill; F1 / F3 sit where the signal bars go.', rp: 'Messages buried in Tune → Places · a separate settings page per room (System holds every setting with resets)' },
+  modes: { line: 'the mode picker and the icon · Control Centre · Boot → mode', rooms: ['Sky', 'Timer'], a: 'Dial A’s safelight plane tunes the red; the mode picks night, red or rose.', m: 'The Moon dial’s red mode shortcut toggles red / the last mode.', sl: 'The dimmer stays on the left edge in red and rose.', rp: 'a day-mode switch hidden in the dot’s pad' },
+  arc: { line: 'an icon and a transition (sending, connecting) · not the boot', rooms: ['Map', 'Sky'], a: 'Separate.', m: 'Plays when Ask or Messages sends; F3 in the status strip is its small form.', sl: 'None.', rp: 'the rejected S-squiggle' },
   left: { line: 'a list, not a dial · for you only', rooms: ['Map'], a: '—', m: '—', sl: '—', rp: '—' },
   sliders: { line: 'under the Mark (now playing) · the Timer (lock) · the left edge in red mode (dimmer)', rooms: ['Sky Player', 'Loops', 'Timer'],
     a: 'They stay sliders, not dials; dial A never takes their job.',
@@ -1193,10 +1418,13 @@ const STAT = {
   'Sundial shadow': ['idea', 'Today’s dial idea. Sets the Safelight tuning, which in the pack lives in Tune → Red mode and the dot’s pad.', 'Idea only (waiting #9). Would duplicate the dot’s pad and the dimmer.'],
   'Lean': ['idea · clear job', 'From the tuning audit: tilt as a real control, with a touch fallback. Not a pack item.', 'Build it, or leave it as an idea? (remaining #9)'],
   'Constellations': ['built', 'Captured in the latest oz build (2198361).', 'None here; see the Mark and the front sky in Waiting on Gill.'],
+  'OS feel': ['new · this page', 'App-level, inside oz. Messages now one tap (11:30).', 'Lock screen on the live sky: always, or only from the Moon dial? Dock hidden by default, or shown in rooms?'],
+  'Modes': ['new · this page', 'Night, red (default), rose; the icon visuals from the open-screen ref.', 'Rose as a full mode, or only a red-mode tone in the dot’s pad?'],
+  'Arc to dot': ['new · this page', 'Your arc-to-dot concept, animated; kept apart from the boot.', 'Cream SKY dot or mint light at the top of the arc?'],
   'Still to consider': ['list', 'From the what’s-left notes (20 Nov, 10:35 AM).', 'See the list.'],
   'Draw the figure': ['pack item 15', 'Already on the ✨ dial: joining stars saves the environment as a named look.', 'None: decided in item 15.']
 };
-const SHORTN = { dialA: 'Dial A', moon: 'Moon', env: '✨ Env', mark2: 'Mark II', pad: 'Dot pad', finger: 'Finger', rail: 'Rail', sliders: 'Sliders', left: 'Still to consider', cons: 'Constellations' };
+const SHORTN = { dialA: 'Dial A', moon: 'Moon', env: '✨ Env', mark2: 'Mark II', pad: 'Dot pad', finger: 'Finger', rail: 'Rail', sliders: 'Sliders', left: 'Still to consider', cons: 'Constellations', os: 'OS feel', modes: 'Modes', arc: 'Arc to dot' };
 const FITS = ORDER.map(d => Object.assign({}, d.ix != null ? FITS0[d.ix] : FITSN[d.key], { st: STAT[d.name][0], stl: STAT[d.name][1], od: STAT[d.name][2] }));
 const SHORT = ORDER.map(d => d.ix != null ? SHORT0[d.ix] : SHORTN[d.key]);
 const KEYOF = i => ORDER[i] ? (ORDER[i].ix != null ? ORDER[i].ix : ORDER[i].key) : i;
@@ -1219,7 +1447,7 @@ function drawIcon(c, i0, s) { const i = KEYOF(i0); c.clearRect(0, 0, s, s); c.sa
   else if (i === 'moon') { c.save(); c.translate(8, 8); c.beginPath(); c.arc(0, 0, 5.8, 0, TAU); c.arc(2.2, -1, 5.3, 0, TAU, true); c.fill('evenodd'); c.restore(); }
   else if (i === 'env') { L(8, 2.5, 8, 13.5); L(3.5, 8, 12.5, 8); L(13, 2, 13, 5); L(11.5, 3.5, 14.5, 3.5); D(3.5, 13, .8); }
   else if (i === 'mark2') { A(8, 9, 6.5, PI, TAU); A(8, 9, 4, PI, TAU); D(8, 9, 1.4); }
-  else if (i === 'pad') { A(8, 8, 6.2, 0, TAU); L(8, 3, 8, 13); L(3, 8, 13, 8); c.fillStyle = '#55DAA1'; D(8, 8, 1.6); }
+  else if (i === 'pad') { A(8, 8, 6.2, 0, TAU); L(8, 3, 8, 13); L(3, 8, 13, 8); c.fillStyle = MINT(); D(8, 8, 1.6); }
   else if (i === 'finger') { A(8, 8, 6, PI * .75, PI * 2.25); D(8, 8, 1.5); }
   else if (i === 'rail') { L(12, 2.5, 12, 13.5); D(12, 3, 1.3); D(12, 8, 1.3); A(12, 13, 1.3, 0, TAU); L(3, 8, 8, 8); }
   else if (i === 'cons') { D(3, 12); D(6, 5); D(11, 7); D(13, 3); c.beginPath(); c.moveTo(3, 12); c.lineTo(6, 5); c.lineTo(11, 7); c.lineTo(13, 3); c.stroke(); }
@@ -1295,7 +1523,7 @@ const DA = (() => {
   function choose(ri, vi) { const r = rows()[ri]; if (r[2] === vi) return; SEL[plane + ri] = { from: r[2], t0: performance.now() }; r[2] = vi; HAP.commit(); if (custom && custom.onChange) custom.onChange(plane, ri, vi);
     if (plane === 'safelight') { if (ri === 0) RED.depth = [0, .4, .75][vi]; if (ri === 1) RED.dim = [0, .25, .5][vi]; if (RED.on) applyRed(); }
     UL.children[ri] && UL.children[ri].querySelectorAll('button').forEach((b, j) => b.classList.toggle('on', j === vi)); sync(); }
-  function wake() { grip.classList.remove('rest'); clearTimeout(rest); rest = setTimeout(() => { if (!open) grip.classList.add('rest'); }, 5000); }
+  function wake() { grip.classList.remove('rest'); clearTimeout(rest); rest = setTimeout(() => { if (!open) grip.classList.add('rest'); }, (window.__ozDialRest || 5) * 1000); }
   function show(on, where, now, set) { if (on && !open) { custom = set || null; } if (where) { place = where; plane = custom ? custom.order[0] : 'place'; } if (now != null) { NOW.textContent = now; NOW.dataset.own = 1; } else delete NOW.dataset.own;
     if (on === open) return; open = on; html.classList.toggle('da-open', on); clearTimeout(fold);
     if (on) { build(); P.hidden = false; P.classList.remove('folding'); void P.offsetWidth; P.classList.add('in'); RD.classList.remove('on'); }
@@ -1349,12 +1577,12 @@ const DA = (() => {
   return { isOpen: () => open, custom: () => custom, openWith: (w, set) => show(true, w, null, set), rowsNow: () => rows(), open: (w, n) => show(true, w, n), close: () => show(false), toggle: (w, n) => show(!open, w, n), setNow: v => { if (open) { NOW.textContent = v; NOW.dataset.own = 1; } }, draw, refresh: () => { if (open) build(); } };
 })();
 
-// ---------------- the free Moon dial: drag anywhere; at an edge it rests as a dot; else the crescent after 5 s; tap for its six shortcuts ----------------
+// ---------------- the free Moon dial: drag anywhere; at an edge it rests as a dot; else the crescent after 5 s; tap for its seven shortcuts ----------------
 const MD = (() => {
   const el = document.getElementById('moon'), cv = el.querySelector('canvas'), RG = document.getElementById('mring'), rc = RG.querySelector('canvas'), g = cv.getContext('2d'), rg = rc.getContext('2d');
   const d0 = Math.min(devicePixelRatio || 1, 3); cv.width = cv.height = 96 * d0; rc.width = rc.height = 220 * d0;
   const st = { x: 0, y: 0, edge: 0, awake: S(0), dot: S(0), last: 0, ring: Fold(), ringOn: false, yaw: S(0), pit: S(0) };
-  const SC = ['home', 'back', 'map', 'ask', 'notes', 'red mode']; let hits = [];
+  const SC = ['home', 'back', 'map', 'ask', 'messages', 'notes', 'red mode']; let hits = [];
   function home() { st.x = innerWidth - 32; st.y = Math.round(innerHeight * .34); st.edge = 0; }
   home();
   function place() { el.style.transform = `translate(${st.x}px,${st.y}px)`; const rx = clamp(st.x, 110, innerWidth - 110), ry = clamp(st.y, 150, innerHeight - 150); RG.style.transform = `translate(${rx}px,${ry}px)`; st.rx = rx; st.ry = ry; }
@@ -1377,7 +1605,7 @@ const MD = (() => {
     if (best < 0) { closeRing(); return; } HAP.commit(); act(SC[best]); });
   RG.addEventListener('pointercancel', () => { rd = null; st.yaw.t = 0; st.pit.t = 0; });
   function act(s) { if (s === 'red mode') { toggleRed(); return; } closeRing();
-    if (s === 'back') back(); else if (s === 'home') teach('home · the whole sky'); else if (s === 'map') CTX.open(cur); else if (s === 'ask') teach('ask · pull down on the sky'); else teach('notes'); }
+    if (s === 'back') back(); else if (s === 'home') teach('home · the whole sky'); else if (s === 'map') CTX.open(cur); else if (s === 'ask') teach('ask · pull down on the sky'); else if (s === 'messages') { teach('messages · one tap, next to ask'); STRIP.send(); } else teach('notes'); }
   function draw(t, dt) {
     const idle = performance.now() - st.last; if (!d && !st.ringOn && idle > 5000) st.awake.t = 0;
     crit(st.awake, dt, 5); crit(st.dot, dt, 9); crit(st.yaw, dt, rd && rd.moved ? 30 : 9); crit(st.pit, dt, rd && rd.moved ? 30 : 9); foldStep(st.ring, dt); place();
@@ -1395,7 +1623,7 @@ const MD = (() => {
       rg.beginPath(); for (let j = 0; j <= 72; j++) { const a = j / 72 * TAU, q = pr(Math.cos(a) * 70 * f, Math.sin(a) * 70 * f); j ? rg.lineTo(q[0], q[1]) : rg.moveTo(q[0], q[1]); }
       rg.strokeStyle = `rgba(232,228,220,${.3 * f})`; rg.lineWidth = 1.1; rg.stroke();
       SC.forEach((s, i) => { const u = clamp(f * 1.4 - i * .07, 0, 1), a = -PI / 2 + i / SC.length * TAU, q = pr(Math.cos(a) * 70 * u, Math.sin(a) * 70 * u); hits.push([q[0], q[1]]);
-        rg.globalAlpha = u; rg.fillStyle = s === 'red mode' ? '#55DAA1' : RED.on ? '#FF4457' : '#e8e4dc'; rg.beginPath(); rg.arc(q[0], q[1], 2.6 * q[2], 0, TAU); rg.fill();
+        rg.globalAlpha = u; rg.fillStyle = s === 'red mode' ? MINT() : RED.on ? '#FF4457' : '#e8e4dc'; rg.beginPath(); rg.arc(q[0], q[1], 2.6 * q[2], 0, TAU); rg.fill();
         rg.font = '400 8px "Julius Sans One", Poppins, sans-serif'; try { rg.letterSpacing = '1.6px'; } catch (e) {} rg.textAlign = 'center'; rg.fillStyle = RED.on ? 'rgba(255,68,87,.85)' : 'rgba(232,228,220,.82)'; rg.fillText(s.toUpperCase(), q[0], q[1] + 15 * q[2]); });
       rg.globalAlpha = 1; }
   }
@@ -1404,7 +1632,7 @@ const MD = (() => {
 })();
 
 // ---------------- red mode: one tap on the dot; the left-edge dimmer appears ----------------
-function toggleRed() { RED.on = !RED.on; applyRed(); HAP.commit(); }
+function toggleRed() { setMode(RED.on ? 'night' : (window.__lastWarm || 'red')); HAP.commit(); }
 const _applyRed = applyRed;
 applyRed = function () { _applyRed(); redrawIcons(); DA.refresh(); const b = document.querySelector('#dim b'); b.style.top = (10 + (1 - RED.dim) * 180) + 'px'; };
 document.getElementById('dot').addEventListener('click', toggleRed);
@@ -1442,7 +1670,7 @@ function drawMock(c, w, h, di, room, t, d) {
   const pill = (x, y, ww, hh, r) => { c.beginPath(); c.roundRect ? c.roundRect(x, y, ww, hh, r) : c.rect(x, y, ww, hh); c.fillStyle = GLASS(); c.fill(); c.strokeStyle = ink(.2); c.lineWidth = .8; c.stroke(); };
   // the Mark (it glows like a safelight) and the mint dot
   pill(6, 8, 34, 15, 7.5); c.save(); c.shadowColor = 'rgba(255,110,90,.6)'; c.shadowBlur = 5 * d; c.font = '400 8px "Noto Sans Canadian Aboriginal", sans-serif'; c.fillStyle = RED.on ? '#FF4457' : '#e8e4dc'; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillText('ᑕᐣᓯ', 23, 15.5); c.restore();
-  pill(w - 22, 8, 15, 15, 7.5); c.beginPath(); c.arc(w - 14.5, 15.5, 2.2, 0, TAU); c.fillStyle = '#55DAA1'; c.fill();
+  pill(w - 22, 8, 15, 15, 7.5); c.beginPath(); c.arc(w - 14.5, 15.5, 2.2, 0, TAU); c.fillStyle = MINT(); c.fill();
   text(c, room.toUpperCase(), w / 2, 40, JUL(9), ink(.85));
   const cx = w / 2, cy = h * .46;
   // the room
@@ -1506,7 +1734,7 @@ const TUNE = (() => {
 })();
 
 // ---------------- the Mark: tap is back; two fingers held still opens Tune ----------------
-function back() { if (TUNE.isOpen()) return TUNE.close(); if (CTX.isOpen()) return CTX.close(); if (DA.isOpen()) return DA.close(); if (MD.ringOpen()) return MD.closeRing(); teach('tap to go back · hold for places'); }
+function back() { if (SYS.isOpen()) return SYS.close(); if (TUNE.isOpen()) return TUNE.close(); if (CTX.isOpen()) return CTX.close(); if (DA.isOpen()) return DA.close(); if (MD.ringOpen()) return MD.closeRing(); teach('tap to go back · hold for places'); }
 { const mk = document.getElementById('mark'); let ht = 0, held = false;
   mk.addEventListener('pointerdown', () => { held = false; ht = setTimeout(() => { held = true; HAP.commit(); TUNE.open(); }, 520); });
   mk.addEventListener('pointerup', () => { clearTimeout(ht); if (!held) { HAP.tick(); back(); } }); mk.addEventListener('pointercancel', () => clearTimeout(ht)); }
@@ -1557,18 +1785,137 @@ const WM = (() => {
   const box = document.querySelector('#tune .wmrows');
   const row = (n, sub, ctl) => { const r = document.createElement('div'); r.className = 'trow'; r.innerHTML = `<div><span>${n}</span><small>${sub}</small></div>`; r.appendChild(ctl); box.appendChild(r); return r; };
   const set = (k, v) => { st[k] = v; save(); dirty = true; sync(); HAP.tick(); };
-  const nt = document.createElement('small'); nt.className = 'wmnote'; nt.textContent = 'always on'; row('watermark', 'the Mark · for Gill’s eyes only · tones down, never off', nt);
-  const rng = (k, min, max, stp, n, sub) => { const i = document.createElement('input'); i.type = 'range'; i.min = min; i.max = max; i.step = stp; i.className = 'rg'; i.setAttribute('aria-label', 'watermark ' + n); i.oninput = () => { st[k] = +i.value; save(); dirty = true; };
+  const nt = document.createElement('small'); nt.className = 'wmnote'; nt.textContent = 'always on'; row('Water Mark', 'the Mark · for Gill’s eyes only · tones down, never off', nt);
+  const rng = (k, min, max, stp, n, sub) => { const i = document.createElement('input'); i.type = 'range'; i.min = min; i.max = max; i.step = stp; i.className = 'rg'; i.setAttribute('aria-label', 'Water Mark ' + n); i.oninput = () => { st[k] = +i.value; save(); dirty = true; };
     i.onchange = () => HAP.tick(); row(n, sub, i); return i; };
   const rO = rng('opacity', .06, .6, .01, 'opacity', 'faint to clear'), rS = rng('size', .8, 2, .05, 'size', 'small to large'), rG = rng('glow', .1, 1, .05, 'glow', 'the safelight glow, never zero');
   const seg = (k, opts, n, sub) => { const w = document.createElement('div'); w.className = 'seg'; opts.forEach(o => { const b = document.createElement('button'); b.textContent = o; b.onclick = () => set(k, o); w.appendChild(b); }); row(n, sub, w); return w; };
   const sP = seg('pos', ['corner', 'centre', 'tiled'], 'position', 'tiled is a star grid'), sY = seg('style', ['mark', 'crescent', 'text', 'all'], 'style', 'what it shows');
-  const rs = document.createElement('button'); rs.className = 'wide'; rs.textContent = 'reset'; rs.onclick = () => { Object.assign(st, D); save(); dirty = true; sync(); HAP.commit(); }; row('reset watermark', 'back to the defaults', rs);
+  const rs = document.createElement('button'); rs.className = 'wide'; rs.textContent = 'reset'; rs.onclick = () => { Object.assign(st, D); save(); dirty = true; sync(); HAP.commit(); }; row('reset Water Mark', 'back to the defaults', rs);
   function sync() { rO.value = st.opacity; rS.value = st.size; rG.value = st.glow;
     sP.querySelectorAll('button').forEach(b => b.classList.toggle('on', b.textContent === st.pos)); sY.querySelectorAll('button').forEach(b => b.classList.toggle('on', b.textContent === st.style)); }
   sync();
   return { draw, st, floor: FLOOR, set: o => { Object.assign(st, o); save(); dirty = true; sync(); }, defaults: D };
 })();
+
+// ---------------- settings: every one saved on this device, every one resets to its default, never past its floor or ceiling ----------------
+const SETS = (() => {
+  let S = {}; try { S = JSON.parse(localStorage.getItem('oz-settings') || '{}') || {}; } catch (e) {}
+  const save = () => { try { localStorage.setItem('oz-settings', JSON.stringify(S)); } catch (e) {} };
+  const SEC = [['boot', 'Boot'], ['dock', 'Dock'], ['bank', 'Dial bank'], ['float', 'Room floating buttons'], ['tune', 'Tune'], ['wm', 'Water Mark'], ['dev', 'Developer']];
+  const R = [], plain = (sec, key, label, sub, type, def, o) => R.push(Object.assign({ sec, key, label, sub, type, def, get() { return S[key] === undefined ? def : S[key]; }, set(v) { S[key] = v; save(); } }, o || {}));
+  const fx = (sec, key, label, sub, obj, k, store) => R.push({ sec, key, label, sub, type: 'switch', def: false, get: () => !!obj[k], set(v) { obj[k] = !!v; try { localStorage.setItem(store, JSON.stringify(obj)); } catch (e) {} applyIcoFx(); } });
+  const wm = (key, label, sub, type, o) => R.push(Object.assign({ sec: 'wm', key: 'wm.' + key, label, sub, type, def: WM.defaults[key], get: () => WM.st[key], set: v => WM.set({ [key]: v }) }, o));
+  // Boot
+  plain('boot', 'mode', 'mode', 'night · red · rose · oz opens in it', 'seg', 'red', { opts: ['night', 'red', 'rose'] });
+  plain('boot', 'boot', 'the boot', 'the dot alone on black, then F1', 'switch', true);
+  plain('boot', 'f1len', 'F1 demo', 'seconds after the dot', 'range', 2.4, { min: 1.5, max: 3.5, step: .1, unit: ' s' });
+  // Dock (hidden by default: pull up from the bottom edge)
+  plain('dock', 'dock', 'dock', 'hidden pulls up from the bottom edge', 'seg', 'hidden', { opts: ['hidden', 'rooms', 'everywhere'] });
+  plain('dock', 'dockpicks', 'picks', 'one to six · Messages is a default', 'picks', ['home', 'ask', 'messages', 'map', 'red mode'], { opts: ['home', 'back', 'map', 'ask', 'messages', 'notes', 'red mode'], min: 1, max: 6 });
+  plain('dock', 'docksize', 'size', 'small to large', 'range', 1, { min: .8, max: 1.3, step: .05, unit: '×' });
+  plain('dock', 'docklabels', 'labels', 'names under every pick', 'switch', false);
+  // Dial bank
+  plain('bank', 'haptics', 'haptics', 'ticks and commits', 'switch', true);
+  plain('bank', 'dialrest', 'dial A rests after', 'seconds untouched', 'range', 5, { min: 3, max: 10, step: 1, unit: ' s' });
+  plain('bank', 'parked', 'parked dials', 'Mark II · ghost · finger ring, shown in the bank', 'switch', false);
+  // Room floating buttons
+  plain('float', 'inoz', '“in oz” button', 'on every card', 'switch', true);
+  plain('float', 'moonsize', 'Moon dial size', 'small to large', 'range', 1, { min: .8, max: 1.4, step: .05, unit: '×' });
+  plain('float', 'f1', 'F1 / F3 in the status strip', 'local · reaching out', 'switch', true);
+  // Tune
+  fx('tune', 'fx.mflip', 'crescent · flip', 'vertical', MOONFX, 'flip', 'oz-moon-fx'); fx('tune', 'fx.mmirror', 'crescent · mirror', 'horizontal', MOONFX, 'mirror', 'oz-moon-fx');
+  fx('tune', 'fx.iflip', 'icons · flip', 'every icon in the viewer', ICOFX, 'flip', 'oz-icon-fx'); fx('tune', 'fx.imirror', 'icons · mirror', 'every icon in the viewer', ICOFX, 'mirror', 'oz-icon-fx');
+  // Water Mark (floors from the Water Mark itself; no off)
+  wm('opacity', 'opacity', 'faint to clear · never below 6%', 'range', { min: WM.floor.opacity, max: .6, step: .01, pct: true });
+  wm('size', 'size', 'small to large', 'range', { min: WM.floor.size, max: 2, step: .05, unit: '×' });
+  wm('glow', 'glow', 'the safelight glow, never zero', 'range', { min: WM.floor.glow, max: 1, step: .05, pct: true });
+  wm('pos', 'position', 'tiled is a star grid', 'seg', { opts: ['corner', 'centre', 'tiled'] }); wm('style', 'style', 'what it shows', 'seg', { opts: ['mark', 'crescent', 'text', 'all'] });
+  // Developer
+  R.push({ sec: 'dev', key: 'teal', label: 'teal', sub: 'A #55DAA1 · B #3EE6B0 · the mint light everywhere', type: 'seg', def: 'a', opts: ['a', 'b'], get: () => tealKey(), set(v) { try { localStorage.setItem('oz-teal', v); } catch (e) {} } });
+  const clampV = (r, v) => { if (r.type === 'range') { v = +v; if (!Number.isFinite(v)) v = r.def; return Math.min(r.max, Math.max(r.min, v)); }
+    if (r.type === 'seg') return r.opts.includes(v) ? v : r.def; if (r.type === 'switch') return !!v;
+    if (r.type === 'picks') { let a = Array.isArray(v) ? r.opts.filter(o => v.includes(o)) : r.def.slice(); if (a.length < r.min) a = r.def.slice(); return a.slice(0, r.max); } return v; };
+  const find = k => R.find(r => r.key === k);
+  const subs = [];
+  function setv(r, v) { r.set(clampV(r, v)); effect(r); subs.forEach(f => f(r)); }
+  const reset = r => setv(r, Array.isArray(r.def) ? r.def.slice() : r.def);
+  const resetSec = id => R.filter(r => r.sec === id).forEach(reset);
+  const resetAll = () => R.forEach(reset);
+  // repair anything stored outside its limits on load
+  R.forEach(r => { const v = r.get(), c = clampV(r, v); if (JSON.stringify(v) !== JSON.stringify(c)) r.set(c); });
+  return { R, SEC, find, get: k => { const r = find(k); return r ? clampV(r, r.get()) : undefined; }, set: (k, v) => setv(find(k), v), reset, resetSec, resetAll, on: f => subs.push(f) };
+})();
+function getSetting(k) { return SETS.get(k); }
+function setSetting(k, v) { SETS.set(k, v); }
+function setMode(m) { if (m !== 'night') window.__lastWarm = m; RED.on = m !== 'night'; RED.rose = m === 'rose'; html.classList.toggle('rose', RED.rose); applyRed(); if (SETS.get('mode') !== m) SETS.set('mode', m); }
+function effect(r) { const v = SETS.get(r.key);
+  if (r.key === 'mode' && curMode() !== v) setMode(v);
+  if (r.key === 'haptics') window.__ozHap = v;
+  if (r.key === 'dialrest') window.__ozDialRest = v;
+  if (r.key === 'inoz') html.classList.toggle('no-inoz', !v);
+  if (r.key === 'moonsize') html.style.setProperty('--moonsz', v);
+  if (r.key === 'f1') html.classList.toggle('no-f1', !v);
+  if (r.key === 'parked') html.classList.toggle('show-parked', v);
+  if (r.key === 'teal') { html.style.setProperty('--mint', MINT()); window.OZTEAL = hexRGB(MINT()); window.OZTEAL_HEX = MINT(); window.OZTEAL_KEY = tealKey(); }
+  if (r.key.startsWith('fx.')) { try { redrawIcons(); } catch (e) {} } }
+SETS.R.forEach(effect);
+// the rows: Tune shows Tune + Water Mark; System shows every section and Reset all
+function renderSettings(box, secs, withAll) { box.innerHTML = ''; const ctl = [];
+  SETS.SEC.filter(([id]) => secs.includes(id)).forEach(([id, name]) => {
+    const hd = document.createElement('div'); hd.className = 'sechd'; hd.innerHTML = `<h4>${name}</h4>`; const rb = document.createElement('button'); rb.className = 'rs sec'; rb.textContent = 'reset ' + name.toLowerCase(); rb.setAttribute('aria-label', 'Reset ' + name);
+    rb.onclick = () => { SETS.resetSec(id); HAP.commit(); teach(name + ' · back to defaults'); }; hd.appendChild(rb); box.appendChild(hd);
+    if (id === 'wm') { const n = document.createElement('div'); n.className = 'trow'; n.innerHTML = '<div><span>Water Mark</span><small>the Mark · for Gill’s eyes only · tones down, never off</small></div><small class="wmnote">always on</small>'; box.appendChild(n); }
+    SETS.R.filter(r => r.sec === id).forEach(r => { const row = document.createElement('div'); row.className = 'trow'; row.dataset.key = r.key;
+      row.innerHTML = `<div><span>${r.label}</span><small>${r.sub}</small></div><div class="ctl"></div>`; const c = row.querySelector('.ctl'); let sync;
+      if (r.type === 'switch') { const b = document.createElement('button'); b.className = 'sw'; b.setAttribute('role', 'switch'); b.setAttribute('aria-label', r.label); b.onclick = () => { SETS.set(r.key, !SETS.get(r.key)); HAP.tick(); }; c.appendChild(b); sync = () => { const v = SETS.get(r.key); b.classList.toggle('on', v); b.setAttribute('aria-checked', v ? 'true' : 'false'); }; }
+      else if (r.type === 'range') { const i = document.createElement('input'); i.type = 'range'; i.className = 'rg'; i.min = r.min; i.max = r.max; i.step = r.step; i.setAttribute('aria-label', r.label); const o = document.createElement('output');
+        i.oninput = () => SETS.set(r.key, +i.value); i.onchange = () => HAP.tick(); c.appendChild(i); c.appendChild(o); sync = () => { const v = SETS.get(r.key); i.value = v; o.textContent = r.pct ? Math.round(v * 100) + '%' : (+v.toFixed(2)) + (r.unit || ''); }; }
+      else { const w = document.createElement('div'); w.className = 'seg'; r.opts.forEach(op => { const b = document.createElement('button'); b.textContent = op;
+          b.onclick = () => { if (r.type === 'picks') { const a = SETS.get(r.key).slice(), j = a.indexOf(op); if (j >= 0) { if (a.length > r.min) a.splice(j, 1); else { teach('at least one pick'); return; } } else { if (a.length >= r.max) { teach('six at most'); return; } a.push(op); } SETS.set(r.key, a); } else SETS.set(r.key, op); HAP.tick(); }; w.appendChild(b); });
+        if (r.type === 'picks') w.classList.add('picks'); c.appendChild(w); sync = () => { const v = SETS.get(r.key); w.querySelectorAll('button').forEach(b => b.classList.toggle('on', r.type === 'picks' ? v.includes(b.textContent) : b.textContent === v)); }; }
+      const rs = document.createElement('button'); rs.className = 'rs'; rs.textContent = '↺'; rs.title = 'reset to default'; rs.setAttribute('aria-label', 'Reset ' + r.label); rs.onclick = () => { SETS.reset(r); HAP.tick(); }; c.appendChild(rs);
+      const syncAll = () => { sync(); const v = SETS.get(r.key); rs.classList.toggle('dirty', JSON.stringify(v) !== JSON.stringify(r.def)); }; syncAll(); ctl.push([r.key, syncAll]); box.appendChild(row); }); });
+  if (withAll) { const row = document.createElement('div'); row.className = 'trow all'; row.innerHTML = '<div><span>Reset all</span><small>every setting to its default · floors and ceilings stay</small></div>'; const b = document.createElement('button'); b.className = 'rs sec'; b.textContent = 'reset all'; b.setAttribute('aria-label', 'Reset all');
+    let armed = 0; b.onclick = () => { if (performance.now() - armed > 2500) { armed = performance.now(); b.textContent = 'tap again'; HAP.tick(); setTimeout(() => { b.textContent = 'reset all'; }, 2500); return; } armed = 0; b.textContent = 'reset all'; SETS.resetAll(); HAP.commit(); teach('every setting · back to defaults'); }; row.appendChild(b); box.appendChild(row); }
+  SETS.on(() => ctl.forEach(([, f]) => f())); }
+{ const tr = document.querySelector('#tune .trows'), wr = document.querySelector('#tune .wmrows'); wr.previousElementSibling && wr.previousElementSibling.tagName === 'H4' && wr.previousElementSibling.remove(); wr.innerHTML = ''; renderSettings(tr, ['tune', 'wm'], false);
+  const sb = document.createElement('button'); sb.className = 'rs sec sysopen'; sb.textContent = 'system · every setting'; sb.onclick = () => { HAP.commit(); TUNE.close(); SYS.open(); }; tr.appendChild(sb); }
+const SYS = (() => { const el = document.getElementById('sys'), sh = sheet(el); renderSettings(el.querySelector('.sysrows'), SETS.SEC.map(s => s[0]), true); return sh; })();
+// the boot: the red-mode dot alone on black, then F1 lights round its arch and settles up into the status strip
+const BOOT = (() => { const cv = document.getElementById('boot'), g = cv.getContext('2d'), q = new URLSearchParams(location.search);
+  let on = SETS.get('boot') && q.get('boot') !== '0', t0 = performance.now() / 1000, done = false;
+  if (q.get('boot') === '1') on = true; if (!on) { cv.remove(); return { on: false, draw() {} }; }
+  const end = () => { if (done) return; done = true; cv.classList.add('out'); setTimeout(() => cv.remove(), 700); };
+  cv.addEventListener('pointerdown', end);
+  function draw(t) { if (done) return; const now = performance.now() / 1000 - t0; if (cv.width !== Math.round(W * DPR)) { cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR); }
+    g.setTransform(DPR, 0, 0, DPR, 0, 0); const d = document.getElementById('dot').getBoundingClientRect(), f = document.getElementById('f1').getBoundingClientRect();
+    if (drawBoot(g, W, H, now, curMode(), SETS.get('f1len'), f.left + f.width / 2, f.top + f.height / 2 + 2, d.left + d.width / 2, d.top + d.height / 2)) end(); }
+  return { on: true, draw, end, restart() { location.search = '?boot=1'; } }; })();
+// the status strip: F1 (local, on device) sits where the signal bars go; F3 (reaching out) animates while a message travels
+const STRIP = (() => { const cv = document.getElementById('f1'), g = cv.getContext('2d'); let travel = -1, tt = 0;
+  function draw(t) { const d = DPR; if (cv.width !== 34 * d) { cv.width = 34 * d; cv.height = 18 * d; } g.setTransform(d, 0, 0, d, 0, 0); g.clearRect(0, 0, 34, 18); const M = MODEC[curMode()];
+    if (travel >= 0) { travel = (t - tt) * .7; if (travel > 1.6) travel = -1; drawF3(g, 8, 15, 12, M.ink, t, travel >= 0 ? travel : null, 1); } else drawF1(g, 17, 12, 6, M.ink, t, 1, 1, true); }
+  return { draw, send() { travel = 0; tt = performance.now() / 1000; } }; })();
+
+// ---------------- OS feel, full screen: the whole phone is oz (tap for the next moment · hold to leave) ----------------
+const OSFULL = (() => { const cv = document.createElement('canvas'); cv.id = 'osfull'; cv.setAttribute('aria-label', 'OS feel, full screen'); document.body.appendChild(cv); const g = cv.getContext('2d');
+  const s = { sc: 0, t0: 0, all: true, closed: -1, wake: 0, on: false }; let d = null, ht = 0;
+  const now = () => performance.now() / 1000;
+  function open(all, sc) { s.on = true; s.all = all !== false; s.sc = sc || 0; s.t0 = now(); s.closed = -1; s.wake = 0; cv.classList.add('on'); }
+  function close() { s.on = false; cv.classList.remove('on'); }
+  cv.addEventListener('pointerdown', e => { d = { x: e.clientX, y: e.clientY, t: now() }; clearTimeout(ht); ht = setTimeout(() => { d = null; HAP.commit(); close(); }, 700); });
+  cv.addEventListener('pointerup', e => { clearTimeout(ht); if (!d) return; const dy = e.clientY - d.y; d = null;
+    if (s.sc === 1 && dy < -40) { s.wake = now(); HAP.commit(); return; } if (s.sc === 4 && dy < -30) { s.closed = now(); HAP.tick(); return; }
+    if (s.sc === 6 && e.clientY > H * .74 && e.clientY < H * .84) { setSetting('teal', tealKey() === 'a' ? 'b' : 'a'); HAP.commit(); return; }
+    s.all = false; s.sc = (s.sc + 1) % OSN.length; s.t0 = now(); s.closed = -1; s.wake = 0; HAP.tick(); });
+  function draw(t) { if (!s.on) return; if (cv.width !== Math.round(W * DPR) || cv.height !== Math.round(H * DPR)) { cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR); }
+    g.setTransform(DPR, 0, 0, DPR, 0, 0); let at = now() - s.t0;
+    if (s.all) { let i = 0, acc = 0; const tot = OSD.reduce((a, b) => a + b, 0); if (at > tot) { s.t0 = now(); at = 0; } while (i < OSN.length - 1 && at > acc + OSD[i]) { acc += OSD[i]; i++; } if (i !== s.sc) { s.sc = i; s.closed = -1; s.wake = 0; } at -= acc; }
+    g.save(); g.translate(0, 0); osScene(g, W, H, s.sc, at, t, s, { now: now() }); g.restore();
+    // the Water Mark stays on, at its floor at least, in the corner
+    g.save(); g.globalAlpha = Math.max(WM.floor.opacity, WM.st.opacity); g.font = '400 13px "Noto Sans Canadian Aboriginal", sans-serif'; g.textAlign = 'left'; g.textBaseline = 'middle'; g.shadowColor = 'rgba(255,110,90,.6)'; g.shadowBlur = 10 * DPR; g.fillStyle = rgba(MODEC[curMode()].ink, 1); g.fillText('ᑕᐣᓯ', 16, H - 76); g.shadowBlur = 0; text(g, 'FOR GILL’S EYES ONLY', 44, H - 76, JUL(7), rgba(MODEC[curMode()].ink, 1), 'left'); g.restore(); }
+  return { open, close, draw, state: s }; })();
 
 // ---------------- switcher and loop ----------------
 const HOMES = ['Golden Hour', 'the sky', 'Golden Hour', 'the sky', 'Archive', 'the sky', 'Timer', 'Sky Player', 'the sky'];
@@ -1576,6 +1923,7 @@ K.forEach((k, i) => k.home = k.d.ix != null ? HOMES[k.d.ix] : (k.d.home || 'the 
 let cur = 0, prevI = -1, prevUntil = 0;
 function size() { W = innerWidth; H = innerHeight; DPR = Math.min(devicePixelRatio || 1, 2.5);
   K.forEach(k => { const l = k.el.querySelector('.leftlist'); if (l) { const lb = k.el.querySelector('.lab'); l.style.top = (lb.offsetTop + lb.offsetHeight + 6) + 'px'; } });
+  K.forEach(k => { const ch = k.el.querySelector('.chips'); if (ch) { const lb = k.el.querySelector('.lab'); const top = Math.max(ch.offsetTop && !ch.dataset.auto ? ch.offsetTop : 0, lb.offsetTop + lb.offsetHeight + 6); if (lb.offsetTop + lb.offsetHeight + 6 > ch.offsetTop) { ch.style.top = top + 'px'; ch.dataset.auto = 1; } if (k.d.key === 'os') OSTOP = ch.offsetTop + ch.offsetHeight + 14; } });
   K.forEach(k => { k.cv.width = Math.round(W * DPR); k.cv.height = Math.round(H * DPR); }); place(false); }
 function place(anim) { track.classList.toggle('anim', !!anim); track.style.transform = `translateX(${-cur * W}px)`; }
 function mode() { const d = K[cur].d; html.classList.toggle('no-da', !!d.noDA); html.classList.toggle('own-moon', !!d.ownMoon); }
@@ -1583,8 +1931,8 @@ function go(i) { i = clamp(i, 0, K.length - 1); if (i === cur) return; prevI = c
   if (DA.isOpen()) DA.close(); if (MD.ringOpen()) MD.closeRing();
   K.forEach((k, j) => k.tab.classList.toggle('on', j === cur)); const tb = K[cur].tab; tabs.scrollTo({ left: tb.offsetLeft - tabs.clientWidth / 2 + tb.offsetWidth / 2, behavior: 'smooth' });
   mode(); HAP.tick(); }
-window.ozDials = { WM, FITS, go, cur: () => cur, K, RED, SENSOR, applyRed, DA, MD, CTX, TUNE, MOONFX, ICOFX, toggleRed, drawCrescent, drawFullMoon, drawSky };
-K[0].tab.classList.add('on'); mode(); applyIcoFx(); applyRed();
+window.ozDials = { OSFULL, SETS, SYS, BOOT, STRIP, setMode, curMode, MINT, WM, FITS, go, cur: () => cur, K, RED, SENSOR, applyRed, DA, MD, CTX, TUNE, MOONFX, ICOFX, toggleRed, drawCrescent, drawFullMoon, drawSky };
+K.forEach(k => { if (k.d.name === 'Mark II' || k.d.name === 'Ghost and finger dials') k.tab.classList.add('parked'); }); K[0].tab.classList.add('on'); mode(); applyIcoFx(); applyRed();
 addEventListener('keydown', e => { if (e.key === 'ArrowRight') go(cur + 1); if (e.key === 'ArrowLeft') go(cur - 1); if (e.key === 'Escape') back(); });
 // swipe between dials on the label band
 let sw = null;
@@ -1600,7 +1948,7 @@ let last = performance.now();
 function frame(now) { const dt = Math.min(.05, (now - last) / 1000); last = now; const t = now / 1000;
   const list = [cur]; if (prevI >= 0 && now < prevUntil) list.push(prevI);
   PHOTOS.length = 0; for (const i of list) { const k = K[i]; k.now = t; PHOTOCTX = i === cur ? k.c : null; k.c.setTransform(DPR, 0, 0, DPR, 0, 0); k.d.draw(k, k.c, dt, t); }
-  PHOTOCTX = null; DA.draw(t, dt); MD.draw(t, dt); CTX.draw(t); TUNE.draw(t); WM.draw(t);
+  PHOTOCTX = null; DA.draw(t, dt); MD.draw(t, dt); CTX.draw(t); TUNE.draw(t); WM.draw(t); STRIP.draw(t); OSFULL.draw(t); BOOT.draw(t);
   requestAnimationFrame(frame); }
 (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(() => requestAnimationFrame(frame));
 })();
