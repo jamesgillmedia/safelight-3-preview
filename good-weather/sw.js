@@ -10,7 +10,7 @@
    · fetch, the readable source (V = 'oz-dev'): everything network first, the kept copy only without a connection.
    · pictures and atlases are kept as they are first seen.
    Registered by core/home.js, only on the page's own https address (or localhost) and not inside another page. */
-var V = 'oz-76f9a2d';   // its own store; a published build stamps its own (pack-alt.py), so builds never mix files
+var V = 'oz-6ab8363';   // its own store; a published build stamps its own (pack-alt.py), so builds never mix files
 var APPS = ['apps/oz/index.html', 'apps/good-weather/index.html'];   // the oz family: each app's page names its own files
 self.addEventListener('install', function (e) {
   self.skipWaiting();
