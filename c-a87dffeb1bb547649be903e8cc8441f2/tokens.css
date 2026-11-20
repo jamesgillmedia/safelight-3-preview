@@ -1,0 +1,52 @@
+/* Tone Check tokens, pulled from the alt build (base.css, sheets.css, master.css).
+   Night room accent is the pack mint. The system red-mode dot is --mint-system. */
+
+:root {
+  --ink: #e8e4dc;
+  --dim: #c9d3d6;
+  --meta: #93a1a6;
+  --paper: #e8e4dc;
+  --hair: rgba(200, 225, 255, 0.22);
+  --hair-row: rgba(200, 225, 255, 0.08);
+  --glass: rgba(6, 10, 18, 0.62);
+  --mint-system: #55DAA1;
+  --mint: #3ee6b0;
+  --rose: #FFB0B8;
+  --crimson: #FF4457;
+  --redpage: #060304;
+  --red-ink: #FF4457;
+  --red-hair: rgba(255, 68, 87, 0.34);
+  --red-glass: rgba(6, 3, 4, 0.66);
+  --sky: #000;
+  --stage-top: #03050b;
+  --stage-bottom: #061018;
+  --sheet: #080c16e6;
+  --sheet-row: #c8e1ff12;
+  --sat: env(safe-area-inset-top, 0px);
+  --edge: 8px;
+  --top: calc(8px + var(--sat));
+  --title-top: calc(112px + var(--sat));
+  --hit: 44px;
+  --hit-vis: 32px;
+  --radius-pill: 16px;
+  --radius-panel: 14px;
+  --fold-ease: cubic-bezier(.22, .7, .2, 1);
+  --room-ease: cubic-bezier(.65, 0, .35, 1);
+  --sheet-ease: cubic-bezier(.2, .85, .25, 1);
+  --fade: .45s;
+  --room-move: .6s;
+  --cue-shift: .7s;
+  --nudge-in: .45s;
+  --nudge-out: .6s;
+  --font-body: Poppins, sans-serif;
+  --font-label: "Julius Sans One", Poppins, sans-serif;
+}
+
+html.red {
+  --ink: var(--red-ink);
+  --dim: var(--red-ink);
+  --meta: var(--red-ink);
+  --hair: var(--red-hair);
+  --glass: var(--red-glass);
+  --sheet: #0a0204eb;
+}
