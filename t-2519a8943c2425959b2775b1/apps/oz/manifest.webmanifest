@@ -1,0 +1,15 @@
+{
+  "name": "oz",
+  "short_name": "oz",
+  "description": "a calm, private phone app with rooms and tools.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#04070b",
+  "theme_color": "#04070b",
+  "icons": [
+    { "src": "../../icons/mark-180.png", "sizes": "180x180", "type": "image/png", "purpose": "any" },
+    { "src": "../../icons/mark-1024.png", "sizes": "1024x1024", "type": "image/png", "purpose": "any" }
+  ]
+}

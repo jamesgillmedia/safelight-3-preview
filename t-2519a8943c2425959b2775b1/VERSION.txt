@@ -1,0 +1,2 @@
+2026-11-20T14:21:55-07:00 builder-r4 + our layers (Ask/oz chat, Circle, truemoji, Threads; Messages toggle)
+t-2519a8943c2425959b2775b1  oz emergent fixes: timer-ended keeps red + quiet line, oz chat whole-word, red reply ink + head under pill, Ask exact name first, per-folder storage (2026-11-20 19:19 MST)
