@@ -1,0 +1,28 @@
+/* teen oz: the same oz, a little tighter; still generous targets */
+:root { --hit: 60px; --ring: 46px; --lab: 13.5px; --row: 54px; --body: 15.5px; }
+#anchor { top: 21%; }
+#anchor .ln { max-width: 300px; white-space: normal; margin-left: auto; margin-right: auto; }
+#home { top: 36%; bottom: 8%; }
+.rcon { position: relative; height: 380px; margin: 0 -26px; }
+.rcon .con { position: absolute; inset: 0; }
+.rcon.drag .cs { touch-action: none; }
+.cs.lit .rg b { border-color: color-mix(in srgb, var(--here) 60%, transparent); }
+.cs.lit em { color: var(--here); }
+.who { display: flex; gap: 18px; flex-wrap: wrap; margin: 8px 0 4px; }
+.who button { min-height: 52px; display: flex; flex-direction: column; align-items: center; gap: 8px; color: var(--far); font-size: 13px; text-transform: lowercase; }
+.who button i { width: 6px; height: 6px; border-radius: 50%; background: var(--ink); opacity: .3; margin-top: 10px; }
+.who button.on { color: var(--here); } .who button.on i { background: var(--here); opacity: 1; box-shadow: 0 0 8px var(--here); }
+.plan { border-top: 1px solid var(--hair); border-bottom: 1px solid var(--hair); padding: 16px 0; margin: 8px 0 16px; transition: opacity 2.4s var(--e), filter 2.4s var(--e); }
+.plan.fade { opacity: .0; filter: blur(2px); }
+.plan .pt { font-size: 22px; color: var(--ink); } .plan .ps { color: var(--meta); font-size: 13px; margin-top: 2px; }
+.plan .pin { color: var(--here); font-size: 13px; margin-top: 10px; min-height: 20px; }
+.win { position: relative; height: 54px; margin: 18px 0 6px; }
+.win .ax { position: absolute; left: 0; right: 0; top: 22px; height: 1px; background: var(--hair); }
+.win .gd { position: absolute; top: 20px; height: 5px; border-radius: 3px; background: var(--here); opacity: .75; }
+.win span { position: absolute; top: 32px; font-size: 11px; color: var(--meta); transform: translateX(-50%); }
+.mk { position: relative; height: 38vh; border: 1px solid var(--hair); border-radius: 20px; overflow: hidden; }
+.mk canvas { width: 100%; height: 100%; display: block; }
+.makes .rw .tx small { color: var(--meta); }
+.end { text-align: center; color: var(--far); margin: 18px 0 0; }
+.ctr { text-align: center; }
+.horizon { width: 120px; height: 70px; margin: 6px auto 0; display: block; fill: none; stroke: var(--here); stroke-width: 1; stroke-linecap: round; }
