@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en" class="red">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="theme-color" content="#000000">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>oz · opening</title>
+<link rel="stylesheet" href="open.css?v=1121-0730">
+</head>
+<body>
+<!-- the opening: black, and only what you came for -->
+<div id="open" class="layer">
+  <canvas id="sky0" aria-hidden="true"></canvas>
+  <div id="centre"><canvas class="grid" aria-hidden="true"></canvas><div id="panels" aria-hidden="true"></div><div class="anchor"><div class="clk"></div><div class="dt lbl"></div></div></div>
+  <div id="stars"></div>
+  <div id="status"><time></time><span class="battery" hidden><i></i></span></div>
+  <div id="moon" aria-label="moon"><svg viewBox="-40 -40 80 80" aria-hidden="true">
+    <defs>
+      <radialGradient id="mh"><stop offset="0" stop-color="currentColor" stop-opacity=".30"/><stop offset=".42" stop-color="currentColor" stop-opacity=".10"/><stop offset="1" stop-color="currentColor" stop-opacity="0"/></radialGradient>
+      <filter id="ms" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation=".55"/></filter>
+      <mask id="mm"><rect x="-40" y="-40" width="80" height="80" fill="#000"/><circle r="13" fill="#fff"/><circle cx="-5.2" cy="-2.6" r="12.6" fill="#000" filter="url(#ms)"/></mask>
+    </defs>
+    <circle r="34" fill="url(#mh)" class="halo"/><circle r="13" fill="currentColor" mask="url(#mm)" filter="url(#ms)"/>
+  </svg><div class="cui" id="moonRing"></div></div>
+  <div class="dock" id="dock"><div class="cui" id="dockCon"></div>
+    <button class="star" id="dockStar" aria-label="the rest"><i></i></button></div>
+  <div id="moonO"></div>
+  <div id="rest"><div class="t"></div><button class="q"><i></i><span></span></button></div>
+  <div id="hint"><span>touch the right edge · turn · lift to go</span><i></i></div>
+  <div id="pull"><i></i><span class="lbl">search</span></div>
+</div>
+
+<!-- the float: a lighter way in, same brain as oz chat -->
+<div id="float" class="layer">
+  <div class="fl-bar"><input id="flIn" type="text" enterkeyhint="go" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false" placeholder="here for…"></div>
+  <div class="fl-list" id="flList"></div>
+  <div class="fl-sky" id="flSky"></div>
+</div>
+
+<!-- the full Ask chat (nothing taken away: chat, every place, Tune rows, room jumps, answers) -->
+<div id="ask" class="layer">
+  <div class="ask-h lbl">ask · oz</div>
+  <div class="ask-log" id="askLog"></div>
+  <div class="ask-in"><input id="askIn" type="text" enterkeyhint="send" autocomplete="off" placeholder="ask oz"><button id="askSend" class="lbl">send</button></div>
+</div>
+
+<div id="room" class="layer"><div class="r-t lbl" id="rT"></div><div class="r-b" id="rB"></div></div>
+<div id="sky" class="layer"><canvas id="skyC"></canvas><div id="skyK"></div></div>
+<div id="nz" class="layer"><div class="nz-loading lbl">a room of sound</div><iframe id="nzF" title="white noise" allow="autoplay" src="about:blank"></iframe></div>
+<div id="env" class="layer"><canvas id="envC"></canvas><div class="env-n lbl" id="envN"></div></div>
+
+<!-- edges: left = light (the dimmer), right = the dial -->
+<div id="dimmer"><i class="ln"></i><i class="bd"></i></div>
+<div id="dimveil"></div>
+<div id="cam" role="group" aria-label="the camera dial · touch, turn, lift to go · double-tap for home"><div class="mk"><svg viewBox="0 0 14 120" aria-hidden="true"><path d="M12 2 Q-4 60 12 118"/><circle cx="4.2" cy="60" r="1.6"/></svg></div></div>
+<div id="camO"></div>
+<div id="dial"><i class="tick"></i><i class="val"></i><span class="nm lbl">weather</span><div class="plate" id="plate"></div></div>
+
+<!-- top: where you are. the hide dot (where the Mark was), the oz corner, the red-mode dot -->
+<button id="hide" aria-label="hide everything but the phone"><i></i></button>
+<div id="corner" role="group" aria-label="oz"><svg viewBox="-46 -40 92 80" class="cn" aria-label="the oz constellation · touch to chime"></svg><button class="oz" aria-label="home">oz</button><i id="f3" aria-hidden="true"></i></div>
+<button id="disc" aria-label="red mode"><i></i></button>
+<button id="tuneBtn" class="lbl">tune</button>
+<div id="toast"></div>
+
+<!-- tune: try what each place needs, and how little -->
+<div id="sheet"><div class="grab"></div><div class="sh-b" id="shB"></div></div>
+
+<!-- boot (locked): pure black, the dot alone; F1 lights its arch, forms the local constellation, oz rises, they settle -->
+<div id="boot"><i class="bd"></i><div class="iam"><svg viewBox="0 0 22 38" aria-hidden="true"><rect x=".5" y=".5" width="21" height="37" rx="4.5"/></svg><span>I am.</span></div></div>
+<div id="bootSky" aria-hidden="true"></div>
+<script src="open.js?v=1121-0730"></script>
+</body>
+</html>
