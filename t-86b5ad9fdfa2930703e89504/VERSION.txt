@@ -1,0 +1,2 @@
+2026-11-20T14:21:55-07:00 builder-r4 + our layers (Ask/oz chat, Circle, truemoji, Threads; Messages toggle)
+t-86b5ad9fdfa2930703e89504  oz boot: pure black, mint dot fade, F1 local check, Save place default / Resume in System > Boot (2026-11-20 18:21 MST)
