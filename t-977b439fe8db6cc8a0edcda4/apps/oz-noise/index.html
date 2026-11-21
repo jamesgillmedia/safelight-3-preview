@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#04070b">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <title>oz</title>
+  <link rel="stylesheet" href="css/room.css">
+</head>
+<body>
+  <canvas id="env" aria-hidden="true"></canvas>
+  <div id="redveil" aria-hidden="true"></div>
+  <audio id="bed" playsinline webkit-playsinline preload="auto"></audio>
+  <button id="disc" type="button" aria-label="red mode"><i></i></button>
+  <div id="dimmer" role="slider" aria-label="dimmer" aria-valuemin="8" aria-valuemax="100" aria-valuenow="100" tabindex="0">
+    <i class="dm-rail"><i class="dm-track"></i><i class="dm-fill"></i><i class="dm-knob"></i></i>
+    <span class="dm-v"></span>
+  </div>
+  <i id="backhint" aria-hidden="true">‹</i>
+  <p id="name" class="jul" aria-live="polite"></p>
+  <p id="wake">tap to hear</p>
+  <i id="heard" aria-hidden="true"></i>
+  <div id="dots" aria-hidden="true"></div>
+  <div id="inten" aria-hidden="true"><i></i></div>
+  <div id="char" aria-hidden="true"><i></i></div>
+  <div id="sleep" hidden>
+    <button type="button" data-m="15">15</button>
+    <button type="button" data-m="30">30</button>
+    <button type="button" data-m="60">60</button>
+    <button type="button" data-m="0">off</button>
+  </div>
+  <p id="left"></p>
+  <script src="js/room.js"></script>
+</body>
+</html>
