@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" class="red awake">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="data:,">
+<title>oz · mini sky</title>
+<link rel="stylesheet" href="mini-sky.css">
+</head>
+<body>
+<!-- standalone prototype of the oz constellation as a mini sky player, and the same gesture for good weather.
+     based on the fixed2 look. does not edit fixed2, the dock, the dials, or #arcDock. oz ignores Reduce Motion. -->
+
+<canvas id="sky0" aria-hidden="true"></canvas>
+<canvas id="sky0b" aria-hidden="true"></canvas>
+
+<button id="disc" type="button" aria-label="red mode · on" aria-pressed="true"><i></i></button>
+
+<div id="corner" class="on">
+  <canvas id="conC" aria-hidden="true"></canvas>
+  <button type="button" class="hit" id="conHit" aria-label="the oz constellation · hold to size · touch a star to play"></button>
+  <button type="button" class="oz" id="ozWord" aria-label="home">oz</button>
+</div>
+
+<div id="weather">
+  <canvas id="wxC" aria-hidden="true"></canvas>
+  <button type="button" class="hit" id="wxHit" aria-label="good weather · hold to size today's feature"></button>
+</div>
+
+<div id="moon" aria-hidden="true">
+  <svg viewBox="-40 -40 80 80">
+    <defs>
+      <radialGradient id="mh"><stop offset="0" stop-color="currentColor" stop-opacity=".30"/><stop offset=".42" stop-color="currentColor" stop-opacity=".10"/><stop offset="1" stop-color="currentColor" stop-opacity="0"/></radialGradient>
+      <filter id="ms" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation=".55"/></filter>
+      <mask id="mm"><rect x="-40" y="-40" width="80" height="80" fill="#000"/><circle r="13" fill="#fff"/><circle cx="-5.2" cy="-2.6" r="12.6" fill="#000" filter="url(#ms)"/></mask>
+    </defs>
+    <circle r="34" fill="url(#mh)" class="halo"/><circle r="13" fill="currentColor" mask="url(#mm)" filter="url(#ms)"/>
+  </svg>
+</div>
+
+<div id="rest">
+  <div class="t" id="clock" role="timer">11:53</div>
+  <div class="q"><i></i><span id="quiet">all quiet</span></div>
+</div>
+
+<div id="dimmer" role="slider" aria-label="the dimmer · slide up and down · swipe right for home" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0"><i class="ln"></i><i class="bd"></i></div>
+<div id="dimveil" aria-hidden="true"></div>
+<div id="cam" aria-hidden="true"><div class="mk"><svg viewBox="0 0 14 120"><path d="M12 2 Q-4 60 12 118"/><circle cx="4.2" cy="60" r="1.6"/></svg></div></div>
+<div class="dock" aria-hidden="true"><div class="star"><i></i></div></div>
+
+<p id="hint"><span id="hintT">hold the constellation to size it · let go and it stays</span></p>
+
+<script src="sun.js"></script>
+<script src="mini-sky.js"></script>
+</body>
+</html>
