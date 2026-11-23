@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="theme-color" content="#060304">
+<title>oz · dock</title>
+<style>
+  @font-face { font-family: Poppins; font-weight: 300; src: url(fonts/poppins-300.woff2) format('woff2'); font-display: swap; }
+  @font-face { font-family: Julius; src: url(fonts/julius-sans-one.woff2) format('woff2'); font-display: swap; }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { margin: 0; height: 100%; background: #060304; color: #683b3f; font: 300 13px/1.4 Poppins, system-ui, sans-serif; overflow: hidden; }
+  body { position: fixed; inset: 0; touch-action: none; }
+  #stage { position: absolute; inset: 0; display: grid; place-items: center; perspective: 1400px; perspective-origin: 50% 46%; }
+  #rig { position: relative; transform-style: preserve-3d; }
+  #phone { position: relative; width: 390px; height: 844px; transform-style: preserve-3d; }
+  #bezel { position: absolute; inset: -12px; border-radius: 56px; background: #14080a; box-shadow: 0 0 0 1px rgba(104,59,63,.28), 0 30px 80px rgba(0,0,0,.55), 0 0 80px rgba(104,59,63,.08); pointer-events: none; }
+  #bezel .chin { position: absolute; left: 50%; bottom: 8px; width: 96px; height: 4px; margin-left: -48px; border-radius: 2px; background: rgba(104,59,63,.35); }
+  #screen { position: absolute; inset: 0; border-radius: 40px; overflow: hidden; background: #060304; }
+  #screen iframe { display: block; width: 390px; height: 844px; border: 0; background: #060304; }
+  #vhint { position: absolute; left: 20px; right: 20px; bottom: 22px; text-align: center; font-size: 12px; letter-spacing: .06em; color: #542f33; opacity: 0; pointer-events: none; transition: opacity 1s ease; }
+  #vhint.on { opacity: .85; }
+  html.hand #stage, html.hand #rig, html.hand #phone, html.hand #screen { position: absolute; inset: 0; width: auto; height: auto; display: block; transform: none !important; border-radius: 0; }
+  html.hand #bezel, html.hand #vhint { display: none; }
+  html.hand #screen iframe { width: 100%; height: 100%; }
+</style>
+</head>
+<body>
+<!-- 3D phone viewer for the dock-edit prototype. on a phone it goes full-bleed.
+     drag around the phone (desktop) to turn the handset. no private material, no keys, unpaired. noindex. -->
+<div id="stage">
+  <div id="rig">
+    <div id="phone">
+      <div id="bezel" aria-hidden="true"><i class="chin"></i></div>
+      <div id="screen"><iframe id="frame" src="home.html?boot=0" title="oz · dock" allow="autoplay"></iframe></div>
+    </div>
+  </div>
+</div>
+<p id="vhint">in a room, touch the dock row · hold revealed to edit · hold frozen for shortcuts</p>
+<script>
+(function () {
+  var narrow = window.matchMedia('(max-width: 700px), (max-height: 780px)').matches
+    || (navigator.maxTouchPoints > 0 && Math.min(innerWidth, innerHeight) < 720);
+  document.documentElement.className = narrow ? 'hand' : 'desk';
+  if (narrow) return;
+  var stage = document.getElementById('stage'), rig = document.getElementById('rig'), hint = document.getElementById('vhint');
+  var yaw = -18, pitch = 8, ty = -18, tp = 8, down = false, sx, sy, y0, p0;
+  function clamp(v, a, b) { return v < a ? a : v > b ? b : v; }
+  stage.addEventListener('pointerdown', function (e) {
+    if (e.button || e.target.closest('#screen')) return;
+    down = true; sx = e.clientX; sy = e.clientY; y0 = ty; p0 = tp;
+    try { stage.setPointerCapture(e.pointerId); } catch (x) {}
+  });
+  stage.addEventListener('pointermove', function (e) {
+    if (!down) return;
+    ty = y0 + (e.clientX - sx) * 0.35;
+    tp = clamp(p0 - (e.clientY - sy) * 0.28, -22, 22);
+  });
+  function up() { down = false; }
+  stage.addEventListener('pointerup', up);
+  stage.addEventListener('pointercancel', up);
+  function tick() {
+    yaw += (ty - yaw) * 0.14;
+    pitch += (tp - pitch) * 0.14;
+    rig.style.transform = 'rotateX(' + pitch.toFixed(2) + 'deg) rotateY(' + yaw.toFixed(2) + 'deg)';
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+  setTimeout(function () { hint.classList.add('on'); setTimeout(function () { hint.classList.remove('on'); }, 3200); }, 500);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en" class="red">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="theme-color" content="#000000">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>oz · home</title>
+<link rel="icon" href="icons/mark-64.png">
+<link rel="apple-touch-icon" href="icons/mark-180.png">
+<link rel="stylesheet" href="open.css?v=1123-dock-edit">
+<link rel="stylesheet" href="dock-edit.css?v=1123">
+</head>
+<body>
+<!-- the Home Screen. the order of this file is the focus order: where you are (top), the home itself, the dials at the edges, then what opens -->
+
+<!-- top: the oz corner (home), the top bar (pull down for the quick sheet), tune, and the red-mode dot -->
+<div id="corner" role="group" aria-label="oz"><svg viewBox="-46 -40 92 80" class="cn" role="img" aria-label="the oz constellation · touch to chime · hold for the opening · double-tap to keep it out · swipe it away"></svg><button class="oz" aria-label="home">oz</button><i id="f3" aria-hidden="true"></i></div>
+<button id="topbar" aria-label="quick sheet · or pull down from the top"><time></time><span class="qc"></span><span class="st"></span></button>
+<button id="tuneBtn" class="lbl" aria-label="settings">tune</button>
+<div id="localMark" role="img" aria-label="local · everything is on this phone"><svg viewBox="-46 -40 92 80" aria-hidden="true"></svg></div>
+<button id="disc" aria-label="red mode" aria-pressed="true"><i></i></button>
+
+<!-- home: the sky, the moon at rest, the big time and one quiet line -->
+<main id="open" class="layer" aria-label="home">
+  <canvas id="sky0" aria-hidden="true"></canvas><canvas id="sky0b" aria-hidden="true"></canvas>
+  <div id="centre" aria-hidden="true"><canvas class="grid"></canvas></div>
+  <div id="moon" role="button" tabindex="0" aria-label="the moon dial · tap to open · hold and slide to choose · drag to move it"><svg viewBox="-40 -40 80 80" aria-hidden="true">
+    <defs>
+      <radialGradient id="mh"><stop offset="0" stop-color="currentColor" stop-opacity=".30"/><stop offset=".42" stop-color="currentColor" stop-opacity=".10"/><stop offset="1" stop-color="currentColor" stop-opacity="0"/></radialGradient>
+      <filter id="ms" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation=".55"/></filter>
+      <mask id="mm"><rect x="-40" y="-40" width="80" height="80" fill="#000"/><circle r="13" fill="#fff"/><circle cx="-5.2" cy="-2.6" r="12.6" fill="#000" filter="url(#ms)"/></mask>
+    </defs>
+    <circle r="34" fill="url(#mh)" class="halo"/><circle r="13" fill="currentColor" mask="url(#mm)" filter="url(#ms)"/>
+  </svg><div class="cui" id="moonRing"></div></div>
+  <div class="dock" id="dock"><div class="cui" id="dockCon"></div>
+    <button class="star" id="dockStar" aria-label="your places"><i></i></button></div>
+  <div id="moonO" role="group" aria-label="the light around you"></div>
+  <div id="rest"><div class="t" role="timer" aria-live="off"></div><button class="q" aria-label=""><i></i><span></span></button></div>
+  <p id="hint"><span>touch the right edge · turn · lift to go</span><i></i></p>
+  <p id="hint2">pull down from the top · quick settings</p>
+</main>
+
+<!-- edges: left = light (the dimmer) and back, right = the camera dial -->
+<div id="dimmer" role="slider" aria-label="the dimmer · slide up and down · swipe right to go back" aria-valuemin="0" aria-valuemax="100" tabindex="0"><i class="ln"></i><i class="bd"></i></div>
+<div id="dimveil" aria-hidden="true"></div>
+<div id="cam" role="button" tabindex="0" aria-label="the camera dial · touch, turn, lift to go · double-tap for home"><div class="mk"><svg viewBox="0 0 14 120" aria-hidden="true"><path d="M12 2 Q-4 60 12 118"/><circle cx="4.2" cy="60" r="1.6"/></svg></div><div class="mkb"><svg viewBox="0 0 120 14" aria-hidden="true"><path d="M2 12 Q60 -4 118 12"/><circle cx="60" cy="4.2" r="1.6"/></svg></div></div>
+<div id="camO" role="group" aria-label="your places on the dial"></div>
+<div id="homeLine" role="button" tabindex="0" aria-label="home · swipe up"><i></i></div>
+<!-- dock edit · 23 Nov: the dock lives at body level so it can open over a room. new chrome only. -->
+<nav id="arcDock" aria-label="your places"></nav>
+<div id="dockHit" aria-label="your places · touch to show the dock"></div>
+<p id="dockCue" aria-live="polite"></p>
+<button id="dockDone" type="button">done</button>
+<div id="dockEdit" hidden>
+  <p class="de-k">your other places</p>
+  <div class="de-tray" id="dockTray"></div>
+</div>
+<div id="dockPad" hidden role="menu" aria-label="shortcuts"></div>
+
+<!-- rooms you open from home: one bar for all of them (back, the room's name, the small time at right) -->
+<header id="rbar"><button class="r-back" id="rBack" aria-label="back"><svg viewBox="0 0 12 20" aria-hidden="true"><path d="M8.5 3.5 L2.5 10 L8.5 16.5"/></svg></button><h1 class="r-t lbl" id="rT"></h1><time id="rTime" aria-label="time"></time></header>
+<section id="room" class="layer" aria-labelledby="rT"><div class="r-b" id="rB"></div></section>
+<section id="sky" class="layer" aria-label="the sky"><canvas id="skyC" aria-hidden="true"></canvas><div id="skyK"></div></section>
+<section id="nz" class="layer" aria-label="white noise"><div class="nz-loading lbl">a room of sound</div><iframe id="nzF" title="white noise" allow="autoplay" src="about:blank"></iframe></section>
+<div id="env" class="layer" aria-hidden="true"><canvas id="envC"></canvas><div class="env-n lbl" id="envN"></div></div>
+
+<!-- search: pull down in the middle of the sky. same brain as oz chat -->
+<section id="float" class="layer" role="search" aria-label="search">
+  <div class="fl-bar"><input id="flIn" type="search" enterkeyhint="go" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false" placeholder="here for…" aria-label="search oz"></div>
+  <div class="fl-list" id="flList"></div>
+  <div class="fl-sky" id="flSky"></div>
+</section>
+<!-- the full Ask chat (nothing taken away: chat, every place, settings rows, room jumps, answers) -->
+<section id="ask" class="layer" aria-label="ask oz">
+  <h1 class="ask-h lbl">ask · oz</h1>
+  <div class="ask-log" id="askLog" role="log" aria-live="polite"></div>
+  <div class="ask-in"><input id="askIn" type="text" enterkeyhint="send" autocomplete="off" placeholder="ask oz" aria-label="ask oz"><button id="askSend" class="lbl">send</button></div>
+</section>
+
+<!-- the quick sheet: pull down from the top edge -->
+<div id="qsVeil" aria-hidden="true"></div>
+<div id="qs" role="dialog" aria-modal="true" aria-label="quick sheet"></div>
+<!-- settings (tune): opens on the switches -->
+<div id="sheet" role="dialog" aria-modal="true" aria-label="settings"><div class="grab" aria-hidden="true"></div><div class="sh-b" id="shB"></div></div>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<!-- boot (locked): pure black, the dot alone; F1 lights its arch, forms the local constellation, oz rises, they settle -->
+<div id="boot" aria-hidden="true"><i class="bd"></i><div class="iam"><svg viewBox="0 0 22 38" aria-hidden="true"><rect x=".5" y=".5" width="21" height="37" rx="4.5"/></svg><span>I am.</span></div><div class="loc">on this phone</div></div>
+<div id="bootSky" aria-hidden="true"></div>
+<script src="open.js?v=1123-dock-edit"></script>
+<script src="dock-edit.js?v=1123"></script>
+</body>
+</html>

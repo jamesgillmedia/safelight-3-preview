@@ -1,0 +1,541 @@
+@font-face { font-family: Poppins; font-weight: 300; src: url(fonts/poppins-300.woff2) format('woff2'); font-display: swap; }
+@font-face { font-family: Julius; src: url(fonts/julius-sans-one.woff2) format('woff2'); font-display: swap; }
+:root {
+  --bg: #000; --here: #DDBC89; --near: #E1626B; --mid: #BC8F94; --far: #4C2C31; --ink: #e8e4dc; --dim: #c9d3d6; --meta: #93a1a6; --moon: #e8e4dc;
+  --hair: rgba(232,228,220,.16); --mint: #55DAA1; --fade: .5s; --top: max(env(safe-area-inset-top, 0px), 14px); --bot: env(safe-area-inset-bottom, 0px); --edge: 8px;
+}
+html.red { --bg: #060304; --here: #754247; --near: #683b3f; --mid: #542f33; --far: #301b1d; --ink: #683b3f; --dim: #5e3539; --meta: #412427; --hair: rgba(105,59,64,.22); --moon: #6e3e42; --dk: #683b3f; }
+html.red body { text-shadow: var(--tglow, none); -webkit-text-stroke: var(--tw, 0) currentColor; }
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body { margin: 0; height: 100%; background: var(--bg); color: var(--ink); font: 300 14px/1.45 Poppins, system-ui, sans-serif; overflow: hidden; overscroll-behavior: none; -webkit-user-select: none; user-select: none; transition: background var(--fade) ease; }
+body { position: fixed; inset: 0; touch-action: none; }
+button { font: inherit; color: inherit; background: none; border: 0; padding: 0; margin: 0; cursor: pointer; }
+input { -webkit-user-select: text; user-select: text; }
+.layer { position: absolute; inset: 0; opacity: 0; pointer-events: none; transition: opacity var(--fade) ease, transform .9s cubic-bezier(.6,0,.3,1); }
+.layer.on { opacity: 1; pointer-events: auto; }
+.lbl { font-family: Julius, Poppins, sans-serif; text-transform: uppercase; letter-spacing: .22em; font-size: 10px; }
+.off { display: none !important; }
+
+/* the red-mode dot: one tap. red while off, mint once on */
+#disc { position: absolute; z-index: 50; right: var(--edge); top: calc(var(--top) + 4px); width: 44px; height: 44px; display: grid; place-items: center; }
+#disc i { width: 8px; height: 8px; border-radius: 50%; background: #FF4457; opacity: .9; box-shadow: 0 0 6px rgba(255,68,87,.45); transition: background .3s, box-shadow .3s; }
+html.red #disc i { background: var(--mint); opacity: 1; box-shadow: 0 0 7px 1px rgba(85,218,161,.7); }
+/* the oz corner: the boot's constellation and its name, settled. tap = back */
+#corner { position: absolute; z-index: 45; left: calc(var(--edge) + 40px); top: calc(var(--top) + 4px); height: 44px; padding: 0 0 0 4px; display: flex; align-items: center; gap: 0; opacity: 0; transition: opacity .6s ease; color: var(--ink); touch-action: none; }
+#corner.on { opacity: 1; }
+#corner svg { width: 34px; height: 30px; overflow: visible; transform-origin: 0 30%; transition: transform .45s cubic-bezier(.2,.7,.2,1); }
+#corner.touch svg, #corner.play svg { transform: scale(2.4); }   /* hold, or a double-tap to keep it out */
+#corner.play { z-index: 55; }
+html.still #corner svg { transition: none; }
+#corner.plain svg { display: none; }
+#corner svg circle { transition: opacity .9s ease, filter .9s ease; }
+#corner svg circle.ring { opacity: 1 !important; filter: drop-shadow(0 0 2.5px currentColor) drop-shadow(0 0 6px currentColor); transition: opacity .05s, filter .05s; }
+#corner .oz { height: 44px; padding: 0 12px 0 6px; font-family: Julius, sans-serif; font-size: 11px; letter-spacing: .3em; opacity: .7; text-transform: lowercase; color: var(--ink); }
+#corner svg circle { fill: currentColor; opacity: .7; } #corner svg path { fill: none; stroke: currentColor; stroke-width: 1.2; opacity: .4; }
+#tuneBtn { position: absolute; z-index: 44; left: 50%; transform: translateX(-50%); top: calc(var(--top) + 4px); height: 44px; padding: 0 14px; color: var(--far); }
+#toast { position: absolute; left: 20px; right: 20px; bottom: calc(110px + var(--bot)); text-align: center; color: var(--mid); font-size: 12px; opacity: 0; transition: opacity .5s; pointer-events: none; z-index: 60; }
+#toast.on { opacity: 1; }
+
+/* boot */
+#boot { position: absolute; inset: 0; z-index: 100; background: #000; transition: opacity 1s ease; }
+#boot.gone { opacity: 0; pointer-events: none; }
+#boot .bd { position: absolute; right: calc(var(--edge) + 18px); top: calc(var(--top) + 22px); width: 8px; height: 8px; border-radius: 50%; background: var(--mint); opacity: 0; transition: opacity 2.4s ease; }
+html:not(.red) #boot .bd { background: #FF4457; }
+#boot.lit .bd { opacity: 1; box-shadow: 0 0 7px 1px rgba(85,218,161,.7); }
+html:not(.red) #boot.lit .bd { box-shadow: 0 0 6px rgba(255,68,87,.45); }
+
+/* the moon — pure, free-moving */
+#moon { position: absolute; z-index: 20; width: 80px; height: 80px; margin: -40px 0 0 -40px; color: var(--moon); touch-action: none; transition: opacity .7s ease; }
+#moon svg { width: 80px; height: 80px; overflow: visible; }
+#moon .cui { left: 40px; top: 40px; }
+/* what you were doing, what fits now: quiet lines, each with a small hairline mark */
+/* the dock, minimised: a faint hairline tick on the bottom edge */
+.dock { position: absolute; left: 0; right: 0; bottom: calc(6px + var(--bot)); height: 44px; display: flex; justify-content: center; align-items: center; }
+.dock .star { width: 88px; height: 44px; display: grid; place-items: center; }
+.dock .star i { display: block; width: 26px; height: 1px; background: var(--ink); opacity: .26; transition: opacity .4s, width .4s; }
+.dock.open .star i { opacity: .5; width: 40px; }
+
+/* the dimmer, minimised: a hairline of light on the left edge */
+#dimmer { position: absolute; z-index: 30; left: 0; top: 0; bottom: 0; width: 26px; touch-action: none; }
+#dimmer .ln { position: absolute; left: 2px; top: 50%; width: 1.5px; height: 84px; margin-top: -42px; border-radius: 1px; background: var(--ink); opacity: .30; box-shadow: 0 0 6px 1px var(--ink); transition: height .35s ease, margin .35s ease, opacity .35s ease, width .35s; }
+#dimmer .bd { position: absolute; left: 0; width: 5.5px; height: 5.5px; border-radius: 50%; background: var(--ink); opacity: 0; box-shadow: 0 0 6px var(--ink); transform: translateY(-50%); transition: opacity .35s ease; }
+#dimmer.live .ln { height: 300px; margin-top: -150px; opacity: .5; width: 2px; } #dimmer.live .bd { opacity: .9; }
+html:not(.red) #dimmer { display: none; }
+#dimveil { position: absolute; inset: 0; z-index: 90; background: #000; opacity: 0; pointer-events: none; }
+
+
+/* the float — two shapes, one brain */
+#float { z-index: 25; }
+#float .fl-bar { position: absolute; left: 34px; right: 34px; top: calc(var(--top) + 96px); }
+#float input { width: 100%; background: transparent; border: 0; border-bottom: 1px solid var(--hair); color: var(--here); font: 300 22px Poppins, sans-serif; letter-spacing: .03em; padding: 6px 0 10px; outline: none; border-radius: 0; caret-color: var(--here); }
+#float input::placeholder { color: var(--far); }
+#float .fl-list { position: absolute; left: 34px; right: 34px; top: calc(var(--top) + 160px); display: flex; flex-direction: column; }
+#float .fl-list button { text-align: left; min-height: 44px; display: flex; flex-direction: column; justify-content: center; padding: 6px 0; font-size: 14px; letter-spacing: .03em; color: var(--near); }
+#float .fl-list button:nth-child(2) { color: var(--mid); } #float .fl-list button:nth-child(n+3) { color: var(--far); }
+#float .fl-list button em { font-style: normal; font-size: 12px; color: var(--mid); margin-top: 2px; line-height: 1.4; }
+#float .fl-list button.up, #float .fl-sky .up span { color: var(--mid); }
+#float .fl-list button.up { margin-top: 10px; border-top: 1px solid var(--hair); padding-top: 12px; font-size: 12px; letter-spacing: .1em; }
+#float .fl-sky { position: absolute; inset: 0; pointer-events: none; }
+#float .fl-sky button { position: absolute; transform: translate(-50%, -50%); pointer-events: auto; display: flex; flex-direction: column; align-items: center; gap: 7px; padding: 10px 12px; max-width: 240px; opacity: 0; transition: opacity .6s ease; }
+#float .fl-sky button.in { opacity: 1; }
+#float .fl-sky button i { width: 3px; height: 3px; border-radius: 50%; background: var(--ink); box-shadow: 0 0 6px var(--ink); }
+#float .fl-sky button span { font-size: 14px; letter-spacing: .05em; color: var(--near); white-space: nowrap; }
+#float .fl-sky button em { font-style: normal; font-size: 12px; line-height: 1.4; color: var(--mid); text-align: center; white-space: normal; }
+#float.fmt-stars .fl-list { display: none; } #float.fmt-bar .fl-sky { display: none; }
+#float.fmt-stars .fl-bar { top: calc(var(--top) + 70px); } #float.fmt-stars input { border-bottom-color: transparent; text-align: center; font-size: 22px; }
+#float .none { color: var(--far); font-size: 12px; min-height: 44px; display: flex; align-items: center; }
+
+/* full Ask */
+#ask { z-index: 26; background: var(--bg); }
+#ask .ask-h { position: absolute; left: 0; right: 0; top: calc(var(--top) + 18px); text-align: center; color: var(--dim); }
+#ask .ask-log { position: absolute; left: 22px; right: 22px; top: calc(var(--top) + 64px); bottom: calc(86px + var(--bot)); overflow: auto; display: flex; flex-direction: column; gap: 12px; justify-content: flex-end; }
+#ask .ask-log p { margin: 0; max-width: 82%; font-size: 14px; line-height: 1.5; }
+#ask .ask-log p.me { align-self: flex-end; color: var(--here); text-align: right; }
+#ask .ask-log p.oz { align-self: flex-start; color: var(--dim); }
+#ask .ask-log .jump { align-self: flex-start; display: flex; gap: 8px; flex-wrap: wrap; }
+#ask .ask-log .jump button { min-height: 36px; padding: 0 12px; border-bottom: 1px solid var(--hair); color: var(--mid); font-size: 12px; letter-spacing: .1em; }
+#ask .ask-in { position: absolute; left: 22px; right: 22px; bottom: calc(26px + var(--bot)); display: flex; gap: 10px; align-items: center; border-bottom: 1px solid var(--hair); }
+#ask .ask-in input { flex: 1; background: transparent; border: 0; color: var(--here); font: 300 17px Poppins, sans-serif; padding: 10px 0; outline: none; }
+#ask .ask-in input::placeholder { color: var(--far); }
+#ask .ask-in button { min-height: 44px; color: var(--mid); }
+
+/* rooms */
+#room .r-b { position: absolute; left: 0; right: 0; top: calc(var(--top) + 80px); bottom: calc(40px + var(--bot)); display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.r-timer svg { width: 260px; height: 260px; overflow: visible; }
+.r-timer svg circle { fill: var(--ink); opacity: .13; transition: opacity .6s; } .r-timer svg circle.lit { opacity: .7; }
+.r-timer .tt { position: absolute; font-size: 56px; letter-spacing: .05em; color: var(--here); font-variant-numeric: tabular-nums; line-height: 1; }
+.r-timer .face { position: relative; display: grid; place-items: center; min-height: 80px; }
+.r-sub { margin-top: 22px; color: var(--mid); font-size: 12px; letter-spacing: .06em; }
+.r-acts { margin-top: 26px; display: flex; gap: 28px; }
+.r-acts button { min-height: 44px; min-width: 64px; color: var(--dim); }
+.r-gold svg { width: 290px; height: 150px; overflow: visible; }
+.r-gold svg path, .r-gold svg line { fill: none; stroke: var(--ink); stroke-width: .6; opacity: .35; }
+.r-gold svg circle { fill: var(--here); }
+.r-gold .rows { margin-top: 26px; width: 250px; }
+.r-gold .rows div { display: flex; justify-content: space-between; min-height: 34px; align-items: center; border-bottom: 1px solid var(--hair); }
+.r-gold .rows div span:first-child { color: var(--meta); } .r-gold .rows div span:last-child { color: var(--here); font-size: 14px; }
+.r-play .song { font-size: 22px; letter-spacing: .06em; color: var(--here); }
+.r-play .pp { margin-top: 34px; width: 64px; height: 64px; border-radius: 50%; border: 1px solid var(--hair); display: grid; place-items: center; color: var(--ink); }
+.r-play .wave { margin-top: 30px; width: 220px; height: 30px; overflow: visible; } .r-play .wave path { fill: none; stroke: var(--ink); stroke-width: .7; opacity: .3; transition: opacity .6s; } .r-play.playing .wave path { opacity: .75; }
+.r-play .honest { margin-top: 18px; color: var(--far); font-size: 12px; }
+.r-notes textarea { width: calc(100% - 60px); height: 60%; background: transparent; border: 0; border-left: 1px solid var(--hair); color: var(--here); font: 300 17px/1.6 Poppins, sans-serif; padding: 4px 0 4px 16px; outline: none; resize: none; -webkit-user-select: text; user-select: text; caret-color: var(--here); }
+.r-notes textarea::placeholder { color: var(--far); }
+#sky canvas, #env canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+#sky .k { position: absolute; transform: translate(-50%, 0); text-align: center; min-width: 110px; padding: 4px 0; }
+#sky .k span { display: block; color: var(--dim); } #sky .k small { display: block; color: var(--meta); font-size: 10px; margin-top: 2px; }
+#env { z-index: 15; background: var(--bg); }
+#env .env-n { position: absolute; left: 0; right: 0; bottom: calc(40px + var(--bot)); text-align: center; color: var(--far); transition: opacity 1.2s ease; }
+
+/* tune sheet */
+#sheet { position: absolute; z-index: 80; left: 0; right: 0; bottom: 0; max-height: 78%; background: rgba(6,3,4,.96); border-top: 1px solid var(--hair); border-radius: 14px 14px 0 0; transform: translateY(105%); transition: transform .5s cubic-bezier(.2,.7,.2,1); display: flex; flex-direction: column; }
+html:not(.red) #sheet { background: rgba(3,5,11,.96); }
+#sheet.on { transform: none; }
+#sheet .grab { width: 36px; height: 3px; border-radius: 2px; background: var(--hair); margin: 10px auto 4px; flex: none; }
+#sheet .sh-b { overflow: auto; padding: 4px 22px calc(26px + var(--bot)); touch-action: pan-y; }
+#sheet h4 { margin: 16px 0 4px; font-family: Julius, sans-serif; font-weight: 400; font-size: 10px; letter-spacing: .22em; text-transform: uppercase; color: var(--meta); }
+#sheet .rw { display: flex; justify-content: space-between; align-items: center; min-height: 40px; border-bottom: 1px solid var(--hair); font-size: 14px; color: var(--dim); gap: 10px; }
+#sheet .rw small { display: block; font-size: 10px; color: var(--far); }
+#sheet .sw { width: 30px; height: 14px; border-radius: 7px; border: 1px solid var(--hair); position: relative; flex: none; }
+#sheet .sw::after { content: ''; position: absolute; top: 2px; left: 2px; width: 8px; height: 8px; border-radius: 50%; background: var(--far); transition: left .25s, background .25s; }
+#sheet .sw.on::after { left: 18px; background: var(--ink); }
+#sheet .seg { display: flex; gap: 2px; } #sheet .seg button { min-height: 32px; padding: 0 9px; font-size: 12px; color: var(--far); letter-spacing: .06em; } #sheet .seg button.cur { color: var(--here); border-bottom: 1px solid var(--here); }
+#sheet .chips { display: flex; flex-wrap: wrap; gap: 4px 14px; padding: 6px 0 10px; border-bottom: 1px solid var(--hair); }
+#sheet .chips button { min-height: 32px; font-size: 12px; color: var(--far); } #sheet .chips button.on { color: var(--here); }
+#sheet .chips button::before { content: '· '; } #sheet .chips button.on::before { content: '✓ '; }
+#sheet .fine { color: var(--far); font-size: 12px; margin: 14px 0 0; }
+#corner.touch .oz, #corner.play .oz { opacity: 0; transition: opacity .2s; }
+
+/* constellation as UI: stars that are controls, labelled, joined by hairlines */
+:root { --dk: #e8e4dc; --hl: #DDBC89; }
+.cui { position: absolute; width: 0; height: 0; pointer-events: none; }
+.dock .cui { left: 50%; top: 22px; }
+.cui svg { position: absolute; overflow: visible; pointer-events: none; }
+.cui > svg line, .cui > svg path { fill: none; stroke: var(--dk); stroke-width: .7; opacity: 0; transition: opacity .45s ease calc(var(--d) * 50ms); }
+.cui .cs { position: absolute; width: 72px; height: 54px; margin: -16px 0 0 -36px; display: flex; flex-direction: column; align-items: center; gap: 9px; padding-top: 13px; opacity: 0; pointer-events: none; transform: translateY(14px); transition: opacity .45s ease calc(var(--d) * 45ms), transform .55s cubic-bezier(.2,.7,.2,1) calc(var(--d) * 45ms); }
+.cui .cs i { width: 6px; height: 6px; border-radius: 50%; background: var(--dk); box-shadow: 0 0 6px rgba(232,228,220,.6); opacity: calc(.9 * var(--a, 1)); }
+.cui .cs .ic { display: block; width: 18px; height: 18px; margin-top: -6px; color: var(--dk); opacity: calc(.9 * var(--a, 1)); } .cui .cs .ic svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; }
+.cui .cs.cur .ic { color: var(--hl); opacity: 1; filter: drop-shadow(0 0 4px var(--hl)); }
+.cui .cs span { font-size: 12px; letter-spacing: .06em; color: rgba(232,228,220,.78); opacity: var(--a, 1); white-space: nowrap; text-transform: lowercase; }
+.cui .cs.cur i { width: 8px; height: 8px; margin-top: -1px; background: var(--hl); box-shadow: 0 0 9px 1px var(--hl); opacity: 1; }
+.cui .cs.cur span { color: var(--hl); opacity: 1; }
+.cui .cs:active i { transform: scale(1.4); }
+.dock.open .cui line, #moon.open .cui line { opacity: .3; } .dock.open .cui path.arc { opacity: .34; stroke-dasharray: 1 4; } .cui > svg path { opacity: 0; transition: opacity .45s ease; }
+.cui .pad { position: absolute; left: -185px; top: -200px; width: 370px; height: 210px; pointer-events: none; touch-action: none; } .dock.open .cui .pad { pointer-events: auto; }
+.dock .star i { background: var(--dk) !important; }
+.dock.open .cui .cs, #moon.open .cui .cs { opacity: 1; pointer-events: auto; transform: none; }
+html.still .cui .cs { transform: none; transition: opacity .45s ease; } html.still .cui line { transition: opacity .45s ease; }
+.dock { z-index: 22; }
+
+/* ——— v5 ——— one transition language: everything moves on the same curve, at three lengths */
+:root { --e: cubic-bezier(.2,.7,.2,1); --spring: cubic-bezier(.34,1.42,.52,1); --t1: .18s; --t2: .45s; --t3: .9s;
+  --l: max(env(safe-area-inset-left, 0px), 0px); --r: max(env(safe-area-inset-right, 0px), 0px); --edge: calc(8px + var(--l)); }
+#disc { right: calc(8px + var(--r)); }
+button { transition: opacity var(--t1) var(--e), transform var(--t1) var(--e); }
+button:active { opacity: .62; }
+
+/* the centre */
+#centre { position: absolute; inset: 0; pointer-events: none; transition: opacity var(--t2) var(--e); }
+#centre .grid { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+
+
+/* the dock, as icons: one stroke, one grid, a lens of depth under each, a small spring */
+.cui .cs.ico { width: 96px; height: 80px; margin: -24px 0 0 -48px; padding-top: 0; gap: 8px;
+  transition: opacity var(--t2) var(--e) calc(var(--d) * 32ms), transform .62s var(--spring) calc(var(--d) * 32ms); transform: translateY(22px) scale(.72); }
+.dock.open .cui .cs.ico { transform: none; }
+.cui .cs.ico .ic { width: 48px; height: 48px; margin: 0; border-radius: 50%; display: grid; place-items: center; color: var(--dk); opacity: calc(.62 + .38 * var(--a, 1));
+  background: radial-gradient(circle at 50% 30%, color-mix(in srgb, var(--dk) 9%, transparent), color-mix(in srgb, var(--dk) 2%, transparent) 62%, transparent 72%);
+  box-shadow: inset 0 0 0 .5px color-mix(in srgb, var(--dk) 20%, transparent), inset 0 1px 0 color-mix(in srgb, var(--dk) 9%, transparent), 0 8px 18px rgba(0,0,0,.55);
+  filter: none; transition: transform var(--t1) var(--e), box-shadow var(--t2) var(--e); }
+.cui .cs.ico .ic svg { width: 23px; height: 23px; fill: none; stroke: currentColor; stroke-width: 1.25; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; shape-rendering: geometricPrecision; }
+.cui .cs.ico .ic svg .pt { stroke-width: 2; }
+.cui .cs.ico.cur .ic { color: var(--hl); filter: none; box-shadow: inset 0 0 0 .75px color-mix(in srgb, var(--hl) 62%, transparent), 0 0 18px color-mix(in srgb, var(--hl) 22%, transparent), 0 8px 18px rgba(0,0,0,.55); }
+.cui .cs.ico span { font-size: 10px; letter-spacing: .04em; }
+.cui .cs.ico:active .ic { transform: scale(.9); transition-duration: .08s; }
+html.still .cui .cs.ico, html.still .dock.open .cui .cs.ico { transform: none; transition: opacity var(--t2) var(--e); }
+
+/* the corner: the boot's constellation IS the control. one element; it never swaps */
+#corner.booting { z-index: 102; opacity: 1; transition: none; }
+#corner.booting svg circle { opacity: 0; transition: opacity .32s var(--e), filter .32s; }
+#corner.booting svg circle.lit { opacity: .95; filter: drop-shadow(0 0 3px currentColor); }
+#corner svg path { vector-effect: non-scaling-stroke; stroke-width: .9; }
+#corner.booting svg path { stroke-dasharray: 160; stroke-dashoffset: 160; transition: stroke-dashoffset .55s var(--e); }
+#corner.booting.drawn svg path { stroke-dashoffset: 0; }
+#corner.booting .oz { opacity: 0; transform: translateY(5px); transition: opacity .4s var(--e), transform .5s var(--e); }
+#corner.booting.formed .oz { opacity: .7; transform: none; }
+html.still #corner.booting svg path { stroke-dasharray: none; stroke-dashoffset: 0; opacity: 0; transition: opacity .4s; } html.still #corner.booting.drawn svg path { opacity: .4; }
+html.still #corner.booting .oz { transform: none; }
+#boot { transition: opacity .8s var(--e); } #boot .bd { transition: opacity .5s var(--e); }
+
+/* the noise room, embedded as it is */
+#nz { z-index: 30; background: #000; transition: opacity .9s var(--e); }
+#nz iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: transparent; }
+#nz .nz-loading { position: absolute; left: 0; right: 0; top: 50%; text-align: center; color: var(--far); }
+html.innz #disc, html.innz #tuneBtn, html.innz #dimmer, html.innz #dimveil, html.innz #topbar, html.innz #corner { opacity: 0 !important; pointer-events: none !important; }
+
+/* tune: text sliders */
+#sheet .slider { display: grid; grid-template-columns: 78px 1fr 38px; align-items: center; gap: 10px; min-height: 36px; font-size: 12px; color: var(--dim); }
+#sheet .slider input { width: 100%; accent-color: var(--ink); touch-action: pan-x; height: 28px; }
+#sheet .slider output { font-size: 12px; color: var(--far); text-align: right; font-variant-numeric: tabular-nums; }
+#sheet .txsample { margin: 10px 0 6px; padding: 14px 0; text-align: center; font-size: 17px; color: var(--ink); border-top: 1px solid var(--hair); border-bottom: 1px solid var(--hair); }
+#sheet .txsample small { display: block; margin-top: 4px; font-size: 12px; color: var(--mid); }
+#sheet .copy { min-height: 40px; color: var(--mid); } #sheet .values { font-size: 10px; color: var(--far); white-space: pre-wrap; margin: 0; }
+html.red #sheet .slider input { accent-color: #5c5852; }
+#sheet .slider input { -webkit-appearance: none; appearance: none; background: transparent; }
+#sheet .slider input::-webkit-slider-runnable-track { height: 1px; background: var(--hair); }
+#sheet .slider input::-webkit-slider-thumb { -webkit-appearance: none; width: 16px; height: 16px; margin-top: -7.5px; border-radius: 50%; background: var(--bg); box-shadow: inset 0 0 0 1px var(--ink), 0 0 0 6px transparent; }
+#sheet .slider input::-moz-range-track { height: 1px; background: var(--hair); } #sheet .slider input::-moz-range-thumb { width: 16px; height: 16px; border-radius: 50%; background: var(--bg); border: 1px solid var(--ink); }
+
+/* ═══════════ v7: distinctly oz. at rest: the time, one quiet line, the dot. the rest comes when you reach ═══════════ */
+#sky0 { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+#centre .grid { opacity: .62; transition: opacity .6s ease; } html.reach #centre .grid { opacity: 1; }
+/* the rest */
+#rest { position: absolute; left: 0; right: 0; bottom: calc(var(--bot) + 76px); display: flex; flex-direction: column; align-items: center; gap: 6px; transition: opacity .5s ease, transform .9s cubic-bezier(.2,.7,.2,1); pointer-events: none; }
+#rest .t { font-size: 56px; line-height: 1; font-weight: 300; letter-spacing: .01em; font-variant-numeric: tabular-nums; color: var(--ink); opacity: .8; }
+#rest .q { pointer-events: auto; min-height: 44px; padding: 0 16px; display: flex; align-items: center; gap: 10px; font-size: 14px; letter-spacing: .05em; color: var(--mid); text-transform: lowercase; }
+#rest .q i { width: 4px; height: 4px; border-radius: 50%; background: var(--ink); opacity: .7; box-shadow: 0 0 5px var(--ink); }
+#rest .q:active { opacity: .6; }
+html.booting #rest, html.booting #hint, html.booting #moon { opacity: 0 !important; }
+/* things that come when you touch, and go after a few quiet seconds */
+#tuneBtn { transition: opacity var(--fd) ease; } #dimmer .ln, #cam .mk { transition: opacity .8s ease; }
+html:not(.awake) #tuneBtn, html:not(.awake) #dimmer .ln, html:not(.awake) #cam .mk { opacity: 0 !important; }
+html:not(.awake) #room [data-f=acts] { opacity: .32; transition: opacity .8s ease; }
+#moon { transition: opacity .8s ease, transform .8s cubic-bezier(.2,.7,.2,1); }
+html:not(.awake) #moon:not(.orb) { opacity: .3; transform: scale(.5); }
+html.still #moon, html.still #rest { transition: opacity var(--fd) ease, filter var(--fd) ease; } html.still:not(.awake) #moon:not(.orb) { transform: none; opacity: .22; }
+html.ess #moon, html.ess #moonO, html.ess #dimmer, html.ess #hint { display: none !important; }
+/* the camera dial: the right edge */
+#cam { position: absolute; z-index: 34; right: 0; top: 24%; height: 54%; width: 34px; touch-action: none; }
+#cam .mk { position: absolute; right: 4px; top: 50%; width: 14px; height: 120px; margin-top: -60px; opacity: .5; pointer-events: none; }
+#cam .mk svg { width: 14px; height: 120px; overflow: visible; } #cam .mk path { fill: none; stroke: var(--ink); stroke-width: .8; opacity: .55; } #cam .mk circle { fill: var(--ink); opacity: .7; }
+html.reach #cam .mk { opacity: 0 !important; }
+#camO { position: absolute; inset: 0; z-index: 40; pointer-events: none; opacity: 0; transition: opacity .25s ease; }
+#camO.on { opacity: 1; }
+#camO svg.ln { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+#camO svg.ln line { stroke: var(--ink); stroke-width: .7; } #camO svg.ln .rim { fill: none; stroke: var(--ink); stroke-width: .6; opacity: .14; stroke-dasharray: 1 5; }
+#camO .hub { position: absolute; width: 5px; height: 5px; margin: -2.5px 0 0 -2.5px; border-radius: 50%; background: var(--ink); opacity: .55; }
+#camO .cst { position: absolute; min-height: 44px; display: flex; align-items: center; gap: 11px; padding: 0 0 0 14px; transform-origin: 100% 50%; white-space: nowrap; text-transform: lowercase; color: var(--ink); will-change: transform, opacity; }
+#camO .cst span { font-size: 13px; letter-spacing: .05em; opacity: calc(.55 * var(--u, 1)); transition: opacity .2s, color .2s; }
+#camO .cst i { width: 5px; height: 5px; border-radius: 50%; background: var(--ink); opacity: calc(.7 * var(--u, 1)); box-shadow: 0 0 5px rgba(232,228,220,.45); transition: transform .2s, opacity .2s; }
+#camO .cst.front span { opacity: 1; color: var(--here); } #camO .cst.front i { opacity: 1; transform: scale(1.5); background: var(--here); box-shadow: 0 0 8px var(--here); }
+#camO .cst.here span { font-style: normal; letter-spacing: .14em; } #camO .cst.here i { background: transparent; box-shadow: inset 0 0 0 1px var(--ink); }
+#camO .cin { position: absolute; min-width: 44px; min-height: 44px; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; color: var(--mid); transition: opacity .3s ease; }
+#camO .cin i { width: 3px; height: 3px; border-radius: 50%; background: var(--mid); } #camO .cin span { font-size: 9px; letter-spacing: .18em; text-transform: lowercase; }
+/* the Moon dial's orbit */
+#moonO { position: absolute; inset: 0; z-index: 21; pointer-events: none; opacity: 0; transition: opacity .25s ease; } #moonO.on { opacity: 1; }
+#moonO svg.ln { position: absolute; inset: 0; width: 100%; height: 100%; } #moonO svg.ln line { stroke: var(--ink); stroke-width: .6; opacity: .2; }
+#moonO .mst { position: absolute; min-width: 44px; min-height: 44px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; color: var(--ink); text-transform: lowercase; transition: opacity .3s ease; }
+#moonO .mst i { width: 5px; height: 5px; border-radius: 50%; background: var(--moon); opacity: .8; box-shadow: 0 0 5px var(--moon); }
+#moonO .mst span { font-size: 11px; letter-spacing: .06em; opacity: .7; }
+#moonO .mst.in i { width: 3px; height: 3px; opacity: .6; } #moonO .mst.in span { font-size: 9.5px; letter-spacing: .16em; opacity: .5; }
+#moonO .mst.cur span, #moonO .mst.hov span { opacity: 1; color: var(--here); } #moonO .mst.cur i, #moonO .mst.hov i { transform: scale(1.5); background: var(--here); }
+/* the first-use teaching line: once, home sky only */
+#hint { position: absolute; right: 44px; top: 51%; transform: translateY(-50%); display: flex; align-items: center; gap: 10px; font-size: 12px; letter-spacing: .05em; color: var(--mid); opacity: 0; pointer-events: none; transition: opacity 1.2s ease; text-transform: lowercase; }
+#hint i { width: 26px; height: 1px; background: var(--mid); opacity: .6; }
+#hint.on { opacity: 1; } html.reach #hint { opacity: 0; }
+/* where you are: the room's name stays at the top */
+/* F3: one bright star, only while something leaves this phone */
+#f3 { position: absolute; left: 39px; top: 9px; width: 5px; height: 5px; border-radius: 50%; background: var(--here); box-shadow: 0 0 8px 1px var(--here); opacity: 0; transition: opacity .2s ease; pointer-events: none; }
+html.f3 #f3 { opacity: 1; }
+/* boot: black, "I am.", the handset, the mint dot — then the sky */
+#boot { transition: opacity .5s ease; } #boot .bd { transition: opacity .35s ease; }
+#boot .iam { position: absolute; left: 50%; top: 44%; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; gap: 16px; opacity: 0; transition: opacity .35s ease; color: #e8e4dc; }
+html.red #boot .iam { color: var(--ink); }
+#boot .iam svg { width: 22px; height: 38px; overflow: visible; } #boot .iam svg rect { fill: none; stroke: currentColor; stroke-width: 1; opacity: .7; }
+#boot .iam span { font-family: Julius, Poppins, sans-serif; font-size: 15px; letter-spacing: .32em; }
+#boot.lit .iam { opacity: .86; } #boot.gone .iam { opacity: 0; transition-duration: .3s; }
+#bootSky { position: absolute; inset: 0; z-index: 101; pointer-events: none; }
+#bootSky svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+#bootSky line { stroke: var(--ink); stroke-width: .7; opacity: 0; transition: opacity .3s ease; } #bootSky.form line { opacity: .3; }
+#bootSky b { position: absolute; width: 5px; height: 5px; margin: -2.5px 0 0 -2.5px; border-radius: 50%; background: var(--ink); box-shadow: 0 0 6px rgba(232,228,220,.5); opacity: 0; transition: opacity .25s ease calc(var(--d) * 40ms), transform .55s cubic-bezier(.6,0,.25,1); }
+#bootSky.form b { opacity: .9; }
+#bootSky.settle b { transform: translate(var(--tx), var(--ty)) scale(.4); opacity: 0; transition: opacity .5s ease .1s, transform .55s cubic-bezier(.6,0,.25,1); } #bootSky.settle line { opacity: 0; transition-duration: .2s; }
+html.still #bootSky.settle b { transform: none; }
+html.reach #room .r-b { opacity: .2; transition: opacity .3s ease; } #room .r-b { transition: opacity .4s ease; }
+html.reach #room [data-f=acts] { opacity: .2 !important; }
+body:not(:has(#open.on)) #tuneBtn { opacity: 0 !important; pointer-events: none; }
+
+/* ═══════════ v7.4: four openings, and more to try ═══════════ */
+#boot:not(.m-dial):not(.m-all) .iam { display: none; }
+#boot .loc { position: absolute; left: 0; right: 0; top: calc(44% + 62px); text-align: center; font-size: 12px; letter-spacing: .12em; color: var(--ink); opacity: 0; transition: opacity .4s ease; text-transform: lowercase; }
+#boot.m-local.says .loc { opacity: .7; } #boot.gone .loc { opacity: 0; transition-duration: .3s; }
+#localMark { position: absolute; z-index: 44; right: calc(var(--edge) + 44px); top: calc(var(--top) + 4px); width: 34px; height: 44px; display: none; align-items: center; justify-content: center; color: var(--ink); pointer-events: none; }
+html.lm #localMark, #localMark.booting { display: flex; }
+#localMark svg { width: 26px; height: 23px; overflow: visible; }
+#localMark circle { fill: currentColor; opacity: .5; } #localMark path { fill: none; stroke: currentColor; stroke-width: .6; opacity: .26; vector-effect: non-scaling-stroke; }
+#localMark.booting { z-index: 102; }
+#localMark.booting circle { opacity: 0; transition: opacity .3s ease; } #localMark.booting circle.lit { opacity: .95; }
+#localMark.booting path { stroke-dasharray: 160; stroke-dashoffset: 160; opacity: .4; transition: stroke-dashoffset .5s ease; } #localMark.booting.drawn path { stroke-dashoffset: 0; }
+html.still #localMark.booting path { stroke-dasharray: none; stroke-dashoffset: 0; opacity: 0; transition: opacity .4s ease; } html.still #localMark.booting.drawn path { opacity: .3; }
+/* places at the bottom middle (option) */
+#cam .mkb { display: none; }
+html.pl-bottom #cam { right: auto; left: 50%; top: auto; bottom: 0; width: 200px; height: calc(40px + var(--bot)); transform: translateX(-50%); }
+html.pl-bottom #cam .mk { display: none; } html.pl-bottom #cam .mkb { display: block; position: absolute; left: 50%; top: 8px; width: 120px; height: 14px; margin-left: -60px; opacity: .5; pointer-events: none; }
+#cam .mkb svg { width: 120px; height: 14px; overflow: visible; } #cam .mkb path { fill: none; stroke: var(--ink); stroke-width: .8; opacity: .55; } #cam .mkb circle { fill: var(--ink); opacity: .7; }
+html:not(.awake) #cam .mkb, html.reach #cam .mkb { opacity: 0 !important; } #cam .mkb { transition: opacity .8s ease; }
+#camO.b .cst { flex-direction: column-reverse; gap: 8px; padding: 0; min-width: 44px; justify-content: flex-end; transform-origin: 50% 100%; }
+html.pl-bottom #rest { bottom: calc(var(--bot) + 64px); }
+html.pl-bottom #hint { right: auto; left: 0; width: 100%; top: auto; bottom: calc(var(--bot) + 46px); transform: none; flex-direction: column-reverse; justify-content: center; gap: 6px; }
+html.pl-bottom #hint i { width: 1px; height: 14px; }
+
+/* the moon at rest (option) */
+html.moon-hide:not(.awake) #moon:not(.orb) { opacity: 0 !important; }
+html.moon-full:not(.awake) #moon:not(.orb) { opacity: 1; transform: none; }
+/* the quiet line (option) */
+html.no-quiet #rest .q { visibility: hidden; }
+
+/* ——— v7.4b: the top bar, the quick sheet, the home line, the docks ——— */
+#topbar { position: absolute; z-index: 44; left: 50%; transform: translateX(-50%); top: calc(var(--top) + 4px); height: 44px; min-width: 120px; padding: 0 16px; display: none; align-items: center; justify-content: center; gap: 6px; font-size: 12px; letter-spacing: .06em; color: var(--ink); opacity: .78; font-variant-numeric: tabular-nums; white-space: nowrap; touch-action: none; }
+#topbar .qc, #topbar .st { color: var(--mid); font-size: 12px; }
+html.tb #topbar { display: flex; } html.tb #tuneBtn { display: none !important; }
+html.tb #localMark { display: flex; }
+html.booting #topbar { opacity: 0; } #topbar { transition: opacity .5s ease; }
+#qs { position: absolute; z-index: 70; left: 8px; right: 8px; top: calc(var(--top) + 2px); max-height: 82%; overflow: auto; padding: 14px 16px 16px; border-radius: 24px; background: rgba(12,8,6,.88); -webkit-backdrop-filter: blur(22px) saturate(1.1); backdrop-filter: blur(22px) saturate(1.1); box-shadow: inset 0 0 0 .75px var(--hair), 0 20px 50px rgba(0,0,0,.6); color: var(--ink); opacity: 0; pointer-events: none; transform: translateY(-18px); transition: opacity .35s ease, transform .45s cubic-bezier(.2,.7,.2,1); }
+#qs.on { opacity: 1; pointer-events: auto; transform: none; }
+body:not(:has(#open.on)) #topbar { opacity: 0; pointer-events: none; }
+#qs .qs-h { display: flex; justify-content: space-between; align-items: center; min-height: 32px; color: var(--mid); }
+#qs .qs-x { min-height: 44px; padding: 0 4px; color: var(--mid); }
+#qs .qs-row { padding: 8px 0; border-bottom: 1px solid var(--hair); }
+#qs .seg { display: flex; gap: 4px; flex-wrap: nowrap; } #qs .seg button { flex: 1; min-height: 40px; font-size: 12px; color: var(--mid); border-radius: 12px; white-space: nowrap; padding: 0 6px; } #qs .seg button.cur { color: var(--ink); box-shadow: inset 0 0 0 .75px var(--hair); background: rgba(255,255,255,.03); }
+#qs .qs-t { margin: 12px 0 4px; color: var(--far); font-size: 10px; }
+#qs .qs-n button { display: flex; flex-direction: column; align-items: flex-start; width: 100%; min-height: 44px; padding: 6px 0; text-align: left; border-bottom: 1px solid var(--hair); } #qs .qs-n button span { font-size: 14px; color: var(--ink); text-transform: lowercase; } #qs .qs-n button em { font-style: normal; font-size: 12px; color: var(--mid); }
+#qs .qs-light { display: flex; align-items: center; gap: 12px; } #qs .qs-red { width: 44px; height: 44px; display: grid; place-items: center; } #qs .qs-red i { width: 10px; height: 10px; border-radius: 50%; background: #FF4457; box-shadow: 0 0 6px rgba(255,68,87,.45); } html.red #qs .qs-red i { background: var(--mint); box-shadow: 0 0 7px 1px rgba(85,218,161,.7); }
+#qs .qs-br { flex: 1; display: flex; align-items: center; gap: 10px; color: var(--mid); } #qs .qs-br input { flex: 1; -webkit-appearance: none; appearance: none; background: transparent; height: 32px; } #qs .qs-br input::-webkit-slider-runnable-track { height: 1px; background: var(--hair); } #qs .qs-br input::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; margin-top: -8.5px; border-radius: 50%; background: var(--bg); box-shadow: inset 0 0 0 1px var(--ink); }
+#qs .qs-go { display: flex; gap: 10px; } #qs .qs-go button { flex: 1; min-height: 56px; display: flex; align-items: center; gap: 10px; padding: 0 12px; border-radius: 16px; box-shadow: inset 0 0 0 .75px var(--hair); color: var(--ink); font-size: 14px; text-transform: lowercase; } #qs .qs-go b svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.2; stroke-linecap: round; stroke-linejoin: round; }
+#qs .qs-all { display: block; width: 100%; min-height: 44px; margin-top: 8px; color: var(--mid); }
+/* the home line */
+#homeLine { position: absolute; z-index: 46; left: 50%; bottom: calc(var(--bot)); width: 140px; margin-left: -70px; height: 22px; display: none; align-items: center; justify-content: center; touch-action: none; }
+#homeLine i { width: 112px; height: 1.5px; border-radius: 1px; background: var(--ink); opacity: .34; transition: opacity .8s ease; }
+html.hl #homeLine { display: flex; }
+html.hl.pl-bottom #cam { bottom: 20px; } html.hl #rest { bottom: calc(var(--bot) + 82px); }
+/* the docks */
+#arcDock { position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity .45s ease; z-index: 23; }
+#arcDock svg { position: absolute; inset: 0; width: 100%; height: 100%; } #arcDock line { stroke: var(--ink); stroke-width: .6; opacity: .18; }
+#arcDock .ad { position: absolute; width: 56px; height: 56px; margin: -28px 0 0 -28px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; color: var(--ink); opacity: calc(.5 + .5 * var(--u, 1)); transform: translateY(10px); transition: transform .5s cubic-bezier(.2,.7,.2,1) calc(var(--d) * 40ms); }
+#arcDock .ad b svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.15; stroke-linecap: round; stroke-linejoin: round; } #arcDock .ad span { font-size: 10px; letter-spacing: .06em; color: var(--mid); white-space: nowrap; text-transform: lowercase; }
+html.dk-arc.awake:not(.booting) #arcDock, html.dk-dial.reach #arcDock { opacity: 1; pointer-events: auto; } html.dk-arc.awake #arcDock .ad, html.dk-dial.reach #arcDock .ad { transform: none; }
+html.still #arcDock .ad { transform: none; transition: none; }
+html.dk-stars .dock { display: flex !important; } html.dk-stars #open:has(.dock.open) #rest { opacity: .2; } html.dk-stars .dock { bottom: calc(var(--bot) + 18px); }
+html.dk-stars.hl #homeLine { bottom: calc(var(--bot) - 4px); }
+#sheet .seg button { white-space: nowrap; }
+
+/* v7.5 — my picks, and space to breathe */
+#topbar { min-width: 68px; }
+html.tb:not(.bt) #topbar time { display: none; }
+html.tb.bt #rest .t { display: none; }
+html.hl body:has(#open.on) #homeLine { display: none; } /* the familiar home gesture only when you're away from home */
+/* Do not let the spring fight CSS transitions: translate is its own channel, separate from the dial/boot transforms */
+#arcDock .ad { will-change: translate; }
+/* the dock layer itself never takes a touch; only its places do (fixes v7.4, where the arc's full-screen layer sat over the moon and the dial while awake) */
+#arcDock, html.dk-arc.awake:not(.booting) #arcDock, html.dk-dial.reach #arcDock { pointer-events: none; } #arcDock svg { pointer-events: none; }
+html.dk-arc.awake:not(.booting) #arcDock .ad, html.dk-dial.reach #arcDock .ad { pointer-events: auto; }
+#arcDock .ad { pointer-events: none; }
+html.hl.pl-bottom #cam { bottom: 0; }
+#sheet .seg button { position: relative; } #sheet .seg button.pk::after { content: ''; position: absolute; left: 50%; bottom: 3px; width: 3px; height: 3px; margin-left: -1.5px; border-radius: 50%; background: var(--ink); opacity: .55; }
+
+/* v7.6 — calmer: nothing moves under a finger; tune is back; the bar keeps the time in rooms */
+html.tb #tuneBtn { display: block !important; left: calc(50% + 40px); }
+html.tb #topbar { margin-left: -30px; padding: 0 8px; min-width: 0; }
+html.tb #topbar .qc::after { content: ''; display: block; width: 14px; height: 1px; margin: 3px auto 0; background: currentColor; opacity: .45; }  /* a small grabber: it pulls */
+html.dk-arc.reach #arcDock, html.dk-arc #open:has(#moonO.on) #arcDock, html.dk-arc.qson #arcDock { opacity: 0 !important; pointer-events: none !important; }
+html.dk-arc.reach #arcDock .ad, html.dk-arc #open:has(#moonO.on) #arcDock .ad { pointer-events: none !important; }
+#hint2 { position: absolute; left: 0; right: 0; top: calc(var(--top) + 54px); text-align: center; font-size: 12px; letter-spacing: .05em; color: var(--mid); opacity: 0; pointer-events: none; transition: opacity 1.2s ease; }
+#hint2.on { opacity: .9; }
+/* in rooms: the bar keeps the time, small, at the right (there is no big clock in a room) */
+html.dk-arc #rest { bottom: calc(var(--bot) + 92px); }
+
+/* ═══════════ h1 (22 Nov) · one look across the Home Screen ═══════════
+   one type scale (10 · 12 · 14 · 17 · 22 · 56), one hairline (1px, --hair), one spacing rhythm (4 · 8 · 12 · 16 · 24),
+   one fade (--fd) and one settle (--settle) for everything that opens and closes. Poppins Light and Julius only.
+   Every target is at least 44pt. The dials, the boot, the Mark, the corner and the dimmer keep their own look (frozen). */
+:root { --fd: .45s; --fade: var(--fd); --settle: .32s cubic-bezier(.2,.7,.2,1); --mwf: .14;
+  --fs-1: 10px; --fs-2: 12px; --fs-3: 14px; --fs-4: 17px; --fs-5: 22px; --fs-t: 56px;
+  --sp-1: 4px; --sp-2: 8px; --sp-3: 12px; --sp-4: 16px; --sp-5: 24px; --tap: 44px; }
+.lbl { font-size: var(--fs-1); font-weight: 300; }
+h1, h2 { font-weight: 300; margin: 0; }
+
+/* modes: the app's five. red (default) and its looks come from tune; rose and Full red carry their own ink (open.js) */
+html.red.rose { --bg: #070304; }
+html.red.fullred { --bg: #040000; }
+html.light { --bg: #F3EEE6; --ink: #2A2024; --here: #8A5C28; --near: #B83A45; --mid: #8E5E64; --far: #B4A09D; --dim: #4A3C3E; --meta: #7D6B6B; --hair: rgba(42,32,36,.16); --moon: #8A5C28; --dk: #2A2024; }
+html.light .cui .cs span { color: var(--dim); } html.light .cui .cs i { box-shadow: none; }
+html.light #rest .q i, html.light #moonO .mst i, html.light #camO .cst i { box-shadow: none; }
+
+/* the star sky: drawn once; it drifts and breathes on the compositor, and rests whenever you are not home */
+#sky0, #sky0b { position: absolute; left: 0; top: 0; pointer-events: none; will-change: transform; animation: oz-drift 600s linear infinite; }
+#sky0b { animation: oz-drift 600s linear infinite, oz-breath 7s ease-in-out infinite alternate; }
+@keyframes oz-drift { to { transform: translateX(-50%); } }
+@keyframes oz-breath { from { opacity: .3; } to { opacity: 1; } }
+html.still #sky0, html.still #sky0b, body:not(:has(#open.on)) #sky0, body:not(:has(#open.on)) #sky0b { animation-play-state: paused; }
+
+/* make way: fade in place, all to one level, on the one fade. nothing slides */
+#rest, #moon, #hint, #hint2, #topbar, #homeLine, #arcDock .ad { transition-property: opacity, transform, filter; transition-duration: var(--fd); transition-timing-function: ease; }
+.mwf { filter: opacity(var(--mwf)); }
+#topbar.mwf, #homeLine.mwf, #arcDock .ad.mwf { pointer-events: none !important; }
+
+/* the rest */
+#rest .q { font-size: var(--fs-3); }
+#hint, #hint2 { font-size: var(--fs-2); }
+#toast { font-size: var(--fs-2); }
+
+/* the arc dock: shown on your first touch, readable in every mode, gone while the dial, the orbit, the quick sheet or settings are open */
+#arcDock .ad { width: 56px; height: 56px; }
+#arcDock .ad span { font-size: var(--fs-1); color: var(--dim); letter-spacing: .04em; }
+#arcDock line { opacity: .22; }
+html.dk-arc body:has(#sheet.on) #arcDock, html.dk-arc body:has(#float.on) #arcDock { opacity: 0 !important; }
+html.dk-arc body:has(#sheet.on) #arcDock .ad, html.dk-arc.qson #arcDock .ad { pointer-events: none !important; }
+
+/* the room bar: one for every room you open from home — back, the room's name, the small time at right */
+#rbar { position: absolute; z-index: 47; left: 0; right: 0; top: calc(var(--top) + 4px); height: var(--tap); display: flex; align-items: center; opacity: 0; pointer-events: none; transition: opacity var(--fd) ease; }
+html.inroom #rbar { opacity: 1; pointer-events: auto; }
+html.inroom #rbar .r-t, html.inroom #rbar time { pointer-events: none; }
+#rbar .r-back { width: var(--tap); height: var(--tap); margin-left: calc(var(--edge) - 6px); display: grid; place-items: center; color: var(--mid); flex: none; }
+#rbar .r-back svg { width: 11px; height: 20px; overflow: visible; fill: none; stroke: currentColor; stroke-width: 1.3; stroke-linecap: round; stroke-linejoin: round; }
+#rbar .r-t { position: absolute; left: 50%; transform: translateX(-50%); color: var(--mid); letter-spacing: .26em; white-space: nowrap; }
+#rbar time { position: absolute; right: calc(var(--edge) + 50px); font-size: var(--fs-2); color: var(--dim); opacity: .8; font-variant-numeric: tabular-nums; letter-spacing: .04em; }
+html.inroom #localMark { display: none !important; }
+#room .r-b { top: calc(var(--top) + 72px); }
+
+/* the quick sheet: readable glass over a veil; the rest state makes way */
+#qsVeil { position: absolute; inset: 0; z-index: 69; background: rgba(0,0,0,.44); opacity: 0; pointer-events: none; transition: opacity var(--settle); }
+html.qson #qsVeil { opacity: 1; pointer-events: auto; }
+html.light #qsVeil { background: rgba(60,40,40,.16); }
+#qs { padding: var(--sp-2) var(--sp-4) var(--sp-1); border-radius: 26px; background: rgba(16,10,10,.84); -webkit-backdrop-filter: blur(28px) saturate(1.15); backdrop-filter: blur(28px) saturate(1.15); transform: translateY(-28px); transition: opacity var(--settle), transform var(--settle); }
+html:not(.red):not(.light) #qs { background: rgba(8,10,16,.84); }
+html.light #qs { background: rgba(250,246,238,.88); box-shadow: inset 0 0 0 .75px var(--hair), 0 18px 40px rgba(60,40,40,.18); }
+html.still #qs { transform: none; }
+#qs.on { transform: none; }
+#qs .qs-h { min-height: var(--tap); }
+#qs .qs-x { min-width: var(--tap); }
+#qs .qs-row { padding: var(--sp-2) 0; }
+#qs .seg button { min-height: var(--tap); font-size: var(--fs-2); color: var(--mid); }
+#qs .seg button.cur { color: var(--ink); background: color-mix(in srgb, var(--ink) 7%, transparent); }
+#qs .qs-t { margin: var(--sp-3) 0 var(--sp-1); color: var(--meta); font-size: var(--fs-1); }
+#qs .qs-n button span { font-size: var(--fs-3); } #qs .qs-n button em { font-size: var(--fs-2); }
+#qs .qs-go button { font-size: var(--fs-3); }
+#qs .qs-all { display: flex; justify-content: space-between; align-items: center; width: 100%; min-height: var(--tap); margin-top: var(--sp-1); font-size: var(--fs-3); color: var(--dim); text-transform: lowercase; }
+#qs .qs-all b { font-weight: 300; color: var(--mid); }
+#qs .qs-grab { display: block; width: 36px; height: 4px; border-radius: 2px; background: var(--hair); margin: var(--sp-1) auto var(--sp-1); }
+
+/* while a pull tracks the finger: no transition fights it */
+.gx { transition: none !important; }
+#float.gx { pointer-events: none; }
+
+/* settings: short sections; one plain line per row; the usual row pattern */
+#sheet { max-height: 82%; transition: transform var(--settle); -webkit-backdrop-filter: blur(24px); backdrop-filter: blur(24px); }
+html.red #sheet { background: rgba(8,4,5,.95); }
+html.light #sheet { background: rgba(250,246,238,.97); }
+#sheet .sh-b { padding: 0 var(--sp-5) calc(var(--sp-5) + var(--bot)); }
+#sheet h2 { margin: var(--sp-5) 0 var(--sp-1); color: var(--meta); }
+#sheet h2:first-child { margin-top: var(--sp-2); }
+#sheet .rw { width: 100%; display: flex; justify-content: space-between; align-items: center; gap: var(--sp-3); min-height: var(--tap); padding: 0; border-bottom: 1px solid var(--hair); font-size: var(--fs-3); color: var(--dim); text-align: left; }
+#sheet .rw > span { flex: 1 1 auto; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#sheet .rw b.lbl { color: var(--mid); }
+#sheet .rw.fam .seg { flex: 1; } #sheet .rw.fam .seg button { flex: 1; }
+#sheet .sw { width: 40px; height: 24px; border-radius: 12px; border: 0; background: var(--hair); transition: background var(--fd) ease; }
+#sheet .sw::after { top: 2px; left: 2px; width: 20px; height: 20px; background: var(--far); transition: left var(--settle), background var(--fd) ease; }
+#sheet .sw.on { background: color-mix(in srgb, var(--ink) 72%, transparent); }
+#sheet .sw.on::after { left: 18px; background: var(--bg); }
+#sheet em.pv, #camO .cst em.pv, #rT em.pv, #arcDock .ad em.pv { font-style: normal; font-family: Julius, sans-serif; font-size: 9px; letter-spacing: .16em; text-transform: lowercase; color: var(--meta, var(--mid)); margin-left: 6px; opacity: .8; }
+#rT { display: flex; align-items: baseline; gap: 0; }
+#rT em.pv { margin-left: 8px; }
+#sheet .seg { display: flex; gap: 0; flex: none; }
+#sheet .seg button { min-height: var(--tap); padding: 0 var(--sp-2); font-size: var(--fs-2); color: var(--mid); letter-spacing: .02em; border-bottom: 0; }
+#sheet .seg button.cur { color: var(--here); border-bottom: 0; box-shadow: inset 0 -1px 0 var(--here); }
+#sheet .rw.chips { flex-wrap: wrap; gap: 0 var(--sp-3); }
+#sheet .rw.chips > div { display: flex; flex-wrap: wrap; gap: 0 var(--sp-3); }
+#sheet .chips button { min-height: var(--tap); font-size: var(--fs-2); color: var(--far); } #sheet .chips button.on { color: var(--here); }
+#sheet details > summary { list-style: none; cursor: pointer; } #sheet details > summary::-webkit-details-marker { display: none; }
+#sheet details[open] > summary b { transform: rotate(90deg); }
+#sheet details > summary b { transition: transform var(--fd) ease; }
+#sheet .why p { margin: var(--sp-2) 0; font-size: var(--fs-2); color: var(--mid); line-height: 1.5; }
+#sheet .why p b { font-weight: 300; color: var(--dim); }
+#sheet .slider { font-size: var(--fs-2); min-height: var(--tap); }
+#sheet .fine { font-size: var(--fs-2); color: var(--meta); margin: var(--sp-4) 0 0; line-height: 1.5; }
+#sheet .values { font-size: var(--fs-1); }
+
+/* the float and Ask keep their shape; the scale only */
+#float .fl-list button { font-size: var(--fs-3); }
+
+/* accessibility: a visible focus for keyboards, nothing for touch */
+:focus { outline: none; }
+:focus-visible { outline: 1px solid var(--here); outline-offset: 2px; border-radius: 6px; }
+#qs { touch-action: none; overflow: hidden; }   /* it fits on the phone; a swipe up on it is always the close, never a scroll */
+/* places and stars: the first tap selects (it lights), the second opens */
+#arcDock .ad.pick b { color: var(--hl); } #arcDock .ad.pick span { color: var(--here); }
+.cui .cs.pick .ic { color: var(--hl); } .cui .cs.pick span { color: var(--hl); opacity: 1; }
+#sky .k.pick span { color: var(--here); } #float .fl-sky button.pick span { color: var(--here); }
+/* rows that are buttons read exactly like rows that are not (buttons drop the red-mode text glow by default) */
+#sheet button, #qs button, #rbar button { text-shadow: inherit; -webkit-text-stroke: inherit; }
+#toast { z-index: 95; }   /* "undo" and other notes show over settings and the quick sheet */
+html.hl.innz body:has(#nz.on) #homeLine { display: flex; }   /* white noise is a room too: the home line is there */
+body:has(#sheet.on) #toast { bottom: auto; top: calc(var(--top) + 96px); }   /* over settings, the note sits in the clear sky above it, never on a row */
+
+/* h1b: rest-state clock font (tune → what shows). size and position stay as they are. */
+#rest .t, html[data-clock="poppins"] #rest .t { font-family: Poppins, system-ui, sans-serif; }
+html[data-clock="julius"] #rest .t { font-family: Julius, Poppins, sans-serif; font-weight: 400; }
+html[data-clock="serif"] #rest .t { font-family: ui-serif, "New York", "Iowan Old Style", Palatino, Times, serif; }
+html[data-clock="rounded"] #rest .t { font-family: ui-rounded, "SF Pro Rounded", "Hiragino Maru Gothic ProN", system-ui, sans-serif; }
+html[data-clock="mono"] #rest .t { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
+#sheet .rw.clockfont { flex-wrap: wrap; }
+#sheet .rw.clockfont .seg { flex: 1 1 100%; justify-content: space-between; }
+
+/* h1d: dock layout only — even height, labels under icons, no joining line, labels on/off.
+   Selectors are #arcDock / #arcDock .ad only. The original #arcDock svg rule is left as it is. */
+#arcDock > svg { display: none; }
+#arcDock .ad { width: auto; min-width: 44px; height: auto; min-height: 44px; margin: 0; padding: 2px 4px 0; box-sizing: border-box; justify-content: flex-start; align-items: center; gap: 5px; }
+#arcDock .ad b { display: block; position: relative; width: 20px; height: 20px; flex: 0 0 20px; }
+#arcDock .ad b svg { position: static; inset: auto; width: 20px; height: 20px; }
+#arcDock .ad span { display: block; position: static; text-align: center; line-height: 1.15; white-space: nowrap; }
+#arcDock .ad.icononly { width: 44px; min-width: 44px; padding: 2px 0 0; }
+#arcDock .ad.icononly span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); clip-path: inset(50%); white-space: nowrap; }
+
+/* h1e: swipe-up dock only. The generic .awake wake does not show this dock. */
+html.dk-swipe body:has(#open.on) #homeLine { display: flex; }
+html.dk-swipe.dockopen:not(.booting) #arcDock { opacity: 1; }
+html.dk-swipe.dockopen:not(.booting) #arcDock .ad { pointer-events: auto; transform: none; }
+html.dk-swipe.reach #arcDock, html.dk-swipe #open:has(#moonO.on) #arcDock, html.dk-swipe.qson #arcDock, html.dk-swipe body:has(#sheet.on) #arcDock, html.dk-swipe body:has(#float.on) #arcDock { opacity: 0 !important; pointer-events: none !important; }
+html.dk-swipe.reach #arcDock .ad, html.dk-swipe #open:has(#moonO.on) #arcDock .ad, html.dk-swipe body:has(#sheet.on) #arcDock .ad, html.dk-swipe.qson #arcDock .ad { pointer-events: none !important; }
+#sheet .rw[aria-label="dock"] .seg { flex-wrap: wrap; }
+/* h1f: red-mode disc and the matching quick-sheet button — let a tap register on iPhone (body is touch-action: none). */
+#disc, #qs .qs-red { touch-action: manipulation; }
