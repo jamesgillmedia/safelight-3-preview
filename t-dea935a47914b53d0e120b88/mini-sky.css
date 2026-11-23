@@ -1,0 +1,116 @@
+/* mini sky · 23 Nov. fixed2 look. red mode default. Poppins Light. lowercase mid-dot copy.
+   oz ignores iPhone / computer Reduce Motion — there is no prefers-reduced-motion stilling here. */
+@font-face { font-family: Poppins; font-weight: 300; src: url(fonts/poppins-300.woff2) format('woff2'); font-display: swap; }
+@font-face { font-family: Julius; src: url(fonts/julius-sans-one.woff2) format('woff2'); font-display: swap; }
+
+:root {
+  --bg: #000; --here: #DDBC89; --near: #E1626B; --mid: #BC8F94; --far: #4C2C31;
+  --ink: #e8e4dc; --dim: #c9d3d6; --meta: #93a1a6; --moon: #e8e4dc;
+  --hair: rgba(232,228,220,.16); --mint: #55DAA1;
+  --top: max(env(safe-area-inset-top, 0px), 14px); --bot: env(safe-area-inset-bottom, 0px); --edge: 8px;
+}
+html.red { --bg: #060304; --here: #754247; --near: #683b3f; --mid: #542f33; --far: #301b1d; --ink: #683b3f; --dim: #5e3539; --meta: #412427; --hair: rgba(105,59,64,.22); --moon: #6e3e42; }
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body { margin: 0; height: 100%; background: var(--bg); color: var(--ink); font: 300 14px/1.45 Poppins, system-ui, sans-serif; overflow: hidden; overscroll-behavior: none; -webkit-user-select: none; user-select: none; }
+body { position: fixed; inset: 0; touch-action: none; }
+button { font: inherit; color: inherit; background: none; border: 0; padding: 0; margin: 0; cursor: pointer; }
+
+#sky0, #sky0b { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+#sky0 { animation: drift 90s linear infinite; }
+#sky0b { animation: drift 90s linear infinite, breath 5.6s ease-in-out infinite; }
+@keyframes drift { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@keyframes breath { 0%, 100% { opacity: .72; } 50% { opacity: 1; } }
+
+#disc { position: absolute; z-index: 50; right: var(--edge); top: calc(var(--top) + 4px); width: 44px; height: 44px; display: grid; place-items: center; }
+#disc i { width: 8px; height: 8px; border-radius: 50%; background: #FF4457; opacity: .9; box-shadow: 0 0 6px rgba(255,68,87,.45); transition: background .3s, box-shadow .3s; }
+html.red #disc i { background: var(--mint); opacity: 1; box-shadow: 0 0 7px 1px rgba(85,218,161,.7); }
+
+/* the oz constellation: at rest it is the familiar corner size; when sized it overflows into a mini sky */
+#corner { position: absolute; z-index: 45; left: calc(var(--edge) + 40px); top: calc(var(--top) + 4px); height: 44px; padding: 0; display: flex; align-items: center; color: var(--ink); touch-action: none; }
+#corner.on { opacity: 1; }
+#corner .oz { position: relative; z-index: 8; height: 44px; padding: 0 12px 0 34px; font-family: Julius, sans-serif; font-size: 11px; letter-spacing: .3em; opacity: .7; text-transform: lowercase; color: var(--ink); pointer-events: auto; cursor: pointer; transition: opacity .28s ease; }
+#corner.sizing .oz, #corner.placed .oz { opacity: .7; } /* oz stays the escape, even while the sky floats */
+#corner .hit { position: absolute; z-index: 3; left: 0; top: 0; width: 44px; height: 44px; }
+#corner.placed .hit, #corner.sizing .hit { /* the canvas world becomes the target; the 44 pt pad stays as a seed */ }
+#conC { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 44; }
+
+/* good weather: a second seed, same gesture, today's feature at rest */
+#weather { position: absolute; z-index: 42; left: calc(var(--edge) + 16px); top: 40%; width: 44px; height: 44px; color: var(--ink); touch-action: none; }
+#weather .hit { position: absolute; inset: 0; z-index: 3; }
+#wxC { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 41; }
+#weather.sizing, #weather.placed { z-index: 46; }
+#corner.sizing, #corner.placed { z-index: 55; }
+
+#moon { position: absolute; z-index: 20; left: 76%; top: 16%; width: 80px; height: 80px; margin: -40px 0 0 -40px; color: var(--moon); pointer-events: none; }
+#moon svg { width: 80px; height: 80px; overflow: visible; }
+html.awake #moon { opacity: .85; transform: scale(.62); transform-origin: 50% 50%; }
+
+#rest { position: absolute; left: 0; right: 0; bottom: calc(var(--bot) + 76px); display: flex; flex-direction: column; align-items: center; gap: 2px; pointer-events: auto; z-index: 18; }
+#feel { min-height: 44px; padding: 8px 22px; max-width: 300px; font-family: Poppins, sans-serif; font-weight: 300; font-size: 17px; line-height: 1.45; letter-spacing: .07em; color: var(--ink); opacity: .9; text-transform: lowercase; text-align: center; }
+#rest .t { font-size: 18px; line-height: 1; font-weight: 300; letter-spacing: .08em; font-variant-numeric: tabular-nums; color: var(--mid); opacity: 0; height: 0; overflow: hidden; transition: opacity .45s ease, height .45s ease; pointer-events: none; }
+#rest.nums .t, html.show-nums #clock { opacity: .55; height: 22px; margin-top: 4px; }
+#rest .q { min-height: 28px; padding: 0 16px; display: flex; align-items: center; gap: 10px; font-size: 12px; letter-spacing: .08em; color: var(--mid); text-transform: lowercase; pointer-events: none; }
+#rest .q i { width: 4px; height: 4px; border-radius: 50%; background: var(--ink); opacity: .7; box-shadow: 0 0 5px var(--ink); }
+
+#dimmer { position: absolute; z-index: 70; left: 0; top: 0; bottom: 0; width: 26px; touch-action: none; }
+#dimmer .ln { position: absolute; left: 2px; top: 50%; width: 1.5px; height: 84px; margin-top: -42px; border-radius: 1px; background: var(--ink); opacity: .30; box-shadow: 0 0 6px 1px var(--ink); transition: height .35s ease, margin .35s ease, opacity .35s ease, width .35s; }
+#dimmer .bd { position: absolute; left: 0; width: 5.5px; height: 5.5px; border-radius: 50%; background: var(--ink); opacity: 0; box-shadow: 0 0 6px var(--ink); transform: translateY(-50%); transition: opacity .35s ease; }
+#dimmer.live .ln { height: 300px; margin-top: -150px; opacity: .5; width: 2px; }
+#dimmer.live .bd { opacity: .9; }
+#dimveil { position: absolute; inset: 0; z-index: 90; background: #000; opacity: 0; pointer-events: none; }
+
+#cam { position: absolute; z-index: 34; right: 0; top: 24%; height: 54%; width: 34px; pointer-events: none; }
+#cam .mk { position: absolute; right: 4px; top: 50%; width: 14px; height: 120px; margin-top: -60px; opacity: .5; }
+#cam .mk svg { width: 14px; height: 120px; overflow: visible; }
+#cam .mk path { fill: none; stroke: var(--ink); stroke-width: .8; opacity: .55; }
+#cam .mk circle { fill: var(--ink); opacity: .7; }
+
+.dock { position: absolute; left: 0; right: 0; bottom: calc(6px + var(--bot)); height: 44px; display: flex; justify-content: center; align-items: center; pointer-events: none; z-index: 16; }
+.dock .star { width: 88px; height: 44px; display: grid; place-items: center; }
+.dock .star i { display: block; width: 26px; height: 1px; background: var(--ink); opacity: .26; }
+
+#hint { position: absolute; left: 24px; right: 24px; bottom: calc(var(--bot) + 28px); text-align: center; font-size: 12px; letter-spacing: .05em; color: var(--mid); opacity: 0; pointer-events: none; z-index: 60; transition: opacity 1s ease; }
+#hint.on { opacity: .85; }
+
+/* no @media (prefers-reduced-motion) — oz keeps the drift, the breath, and the orbit. */
+
+/* ——— good weather · golden hour (23 Nov) ——— */
+#ghMore { position: absolute; z-index: 48; left: 50%; bottom: calc(var(--bot) + 200px); transform: translateX(-50%); min-width: 44px; min-height: 44px; padding: 0 16px; font-family: Julius, sans-serif; font-size: 10px; letter-spacing: .22em; text-transform: lowercase; color: var(--mid); }
+#ghMore[aria-pressed="true"] { color: var(--ink); }
+html.wx-away #ghMore { opacity: 0; pointer-events: none; }
+#ghPanel { position: absolute; z-index: 47; left: 14px; right: 14px; top: auto; width: auto; bottom: calc(var(--bot) + 176px); max-height: none; overflow: visible; padding: 0; }
+html.show-nums #ghPanel { bottom: calc(var(--bot) + 228px); }
+#ghPanel .gh-toggles { display: grid; grid-template-columns: 1fr 1fr; gap: 0 8px; }
+#ghPanel .rw { display: flex; align-items: center; justify-content: space-between; min-height: 44px; padding: 0 8px; color: var(--mid); font-size: 14px; letter-spacing: .04em; text-transform: lowercase; border-bottom: 1px solid var(--hair); }
+#ghPanel .rw span { pointer-events: none; }
+#ghPanel .sw { width: 36px; height: 22px; border-radius: 11px; border: 1px solid var(--hair); position: relative; flex: 0 0 36px; }
+#ghPanel .sw i { position: absolute; top: 3px; left: 3px; width: 14px; height: 14px; border-radius: 50%; background: var(--ink); opacity: .35; transition: left .25s ease, opacity .25s ease; }
+#ghPanel .sw.on { border-color: var(--ink); }
+#ghPanel .sw.on i { left: 17px; opacity: .9; }
+#ghTimes { padding: 8px 8px 4px; color: var(--mid); font-size: 13px; letter-spacing: .04em; text-transform: lowercase; line-height: 1.7; }
+#ghTimes b { font-weight: 300; color: var(--ink); margin-left: 8px; letter-spacing: .03em; }
+#ghEnv { padding: 6px 8px 8px; display: flex; flex-direction: column; gap: 2px; }
+#ghEnv label { display: flex; align-items: center; gap: 10px; min-height: 44px; color: var(--mid); font-size: 13px; letter-spacing: .04em; text-transform: lowercase; }
+#ghEnv label span { flex: 0 0 78px; }
+#ghEnv input[type=range] { -webkit-appearance: none; appearance: none; flex: 1; height: 44px; background: transparent; margin: 0; }
+#ghEnv input[type=range]::-webkit-slider-runnable-track { height: 1px; background: var(--ink); opacity: .35; }
+#ghEnv input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; margin-top: -6.5px; border-radius: 50%; background: var(--ink); box-shadow: 0 0 6px var(--ink); }
+#ghChart { position: fixed; z-index: 47; right: 16px; top: 56px; display: block; width: 88px; height: 88px; margin: 0; }
+#ghPanel #ghEnv, #ghEnv { position: relative; left: auto; right: auto; bottom: auto; display: grid; grid-template-columns: 1fr 1fr; gap: 0 16px; margin-top: 4px; }
+html.more-on #ghMore { opacity: 0; pointer-events: none; }
+#ghClock { position: absolute; z-index: 43; left: 50%; top: 22%; width: 200px; height: 200px; margin-left: -100px; pointer-events: none; opacity: 0; transition: opacity .4s ease; }
+#ghClock.on { opacity: 1; pointer-events: auto; }
+#ghRail { position: absolute; z-index: 48; right: 18px; top: 18%; bottom: 38%; width: 44px; display: flex; flex-direction: column; justify-content: space-between; align-items: flex-end; }
+#ghRail button { min-height: 44px; padding: 0 4px; text-align: right; font-size: 11px; letter-spacing: .06em; text-transform: lowercase; color: var(--mid); }
+#ghRail button.on { color: var(--ink); }
+#ghRail button small { display: block; font-size: 9px; letter-spacing: .08em; opacity: .7; }
+#rest .q[data-live="0"] span { opacity: 1; }
+/* no prefers-reduced-motion stilling — oz ignores Reduce Motion. */
+
+#feel, #ghMore, #ghRail button, #ozWord, #corner .oz, #ghPanel .rw, .gh-horiz button {
+  background: transparent; border: 0; appearance: none; -webkit-appearance: none; cursor: pointer;
+}
+.gh-horiz { display: flex; justify-content: center; gap: 4px; padding: 4px 0 8px; }
+.gh-horiz button.on { color: var(--ink); }
+#ghTimes.gh-horiz { display: flex; }
