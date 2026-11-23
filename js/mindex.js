@@ -1,25 +1,4 @@
-/* tools-02 · Motion Index (briefs/MOTION-INDEX.md; Gill, 18 Nov: in "a big batch of the new features").
-   Choose a clip and get back an index sheet: the motion laid out as stills, so a person — or a vision model — can read a
-   video at a glance. All of it happens here, on the device; nothing is uploaded, and no AI is involved.
-     1. Index the motion, not the time. The clip plays through once, silently and fast, into a 64 × 36 thumbnail. Each
-        sample is compared with the one before: how much changed, and whether the whole picture shifted (a pan or a tilt)
-        or spread (a push in, a pull out). A jump that no camera move explains is a cut.
-     2. Keep 12–48 frames where something changes: the first frame of every shot, then another each time enough has
-        changed since the last one kept. DENSITY (fewer · mid · more) sets how much "enough" is.
-     3. The kept frames are taken again from the clip at full sheet size — exact pixels, only scaled; never tinted.
-     4. The sheet: frames left to right, top to bottom, a timecode under each; a thin motion strip under every frame
-        (direction and speed of the camera); a colour bar for each shot; cuts marked. LAYOUT: grid · strip · by shot.
-     5. Out: PDF (a cover with the whole piece as one strip, then the sheet), PNG, PNG tiles (4 × 4 at 1024 px, for a
-        vision model), a JSON sidecar (timecode, shot, motion and dominant colours for every frame) — or all in one zip.
-   Tap a frame on the sheet and the clip goes there and plays: back into motion.
-   SCREENSHOTS (Gill, 18 Nov 15:23: "indexes screenshots as well as clips and screenshot clips … a toggle on index
-   motion"): the same tool reads what it is given. A clip — a film or a screen recording — is sampled by its motion, as
-   above. A set of screenshots simply becomes the frames, in the order they were taken (by name when the phone hands
-   them over with one time), up to 48; a new group starts where the size changes or more than 90 s pass. Same sheet,
-   same PDF / PNG / tiles / JSON, same Compare. CLIP · SCREENSHOTS at the top only sets what the picker offers.
-   Not here (the brief): long-press on a clip in the Archive (the prototype's archive holds frames, not clips — this
-   opens from Tune → Clips and the Mark's board); pinch from sheet into a frame; tagging by a vision model; Stills to
-   Motion. The "60 s clip in under 10 s on a phone" target is not measured here: the pass plays at up to 8×. */
+/* tools-02 · Motion Index: a clip or screenshots as an index sheet, on this device. */
 (function (G) {
   'use strict';
   var GJ = G.GJ, clamp = GJ.clamp, html = document.documentElement;
@@ -47,7 +26,7 @@
   /* ---------- 1. the pass: every sample's luma, colours, change and camera move ---------- */
   var ac = document.createElement('canvas'); ac.width = AW; ac.height = AH; var ag = ac.getContext('2d', { willReadFrequently: true });
   function half(y) { var o = new Float32Array(32 * 18); for (var j = 0; j < 18; j++) for (var i = 0; i < 32; i++) { var a = (j * 2) * AW + i * 2; o[j * 32 + i] = (y[a] + y[a + 1] + y[a + AW] + y[a + AW + 1]) / 4; } return o; }
-  function sad(A, B, sx, sy, x0, x1) {   // mean |B(x, y) − A(x + sx, y + sy)| over the part that overlaps, columns x0 … x1
+  function sad(A, B, sx, sy, x0, x1) {
     var s = 0, n = 0; for (var y = Math.max(0, -sy); y < Math.min(18, 18 - sy); y++) for (var x = Math.max(x0, -sx); x < Math.min(x1, 32 - sx); x++) { s += Math.abs(B[y * 32 + x] - A[(y + sy) * 32 + x + sx]); n++; }
     return n ? s / n : 255;
   }
@@ -56,15 +35,15 @@
     ag.drawImage(vid, 0, 0, AW, AH); var d = ag.getImageData(0, 0, AW, AH).data, y = new Uint8Array(AW * AH), H = {}, i, k;
     for (i = 0, k = 0; i < d.length; i += 4, k++) { y[k] = (d[i] * 54 + d[i + 1] * 183 + d[i + 2] * 19) >> 8; var key = (d[i] >> 6) << 4 | (d[i + 1] >> 6) << 2 | (d[i + 2] >> 6), h = H[key] || (H[key] = [0, 0, 0, 0]); h[0]++; h[1] += d[i]; h[2] += d[i + 1]; h[3] += d[i + 2]; }
     var cols = Object.keys(H).map(function (kk) { var h2 = H[kk]; return [h2[0], h2[1] / h2[0], h2[2] / h2[0], h2[3] / h2[0]]; }).sort(function (a, b) { return b[0] - a[0]; }).slice(0, 3).map(function (c) { return [c[1], c[2], c[3], c[0] / (AW * AH)]; });
-    var hist = new Float32Array(64); Object.keys(H).forEach(function (kk) { hist[+kk] = H[kk][0] / (AW * AH); });   // how much of each coarse colour: a pan keeps it, a cut does not
+    var hist = new Float32Array(64); Object.keys(H).forEach(function (kk) { hist[+kk] = H[kk][0] / (AW * AH); });
     var o = { t: t, y: y, h: half(y), hist: hist, cols: cols, diff: 0, dx: 0, dy: 0, zm: 0, res: 0, hd: 0, cut: false, type: 'still', speed: 0 }, p = S[S.length - 1];
     if (p) {
       var s = 0; for (k = 0; k < y.length; k++) s += Math.abs(y[k] - p.y[k]); o.diff = s / y.length;
       for (k = 0; k < 64; k++) o.hd += Math.abs(hist[k] - p.hist[k]);
-      var all = best(p.h, o.h, 0, 32, 6), l = best(p.h, o.h, 0, 12, 4), r = best(p.h, o.h, 20, 32, 4), still = sad(p.h, o.h, 0, 0, 0, 32);   // a shift of up to 6 in 32: a fast pan between two samples
+      var all = best(p.h, o.h, 0, 32, 6), l = best(p.h, o.h, 0, 12, 4), r = best(p.h, o.h, 20, 32, 4), still = sad(p.h, o.h, 0, 0, 0, 32);
       o.res = all.s; o.still = still;
       if (still > 1.2 && all.s < still * .72 && (all.x || all.y)) { o.dx = all.x; o.dy = all.y; }
-      if (still > 1.2 && l.s < still * .8 && r.s < still * .8 && Math.abs(l.x - r.x) >= 2 && Math.abs(all.x) <= 1) o.zm = l.x - r.x;   // the sides part (push in) or close (pull out)
+      if (still > 1.2 && l.s < still * .8 && r.s < still * .8 && Math.abs(l.x - r.x) >= 2 && Math.abs(all.x) <= 1) o.zm = l.x - r.x;
     }
     S.push(o); return o;
   }
@@ -73,8 +52,6 @@
     S.forEach(function (o, i) {
       if (!i) { o.cut = true; o.type = 'start'; return; }
       var med = recent.length ? recent.slice().sort(function (a, b) { return a - b; })[recent.length >> 1] : 2;
-      // a cut: a jump no shift explains (what is left after the best shift is far more than it has been) AND the colours themselves change;
-      // a fast pan can outrun the shift search, but it keeps the scene's colours — so it is not taken for a cut
       o.cut = (o.diff > 16 && o.res > 10 && o.res > 2.6 * Math.max(2, med) && o.hd > .45) || o.hd > 1.25;
       if (o.cut) { o.type = 'cut'; recent = []; return; }
       recent.push(o.res); if (recent.length > 12) recent.shift();
@@ -82,9 +59,9 @@
       o.type = o.zm >= 2 ? 'push in' : o.zm <= -2 ? 'pull out' : (o.dx || o.dy) ? (Math.abs(o.dx) >= Math.abs(o.dy) ? (o.dx > 0 ? 'pan right' : 'pan left') : (o.dy > 0 ? 'tilt down' : 'tilt up')) : o.diff > 5 ? 'move' : 'still';
     });
   }
-  function run() {   // play through once, fast and silent; a sample every `step` seconds of the clip
+  function run() {
     return new Promise(function (done) {
-      S = []; var dur = isFinite(vid.duration) ? vid.duration : 0, step = Math.max(1 / 8, dur / 900), last = -1, lastProg = GJ.now(), ended = false, rate = dur > 30 ? 8 : 4;   // a short clip can afford more samples
+      S = []; var dur = isFinite(vid.duration) ? vid.duration : 0, step = Math.max(1 / 8, dur / 900), last = -1, lastProg = GJ.now(), ended = false, rate = dur > 30 ? 8 : 4;
       function take(t) { if (t - last >= step - 1e-3 || last < 0) { last = t; sample(t); lastProg = GJ.now(); if (dur) bar.style.width = (t / dur * 70).toFixed(1) + '%'; } }
       function fin() { if (ended) return; ended = true; clearInterval(guard); try { vid.pause(); } catch (e) {} done(); }
       var rv = vid.requestVideoFrameCallback ? function loop() { vid.requestVideoFrameCallback(function (n, m) { if (ended) return; take(m.mediaTime); loop(); }); } : function loop() { if (ended) return; if (!vid.paused && vid.readyState >= 2) take(vid.currentTime); requestAnimationFrame(loop); };
@@ -98,14 +75,13 @@
   /* ---------- 2. which frames to keep ---------- */
   function pick() {
     var n = S.length; K = []; shots = []; if (!n) return;
-    var w = S.map(function (o, i) { return i ? Math.min(40, o.diff) / 10 + (o.t - S[i - 1].t) * .15 : 0; });   // change, and a little for time passing (a long still shot still gets a frame now and then)
+    var w = S.map(function (o, i) { return i ? Math.min(40, o.diff) / 10 + (o.t - S[i - 1].t) * .15 : 0; });
     function keep(th) { var k = [], acc = 0; for (var i = 0; i < n; i++) { if (S[i].cut) { k.push(i); acc = 0; } else { acc += w[i]; if (acc >= th) { k.push(i); acc = 0; } } } return k; }
     var want = clamp(TARGET[density], 12, 48), lo = .01, hi = 400, k = keep(1);
     for (var it = 0; it < 26; it++) { var mid = Math.sqrt(lo * hi); k = keep(mid); if (k.length > want) lo = mid; else hi = mid; }
     k = keep(hi); if (k.length < 12) k = keep(lo); if (k.length > 48) { var cuts = k.filter(function (i) { return S[i].cut; }), rest = k.filter(function (i) { return !S[i].cut; }), room = Math.max(0, 48 - cuts.length); k = cuts.slice(0, 48).concat(rest.filter(function (x, j) { return Math.floor(j * room / rest.length) !== Math.floor((j - 1) * room / rest.length); })).sort(function (a, b) { return a - b; }); }
     var sh = 0; K = k.map(function (i) { if (S[i].cut) sh++; return { i: i, t: S[i].t, shot: sh, cut: S[i].cut && i > 0, s: S[i], img: null }; });
-    // the move shown under a kept frame is the strongest one between it and the next kept frame
-    K.forEach(function (f, j) { var end = j + 1 < K.length ? K[j + 1].i : n - 1, bestS = null; for (var i = f.i + 1; i <= end && i < n; i++) if (!S[i].cut && (!bestS || S[i].speed > bestS.speed)) bestS = S[i];   // up to and including the next kept frame, unless that is a cut
+    K.forEach(function (f, j) { var end = j + 1 < K.length ? K[j + 1].i : n - 1, bestS = null; for (var i = f.i + 1; i <= end && i < n; i++) if (!S[i].cut && (!bestS || S[i].speed > bestS.speed)) bestS = S[i];
       f.move = bestS && bestS.type !== 'still' ? { type: bestS.type, speed: bestS.speed, dx: bestS.dx, dy: bestS.dy, zoom: bestS.zm } : { type: 'still', speed: 0, dx: 0, dy: 0, zoom: 0 }; });
     for (var s2 = 1; s2 <= sh; s2++) { var fs = K.filter(function (f) { return f.shot === s2; }), acc = {}; fs.forEach(function (f) { f.s.cols.forEach(function (c) { var key = (c[0] >> 5) + ',' + (c[1] >> 5) + ',' + (c[2] >> 5), a = acc[key] || (acc[key] = [0, 0, 0, 0]); a[0] += c[3]; a[1] += c[0] * c[3]; a[2] += c[1] * c[3]; a[3] += c[2] * c[3]; }); });
       var cols = Object.keys(acc).map(function (kk) { var a = acc[kk]; return [a[1] / a[0], a[2] / a[0], a[3] / a[0], a[0]]; }).sort(function (a, b) { return b[3] - a[3]; }).slice(0, 5);
@@ -219,14 +195,14 @@
   }
   /* ---------- screenshots: the stills are the frames ---------- */
   function decode(f) { return new Promise(function (ok, no) { var im = new Image(), u = URL.createObjectURL(f); im.onload = function () { ok({ im: im, f: f, u: u }); }; im.onerror = function () { URL.revokeObjectURL(u); no(new Error('picture')); }; im.src = u; }); }
-  function colsOf(c) {   // a still's own colours, in the same shape the clip's samples have
+  function colsOf(c) {
     var t = document.createElement('canvas'); t.width = t.height = 16; var x = t.getContext('2d'); x.drawImage(c, 0, 0, 16, 16); var d = x.getImageData(0, 0, 16, 16).data, acc = {};
     for (var i = 0; i < d.length; i += 4) { var k = (d[i] >> 5) + ',' + (d[i + 1] >> 5) + ',' + (d[i + 2] >> 5), a = acc[k] || (acc[k] = [0, 0, 0, 0]); a[0]++; a[1] += d[i]; a[2] += d[i + 1]; a[3] += d[i + 2]; }
     return Object.keys(acc).map(function (k) { var a = acc[k]; return [a[1] / a[0], a[2] / a[0], a[3] / a[0], a[0]]; }).sort(function (a, b) { return b[3] - a[3]; }).slice(0, 5);
   }
   function loadStills(files) {
     var list = [].slice.call(files || []).filter(function (f) { return f && (!f.type || f.type.indexOf('image') === 0); }); if (!list.length) return false;
-    var ts = list.map(function (f) { return f.lastModified || 0; }), timed = Math.max.apply(null, ts) - Math.min.apply(null, ts) > 3000;   // a phone's picker often stamps them all "now": then the names carry the order
+    var ts = list.map(function (f) { return f.lastModified || 0; }), timed = Math.max.apply(null, ts) - Math.min.apply(null, ts) > 3000;
     list.sort(function (a, b) { return (timed ? (a.lastModified || 0) - (b.lastModified || 0) : 0) || String(a.name).localeCompare(String(b.name), undefined, { numeric: true }); });
     pics.forEach(function (p) { if (p.u) try { URL.revokeObjectURL(p.u); } catch (e) {} }); pics = list.slice(0, 48).map(function (f) { return { f: f, timed: timed }; });
     stills = true; file = pics[0].f; name = pics.length + (pics.length === 1 ? ' screenshot' : ' screenshots'); result = null; S = []; K = []; el.dataset.done = ''; sheetBox.innerHTML = ''; bar.style.width = '0'; prev.hidden = true;
