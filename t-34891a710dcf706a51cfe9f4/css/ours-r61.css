@@ -1,0 +1,100 @@
+/* r6.1 (20 Nov) · Messages tools in familiar iOS patterns, drawn in oz. Gill: "familiar patterns for familiar tasks;
+   the oz features should feel like a natural fit." Hold a bubble → a small floating menu; swipe a chat → pin, mute, hide, lock;
+   hold Send → send later; + → a compact row of hairline icons; hold the mic → record. Actions are plain text, never underlined:
+   an underline means a real link. Media pixels untouched (Full red's whole-screen rule aside). Loaded after css/ours-tools.css. */
+
+/* ---------- hold a bubble: the held bubble stays lit, the rest dims, a small menu floats by it ---------- */
+#msg-ours .mg-thread.mo-holding .im-b:not(.mo-sel) { opacity: .28; transition: opacity .18s; }
+#msg-ours .im-b.mo-sel { position: relative; z-index: 31; }
+#msg-ours .mg-thread { position: relative; }
+#msg-ours .im-ops.mo-menu {
+  position: absolute; z-index: 32; width: 232px; margin: 0; padding: 4px 0; display: block;
+  background: rgba(22, 16, 20, .94); border: 1px solid var(--im-line); border-radius: 14px;
+  -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px); box-shadow: 0 10px 34px rgba(0,0,0,.45);
+}
+#msg-ours .im-ops.mo-menu button {
+  display: flex; align-items: center; justify-content: space-between; width: 100%; min-height: 44px; padding: 0 14px;
+  background: none !important; border: 0; border-radius: 0; font: 300 15px/1.2 Poppins, sans-serif; color: var(--im-soft); text-align: left;
+}
+#msg-ours .im-ops.mo-menu button + button { border-top: 1px solid var(--im-line); }
+#msg-ours .im-ops.mo-menu button small { display: inline; margin-left: 8px; font: 300 11px Poppins, sans-serif; color: var(--im-meta); }
+#msg-ours .im-ops.mo-menu svg { width: 19px; height: 19px; flex: none; opacity: .85; }
+#msg-ours .im-ops.mo-menu button:active { background: rgba(255,255,255,.06) !important; }
+#msg-ours .im-tapbar { z-index: 33; }
+html.day #msg-ours .im-ops.mo-menu { background: rgba(250, 246, 238, .96); }
+
+/* ---------- swipe a chat: icons with a small label; lock is the last one ---------- */
+#msg-ours .mg-swipe .mg-actions button, #msg-ours .mg-swipe .mg-actions button.pin, #msg-ours .mg-swipe .mg-actions button.mute,
+#msg-ours .mg-swipe .mg-actions button.hide, #msg-ours .mg-swipe .mg-actions button.lock {
+  width: 64px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+  background: rgba(255,255,255,.035); color: var(--im-soft); border-left: 1px solid var(--im-line);
+  font: 300 11px/1 Poppins, sans-serif; letter-spacing: .02em;
+}
+#msg-ours .mg-swipe .mg-actions svg { width: 21px; height: 21px; }
+#msg-ours .mg-swipe .mg-actions button.hide { color: var(--depth-near, #E1626B); }
+
+/* ---------- the + row: hairline icons, labels under ---------- */
+#msg-ours .im-drawer.mo-icons {
+  display: flex; justify-content: space-around; gap: 0; padding: 12px 8px calc(12px + env(safe-area-inset-bottom, 0px));
+  border-top: 1px solid var(--im-line);
+}
+#msg-ours .im-drawer.mo-icons button {
+  display: flex; flex-direction: column; align-items: center; gap: 6px; min-width: 56px; min-height: 56px; padding: 4px 0;
+  background: none !important; border: 0; color: var(--im-soft); font: 300 11px/1.2 Poppins, sans-serif;
+}
+#msg-ours .im-drawer.mo-icons svg { width: 26px; height: 26px; opacity: .9; }
+#msg-ours .im-drawer.mo-icons span { color: var(--im-meta); }
+
+/* ---------- hold Send: a small popover with three times ---------- */
+#msg-ours .mo-pop {
+  position: absolute; z-index: 34; right: 10px; bottom: calc(64px + env(safe-area-inset-bottom, 0px)); width: 210px; padding: 4px 0;
+  background: rgba(22, 16, 20, .95); border: 1px solid var(--im-line); border-radius: 14px;
+  -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px); box-shadow: 0 10px 34px rgba(0,0,0,.45);
+}
+#msg-ours .mo-pop .mo-ph { display: flex; align-items: center; gap: 8px; margin: 0; padding: 8px 14px 6px; font: 400 11px/1.2 Poppins, sans-serif; letter-spacing: .08em; color: var(--im-meta); }
+#msg-ours .mo-pop .mo-ph svg { width: 15px; height: 15px; }
+#msg-ours .mo-pop button { display: block; width: 100%; min-height: 44px; padding: 0 14px; text-align: left; background: none !important; border: 0; border-top: 1px solid var(--im-line); border-radius: 0; font: 300 15px/44px Poppins, sans-serif; color: var(--im-soft); }
+html.day #msg-ours .mo-pop { background: rgba(250, 246, 238, .97); }
+
+/* ---------- hold the mic: a quiet recording strip over the composer ---------- */
+#msg-ours .im-comp.mo-recording textarea { visibility: hidden; }
+#msg-ours .mo-recstrip { position: absolute; left: 52px; right: 56px; top: 50%; transform: translateY(-50%); margin: 0; display: flex; align-items: center; gap: 8px; pointer-events: none;
+  font: 300 14px/1 Poppins, sans-serif; color: var(--im-soft); }
+#msg-ours .mo-recstrip i { width: 7px; height: 7px; border-radius: 50%; background: var(--depth-near, #E1626B); }
+#msg-ours .mo-recstrip span { margin-left: auto; font-size: 11px; color: var(--im-meta); white-space: nowrap; }
+#msg-ours .im-comp.mo-rec-cancel .mo-recstrip { color: var(--im-meta); }
+#msg-ours .im-comp.mo-recording .im-mic { color: var(--depth-near, #E1626B); }
+
+/* ---------- the info sheet: call and FaceTime icons, then three quiet rows; the rest folds into "about this chat" ---------- */
+#msg-ours .mo-calls { display: flex; justify-content: center; gap: 14px; margin: 6px 0 14px; }
+#msg-ours .mo-calls button { width: 84px; min-height: 58px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px;
+  background: rgba(255,255,255,.045) !important; border: 1px solid var(--im-line); border-radius: 12px; color: var(--im-soft); font: 300 11px/1 Poppins, sans-serif; }
+#msg-ours .mo-calls svg { width: 22px; height: 22px; }
+#msg-ours .mo-chat { margin: 0 14px; border-top: 1px solid var(--im-line); }
+#msg-ours .mo-chat .mo-r { display: flex; align-items: center; gap: 10px; width: 100%; min-height: 50px; padding: 0 4px; background: none !important; border: 0; border-bottom: 1px solid var(--im-line); border-radius: 0; text-align: left; color: var(--im-soft); }
+#msg-ours .mo-chat .mo-r b { flex: 1; font: 300 15px/1.2 Poppins, sans-serif; }
+#msg-ours .mo-chat .mo-val { font: 300 13px/1.2 Poppins, sans-serif; color: var(--im-meta); }
+#msg-ours .mo-chat .mo-r svg { width: 16px; height: 16px; opacity: .55; }
+#msg-ours .mo-sw { width: 38px; height: 22px; border-radius: 11px; border: 1px solid var(--im-line); background: rgba(255,255,255,.06); position: relative; transition: background .18s; }
+#msg-ours .mo-sw::after { content: ""; position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; border-radius: 50%; background: var(--im-soft); transition: transform .18s; }
+#msg-ours .mo-r[aria-checked="true"] .mo-sw { background: var(--im-sent); border-color: var(--im-sent-edge); }
+#msg-ours .mo-r[aria-checked="true"] .mo-sw::after { transform: translateX(16px); }
+#msg-ours .mo-about { margin: 18px 14px 0; }
+#msg-ours .mo-about summary { list-style: none; cursor: pointer; min-height: 40px; line-height: 40px; font: 300 13px/40px Poppins, sans-serif; color: var(--im-meta); text-align: center; }
+#msg-ours .mo-about summary::-webkit-details-marker { display: none; }
+
+/* ---------- no underlines for actions anywhere in this skin: sheets read as plain stacked choices ---------- */
+#msg-ours .mo-opts { display: flex; flex-direction: column; gap: 0; margin: 4px 0 0; border-top: 1px solid var(--im-line); }
+#msg-ours .mo-sheet u, #msg-ours .mo-sheet a, #msg-ours .mg-info u[data-mo] {
+  display: block; min-height: 44px; line-height: 44px; text-decoration: none; border-bottom: 1px solid var(--im-line); color: var(--im-soft);
+}
+#msg-ours .mo-sheet u[data-mo="x"], #msg-ours .mo-sheet u[data-mo="vcancel"] { color: var(--im-meta); border-bottom: 0; }
+#msg-ours .mo-hidden { text-decoration: none; }
+#msg-ours .mo-voice u { text-decoration: none; }
+#msg-ours .mo-voice u::before { content: ""; }
+
+/* ---------- the chat list breathes like Messages: the typography reset had zeroed the row padding ---------- */
+#msg-ours button.mg-t { padding: 11px 16px; }
+#msg-ours .mg-swipe + .mg-swipe .mg-t::before { content: ""; position: absolute; top: 0; left: 74px; right: 0; border-top: 1px solid var(--im-line); }
+#msg-ours .im-comp.mo-recording .im-field, #msg-ours .im-comp.mo-recording .im-emoji, #msg-ours .im-comp.mo-recording .im-plus { visibility: hidden; }
+#msg-ours .mo-recstrip { left: 16px; right: 60px; }
