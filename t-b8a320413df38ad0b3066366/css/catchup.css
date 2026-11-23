@@ -1,0 +1,3 @@
+/* catch-up (23 Nov 2026) · small join-up fixes across rooms */
+/* Messages in day mode: an unread chat's last line was light grey on the cream list; it reads now */
+html.day #msg .mz-row.unread .mz-mid span { color: #5d4a4e; }
