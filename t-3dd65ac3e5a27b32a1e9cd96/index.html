@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="googlebot" content="noindex, nofollow, noarchive">
+<meta name="theme-color" content="#03050b">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>grant recovery</title>
+<style>
+  :root { --bg:#03050b; --ink:#e8e4dc; --dim:rgba(232,228,220,.72); --meta:rgba(232,228,220,.52); --hair:rgba(232,228,220,.14); --soft:rgba(232,228,220,.06); }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; min-height: 100%; background: var(--bg); color: var(--ink); font: 300 16px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+  body { padding: calc(18px + env(safe-area-inset-top)) 18px calc(28px + env(safe-area-inset-bottom)); }
+  h1 { font-weight: 400; font-size: 22px; letter-spacing: .02em; margin: 0 0 8px; }
+  .lead, .sub { color: var(--dim); font-size: 14px; margin: 0 0 12px; }
+  .warn { margin: 0 0 18px; padding: 10px 12px; border: 1px solid var(--hair); border-radius: 12px; color: var(--dim); font-size: 13px; }
+  .tools { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 22px; }
+  button { min-height: 44px; padding: 0 14px; border-radius: 22px; border: 1px solid var(--hair); background: none; color: var(--ink); font: 400 14px/1 -apple-system, BlinkMacSystemFont, sans-serif; }
+  button.primary { border-color: var(--ink); }
+  .ok { color: var(--dim); font-size: 13px; min-height: 18px; margin: 0 0 16px; }
+  .hit { margin: 0 0 22px; padding: 14px 14px 10px; border: 1px solid var(--hair); border-radius: 14px; background: var(--soft); }
+  .hit h2 { margin: 0 0 6px; font-size: 13px; font-weight: 400; letter-spacing: .08em; text-transform: lowercase; }
+  .hit .meta { color: var(--meta); font-size: 12px; margin: 0 0 10px; word-break: break-all; }
+  .sec { margin: 0 0 14px; }
+  .sec h3 { margin: 0 0 4px; font-size: 11px; font-weight: 400; letter-spacing: .18em; text-transform: uppercase; color: var(--meta); }
+  .sec pre, .raw { white-space: pre-wrap; word-break: break-word; font: 300 15px/1.5 -apple-system, BlinkMacSystemFont, sans-serif; margin: 0; color: var(--ink); }
+  .empty { color: var(--meta); font-size: 14px; }
+  #dump { display: none; }
+</style>
+</head>
+<body>
+  <h1>grant recovery</h1>
+  <p class="lead">A read-only look at writing already saved on this phone. Nothing here is changed or deleted.</p>
+  <p class="warn">This page only reads. It does not write to storage, and it does not overwrite any draft.</p>
+  <div class="tools">
+    <button type="button" class="primary" id="copyall">Copy all</button>
+    <button type="button" class="primary" id="bundle">Send-to-agent bundle</button>
+    <button type="button" id="rescan">Scan again</button>
+  </div>
+  <p class="ok" id="status" role="status"></p>
+  <div id="out"></div>
+  <textarea id="dump" readonly aria-hidden="true"></textarea>
+<script>
+(function () {
+  'use strict';
+  /* Read raw localStorage for this origin. Do not use a preview prefix, and never set or remove a key. */
+  var rawGet = Storage.prototype.getItem;
+  var rawKey = Storage.prototype.key;
+  var rawLen = Object.getOwnPropertyDescriptor(Storage.prototype, 'length');
+  function lenOf(st) { return rawLen && rawLen.get ? rawLen.get.call(st) : st.length; }
+  function allKeys() {
+    var out = [], n = 0, i, k;
+    try { n = lenOf(localStorage); } catch (e) { return out; }
+    for (i = 0; i < n; i++) {
+      try { k = rawKey.call(localStorage, i); if (k) out.push(k); } catch (e) {}
+    }
+    return out;
+  }
+  function getRaw(k) {
+    try { return rawGet.call(localStorage, k); } catch (e) { return null; }
+    }
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[c]; }); }
+  function looksGrant(k, v) {
+    k = String(k || '');
+    v = String(v || '');
+    if (/grant|cks|oz-grant|draft|drift/i.test(k)) return true;
+    if (/gj-settings/.test(k) && /gj-grant|grant/i.test(v)) return true;
+    if (/GRANT ROOM BUNDLE|Permanent Impermanence|describe your project/i.test(v)) return true;
+    return false;
+  }
+  function parseMaybe(s) {
+    try { return JSON.parse(s); } catch (e) { return null; }
+  }
+  function sectionPairs(obj) {
+    var pairs = [], i, s, id, text, name;
+    if (!obj) return pairs;
+    if (Array.isArray(obj.sections)) {
+      for (i = 0; i < obj.sections.length; i++) {
+        s = obj.sections[i] || {};
+        text = s.text == null ? '' : String(s.text);
+        if (text.trim()) pairs.push({ id: s.id || s.name || ('s' + i), name: s.name || s.short || s.id || '', text: text });
+      }
+    } else if (obj.sections && typeof obj.sections === 'object') {
+      for (id in obj.sections) {
+        if (!Object.prototype.hasOwnProperty.call(obj.sections, id)) continue;
+        s = obj.sections[id];
+        text = (s && typeof s === 'object') ? (s.text == null ? '' : String(s.text)) : String(s == null ? '' : s);
+        name = (s && s.name) || id;
+        if (String(text).trim()) pairs.push({ id: id, name: name, text: text });
+      }
+    }
+    return pairs;
+  }
+  function versionsOf(obj) {
+    var out = [], id, list, i, v;
+    if (!obj || !obj.versions || typeof obj.versions !== 'object') return out;
+    for (id in obj.versions) {
+      if (!Object.prototype.hasOwnProperty.call(obj.versions, id)) continue;
+      list = obj.versions[id] || [];
+      for (i = 0; i < list.length; i++) {
+        v = list[i] || {};
+        if (v.text && String(v.text).trim()) out.push({ id: id, label: v.label || 'kept', t: v.t, text: String(v.text) });
+      }
+    }
+    return out;
+  }
+  function driftOf(obj) {
+    var out = [], i, d;
+    if (!obj) return out;
+    if (obj.stream && String(obj.stream.text || '').trim()) out.push({ id: 'stream', text: String(obj.stream.text) });
+    if (Array.isArray(obj.drift)) {
+      for (i = 0; i < obj.drift.length; i++) {
+        d = obj.drift[i] || {};
+        if (d.text && String(d.text).trim()) out.push({ id: d.id || ('d' + i), text: String(d.text), saved: d.saved || '' });
+      }
+    }
+    return out;
+  }
+  function folderOf(k) {
+    var m = String(k).match(/^(t-[0-9a-f]{24}):/);
+    return m ? m[1] : (String(k).indexOf('t-') === 0 ? 'prefixed' : 'this origin, unprefixed');
+  }
+  function unpack(key, raw) {
+    var found = [], j, inner, val, name;
+    var root = parseMaybe(raw);
+    if (root && typeof root === 'object' && !Array.isArray(root) && (root['gj-grant'] || /gj-settings/.test(key))) {
+      for (name in root) {
+        if (!Object.prototype.hasOwnProperty.call(root, name)) continue;
+        val = root[name];
+        if (typeof val === 'string' && (name.indexOf('grant') >= 0 || /GRANT ROOM BUNDLE|"sections"/.test(val))) {
+          inner = parseMaybe(val);
+          found.push({ source: key + ' → ' + name, data: inner || val, raw: typeof val === 'string' ? val : JSON.stringify(val) });
+        }
+      }
+      if (!found.length && root.sections) found.push({ source: key, data: root, raw: raw });
+    } else if (root && (root.sections || root.stream || root.drift || root.v === 1)) {
+      found.push({ source: key, data: root, raw: raw });
+    } else if (raw && looksGrant(key, raw)) {
+      found.push({ source: key, data: root || raw, raw: raw });
+    }
+    return found;
+  }
+  var hits = [];
+  function scan() {
+    hits = [];
+    var keys = [], i, k, raw, parts, p;
+    try { keys = allKeys(); } catch (e) { keys = []; }
+    for (i = 0; i < keys.length; i++) {
+      k = keys[i];
+      raw = getRaw(k);
+      if (raw == null || raw === '') continue;
+      parts = unpack(k, raw);
+      if (!parts.length && looksGrant(k, raw)) parts = [{ source: k, data: parseMaybe(raw) || raw, raw: raw }];
+      for (p = 0; p < parts.length; p++) hits.push({ key: k, folder: folderOf(k), bytes: raw.length, part: parts[p] });
+    }
+    /* also record other keys so we can say what was scanned, without dumping secrets */
+    return { keys: keys, hits: hits };
+  }
+  function render() {
+    var res = scan();
+    var out = document.getElementById('out');
+    var st = document.getElementById('status');
+    var html = '';
+    var i, h, part, data, secs, vers, drift, j, s, any = false, plain = [], bundleSecs = {};
+    st.textContent = 'Scanned ' + res.keys.length + ' saved item' + (res.keys.length === 1 ? '' : 's') + ' on this origin. ' + (res.hits.length ? res.hits.length + ' look like grant writing.' : 'No grant-related writing was found in this browser.');
+    if (!res.hits.length) {
+      html = '<p class="empty">Nothing grant-related is saved in this browser for ' + esc(location.origin) + '. If the writing was on another phone, or in a private tab that has since been closed, it will not be here.</p>';
+      out.innerHTML = html;
+      return;
+    }
+    for (i = 0; i < res.hits.length; i++) {
+      h = res.hits[i];
+      part = h.part;
+      data = part.data;
+      secs = typeof data === 'object' ? sectionPairs(data) : [];
+      vers = typeof data === 'object' ? versionsOf(data) : [];
+      drift = typeof data === 'object' ? driftOf(data) : [];
+      html += '<article class="hit"><h2>' + esc(part.source) + '</h2>';
+      html += '<p class="meta">' + esc(h.folder) + ' · ' + h.bytes.toLocaleString('en-CA') + ' characters stored</p>';
+      if (secs.length) {
+        any = true;
+        for (j = 0; j < secs.length; j++) {
+          s = secs[j];
+          html += '<div class="sec"><h3>' + esc(s.name || s.id) + ' · ' + s.text.length.toLocaleString('en-CA') + '</h3><pre>' + esc(s.text) + '</pre></div>';
+          plain.push('## ' + (s.name || s.id), s.text, '');
+          if (!bundleSecs[s.id] || (bundleSecs[s.id].text || '').length < s.text.length) bundleSecs[s.id] = s;
+        }
+      }
+      if (drift.length) {
+        any = true;
+        for (j = 0; j < drift.length; j++) {
+          html += '<div class="sec"><h3>free writing · ' + esc(drift[j].id) + '</h3><pre>' + esc(drift[j].text) + '</pre></div>';
+          plain.push('## free writing ' + drift[j].id, drift[j].text, '');
+        }
+      }
+      if (vers.length) {
+        any = true;
+        for (j = 0; j < vers.length; j++) {
+          html += '<div class="sec"><h3>earlier version · ' + esc(vers[j].id) + ' · ' + esc(vers[j].label) + '</h3><pre>' + esc(vers[j].text) + '</pre></div>';
+          plain.push('## earlier version ' + vers[j].id + ' (' + vers[j].label + ')', vers[j].text, '');
+        }
+      }
+      if (!secs.length && !drift.length && !vers.length) {
+        var excerpt = String(part.raw || '').slice(0, 4000);
+        if (excerpt.trim()) {
+          any = true;
+          html += '<div class="sec"><h3>saved text</h3><pre>' + esc(excerpt) + (String(part.raw).length > 4000 ? '\n…' : '') + '</pre></div>';
+          plain.push('## ' + part.source, String(part.raw), '');
+        }
+      }
+      html += '</article>';
+    }
+    out.innerHTML = html;
+    window.__recoverPlain = plain.join('\n');
+    window.__recoverBundle = makeBundle(bundleSecs, res.hits);
+  }
+  function makeBundle(secs, allHits) {
+    var lines = ['GRANT ROOM BUNDLE', 'version: 2', 'kind: recovery', 'title: recovered from this phone', 'saved: ' + new Date().toISOString(), ''], id, s, map, drift, i, h, data, d;
+    map = { name: 'title', summary: 'summary', describe: 'describe', why: 'why', impact: 'impact', capacity: 'capacity', timeline: 'timeline', tk: 'protocol', protocol: 'protocol', collab: 'collaborators', collaborators: 'collaborators', budget: 'budget', support: 'support', title: 'title' };
+    for (id in secs) {
+      if (!Object.prototype.hasOwnProperty.call(secs, id)) continue;
+      s = secs[id];
+      lines.push('=== SECTION ' + (map[id] || id) + ' | ' + (s.name || id) + ' | status=recovered | chars=' + s.text.length + ' | limit=none ===');
+      lines.push(s.text);
+      lines.push('=== END SECTION ' + (map[id] || id) + ' ===');
+      lines.push('');
+    }
+    /* include free writing if present */
+    for (i = 0; i < allHits.length; i++) {
+      h = allHits[i]; data = h.part && h.part.data;
+      if (!data || typeof data !== 'object') continue;
+      if (data.stream && String(data.stream.text || '').trim()) {
+        lines.push('=== DRIFT stream | recovered ===');
+        lines.push(String(data.stream.text));
+        lines.push('=== END DRIFT stream ===');
+        lines.push('');
+      }
+      if (Array.isArray(data.drift)) {
+        for (d = 0; d < data.drift.length; d++) {
+          if (!data.drift[d] || !data.drift[d].text) continue;
+          lines.push('=== DRIFT ' + (data.drift[d].id || d) + ' | recovered ===');
+          lines.push(String(data.drift[d].text));
+          lines.push('=== END DRIFT ' + (data.drift[d].id || d) + ' ===');
+          lines.push('');
+        }
+      }
+    }
+    lines.push('=== NOTE ===');
+    lines.push('Recovered read-only from localStorage on this phone. Nothing was changed.');
+    lines.push('=== END NOTE ===');
+    lines.push('');
+    lines.push('=== END BUNDLE ===');
+    return lines.join('\n');
+  }
+  function copyText(text, okMsg) {
+    var ta, ok = false;
+    function done(yes) { document.getElementById('status').textContent = yes ? okMsg : 'copy did not work — select the text and copy'; }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(text).then(function () { done(true); }).catch(function () { done(fallback(text)); });
+    }
+    done(fallback(text));
+    function fallback(t) {
+      ta = document.getElementById('dump'); ta.value = t; ta.style.display = 'block'; ta.focus(); ta.select();
+      try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+      if (ok) ta.style.display = 'none';
+      return ok;
+    }
+  }
+  document.getElementById('copyall').onclick = function () {
+    copyText(window.__recoverPlain || '', 'all recovered writing copied');
+  };
+  document.getElementById('bundle').onclick = function () {
+    copyText(window.__recoverBundle || '', 'bundle copied — paste it into our chat');
+  };
+  document.getElementById('rescan').onclick = function () { render(); };
+  render();
+})();
+</script>
+</body>
+</html>
