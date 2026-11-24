@@ -1,0 +1,66 @@
+/* oz Notes (catch-up, 23 Nov): the familiar Notes layout in the app's lights — search, folders, the list with its
+   swipe actions, the pencil; and a full typing area. The Mark, the name, the small time and the dot ride above in the chrome. */
+#notes { position: fixed; z-index: 62; left: 0; right: 0; top: calc(var(--top, 8px) + 52px); bottom: 0; display: flex; flex-direction: column;
+  background: rgba(5,9,18,.94); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); border-top: 1px solid var(--hair);
+  opacity: 0; transform: translateY(14px); transition: opacity .3s ease, transform .45s cubic-bezier(.2,.85,.25,1); }
+#notes.in { opacity: 1; transform: none; } #notes[hidden] { display: none; }
+html.red #notes { background: rgba(12,3,5,.95); } html.day #notes { background: rgba(52,70,90,.94); }
+html.noting #chrome { z-index: 66; }
+#notes .nt-list-v, #notes .nt-edit-v { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+#notes [hidden] { display: none !important; }
+#notes .nt-find { padding: 12px 16px 4px; }
+#notes .nt-q { width: 100%; height: 40px; padding: 0 14px; border-radius: 12px; border: 1px solid var(--hair); background: rgba(255,255,255,.04); color: var(--ink); font: 300 16px/1 Poppins, sans-serif; outline: none; -webkit-appearance: none; appearance: none; }
+#notes .nt-q::placeholder { color: var(--meta); }
+#notes .nt-folders { display: flex; gap: 4px; overflow-x: auto; padding: 4px 12px; scrollbar-width: none; }
+#notes .nt-folders::-webkit-scrollbar { display: none; }
+#notes .nt-folders button { flex: none; min-height: 44px; padding: 0 10px; font-size: 13px; color: var(--meta); letter-spacing: .02em; }
+#notes .nt-folders button.on { color: var(--ink); box-shadow: inset 0 -1px 0 var(--ink); }
+#notes .nt-rows { flex: 1; overflow-y: auto; overscroll-behavior: contain; touch-action: pan-y; padding: 0 0 12px; }
+#notes .nt-row { position: relative; overflow: hidden; border-bottom: 1px solid var(--hair); margin: 0 16px; }
+#notes .nt-acts { position: absolute; right: 0; top: 0; bottom: 0; display: flex; }
+#notes .nt-acts button { width: 64px; font-size: 12px; letter-spacing: .06em; color: var(--ink); background: rgba(255,255,255,.06); }
+#notes .nt-acts button[data-act=del] { background: rgba(255,68,87,.22); }
+#notes .nt-open { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 3px; width: 100%; min-height: 64px; padding: 10px 0; text-align: left; background: inherit;
+  color: var(--ink); transition: transform .28s cubic-bezier(.2,.7,.2,1); touch-action: pan-y; }
+#notes .nt-row .nt-open { background: rgba(5,9,18,1); } html.red #notes .nt-row .nt-open { background: rgb(12,3,5); } html.day #notes .nt-row .nt-open { background: rgb(52,70,90); }
+#notes .nt-open b { font-weight: 300; font-size: 16px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+#notes .nt-open b i { font-style: normal; color: var(--meta); }
+#notes .nt-open span { font-size: 13px; color: var(--meta); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+#notes .nt-open em { font-style: normal; color: var(--dim); margin-right: 6px; }
+#notes .nt-none { margin: 24px 16px; font-size: 13px; color: var(--meta); }
+#notes .nt-foot { display: flex; align-items: center; justify-content: center; position: relative; min-height: 52px; border-top: 1px solid var(--hair); padding-bottom: env(safe-area-inset-bottom, 0px); }
+#notes .nt-count { font-size: 11px; letter-spacing: .12em; color: var(--meta); }
+#notes .nt-new { position: absolute; right: 10px; top: 4px; width: 44px; height: 44px; display: grid; place-items: center; color: var(--ink); }
+#notes .nt-new svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 1.3; stroke-linejoin: round; stroke-linecap: round; }
+#notes .nt-bar { display: flex; align-items: center; min-height: 48px; padding: 0 6px; }
+#notes .nt-back { min-height: 44px; padding: 0 10px; color: var(--ink); font-size: 15px; } #notes .nt-back span { font-size: 15px; }
+#notes .nt-when { flex: 1; text-align: center; font-size: 11px; letter-spacing: .08em; color: var(--meta); }
+#notes .nt-done { min-height: 44px; padding: 0 12px; font-size: 15px; color: var(--ink); }
+#notes .nt-text { flex: 1; margin: 0; padding: 6px 18px 24px; background: transparent; border: 0; outline: 0; resize: none; color: var(--ink); font: 300 18px/1.55 Poppins, sans-serif;
+  user-select: text; -webkit-user-select: text; touch-action: pan-y; }
+#notes .nt-text::placeholder { color: var(--meta); }
+#notes .nt-sheet { position: absolute; left: 0; right: 0; bottom: 0; z-index: 3; padding: 10px 16px calc(18px + env(safe-area-inset-bottom, 0px)); background: rgb(8,6,10); border-top: 1px solid var(--hair);
+  transform: translateY(100%); transition: transform .32s cubic-bezier(.2,.7,.2,1); }
+html.red #notes .nt-sheet { background: rgb(16,4,6); } html.day #notes .nt-sheet { background: rgb(46,62,80); }
+#notes .nt-sheet.in { transform: none; }
+#notes .nt-sheet h3 { margin: 8px 0; font-size: 10px; font-weight: 400; letter-spacing: .24em; text-transform: uppercase; color: var(--meta); }
+#notes .nt-wide { display: block; width: 100%; min-height: 48px; margin: 8px 0 0; padding: 0 14px; border-radius: 12px; border: 1px solid var(--hair); color: var(--ink); font-size: 15px; text-align: left; }
+#notes .nt-wide.on { border-color: var(--meta); } #notes .nt-wide.nt-soft { border-color: transparent; color: var(--meta); }
+#notes .nt-fin { width: 100%; height: 44px; padding: 0 12px; border-radius: 10px; border: 1px solid var(--hair); background: rgba(255,255,255,.04); color: var(--ink); font: 300 16px/1 Poppins, sans-serif; outline: none; }
+/* the same quiet as Messages: the free moon, the leftover dial slivers and the focus ring step aside for typing */
+html.noting #moonfree, html.noting .gdial, html.noting #ozfocus, html.noting #mark-tip { opacity: 0 !important; pointer-events: none !important; }
+/* red mode: the room's own ink goes red, like every other room */
+html.red #notes { --ink: var(--red-ink); --dim: rgba(255,68,87,.82); --meta: rgba(255,68,87,.58); --hair: var(--red-hair); }
+html.red #notes input { color: var(--red-ink); }
+html.noting .env-spark, html.noting #env-spark { opacity: 0 !important; pointer-events: none !important; }   /* the environment spark would sit on the room's own back and search */
+
+/* 24 Nov · the date groups, the editor's checklist and share, recently deleted */
+#notes .nt-g { margin: 18px 16px 2px; font: 400 11px/1 Poppins, sans-serif; letter-spacing: .16em; text-transform: uppercase; color: var(--meta); }
+#notes .nt-rows > .nt-g:first-child { margin-top: 8px; }
+#notes .nt-tool { width: 44px; height: 44px; display: grid; place-items: center; color: var(--ink); flex: none; }
+#notes .nt-tool svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.3; stroke-linecap: round; stroke-linejoin: round; }
+#notes.nt-ro .nt-tool { display: none; }
+#notes.nt-ro .nt-text { color: var(--meta); }
+#notes .nt-row.nt-gone .nt-open b { color: var(--dim); }
+#notes .nt-acts button[data-act=kill] { background: rgba(255,68,87,.22); }
+#notes .nt-new[hidden] { display: none; }

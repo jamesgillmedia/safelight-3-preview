@@ -1,0 +1,104 @@
+/* grant (Grant room, 24 Nov 2026: the later brief) · a room on the oz layer: the Mark, the room's name, the time, the
+   red-mode dot and F3 ride above it. A solid surface, no sky through it. A small header (open it for the scoring, the
+   protocol and the current direction), the path (gather · edit pass · final read), the sections in form order, then one
+   big writing box. Reference lives in a drawer from the bottom. */
+#grant { position: fixed; z-index: 62; left: 0; right: 0; top: calc(var(--top, 8px) + 52px); bottom: 0; display: flex; flex-direction: column; color: var(--ink);
+  background: #050912; border-top: 1px solid var(--hair); opacity: 0; transform: translateY(14px); transition: opacity .3s ease, transform .45s cubic-bezier(.2,.85,.25,1); }
+#grant.in { opacity: 1; transform: none; }
+#grant[hidden], #grant [hidden] { display: none !important; }
+html.red #grant { background: #0c0305; --ink: var(--red-ink); --dim: rgba(255,68,87,.82); --meta: rgba(255,68,87,.58); --hair: var(--red-hair); }
+html.day #grant { background: #34465a; }
+html.granting #chrome { z-index: 66; }
+html.granting #ozcmp, html.granting #ozcmp-note, html.granting #rooms, html.granting #title, html.granting #sub, html.granting #poem, html.granting #foot { display: none !important; }
+html.granting #sky, html.granting #moonfree, html.granting .gdial, html.granting #ozfocus, html.granting #mark-tip, html.granting .env-spark, html.granting #env-spark, html.granting #dimmer { opacity: 0 !important; pointer-events: none !important; }
+
+/* the small header */
+#grant .g2-head { flex: none; padding: 4px 16px 0; }
+#grant .g2-about-b { display: flex; flex-direction: column; align-items: flex-start; gap: 1px; width: 100%; min-height: 44px; padding: 4px 0; text-align: left; color: var(--ink); }
+#grant .g2-t { font-weight: 300; font-size: 15px; letter-spacing: .02em; }
+#grant .g2-t::after { content: ' ›'; color: var(--meta); }
+#grant .g2-about-b[aria-expanded="true"] .g2-t::after { content: ' ⌄'; }
+#grant .g2-due { font-size: 11.5px; color: var(--dim); }
+#grant .g2-due.near { color: var(--ink); }
+#grant .g2-about { max-height: 46vh; overflow-y: auto; padding: 4px 0 10px; border-bottom: 1px solid var(--hair); font-size: 13px; line-height: 1.45; color: var(--dim); }
+#grant .g2-about p { margin: 3px 0; } #grant .g2-about h4, #grant .g2-body h4, #grant .g2-sheet h4 { margin: 12px 0 4px; font-size: 10px; font-weight: 400; letter-spacing: .22em; text-transform: uppercase; color: var(--meta); }
+#grant .g2-quiet { font-size: 12px; color: var(--meta); line-height: 1.45; margin: 6px 0; }
+
+/* the path, then the sections */
+#grant .g2-path { flex: none; display: grid; grid-template-columns: repeat(3, 1fr); margin: 6px 16px 0; border: 1px solid var(--hair); border-radius: 12px; overflow: hidden; }
+#grant .g2-path button { min-height: 40px; font-size: 13px; color: var(--meta); letter-spacing: .02em; }
+#grant .g2-path button + button { border-left: 1px solid var(--hair); }
+#grant .g2-path button.on { color: var(--ink); background: rgba(255,255,255,.06); }
+#grant .g2-secs { flex: none; display: flex; gap: 6px; overflow-x: auto; padding: 8px 16px; scrollbar-width: none; -webkit-overflow-scrolling: touch; touch-action: pan-x; }
+#grant .g2-secs::-webkit-scrollbar { display: none; }
+#grant .g2-secs button { flex: none; display: flex; flex-direction: column; align-items: flex-start; gap: 2px; min-height: 44px; padding: 5px 12px; border-radius: 12px; border: 1px solid var(--hair); color: var(--meta); }
+#grant .g2-secs span { font-size: 12.5px; white-space: nowrap; } #grant .g2-secs em { font-style: normal; font-size: 10.5px; letter-spacing: .03em; font-variant-numeric: tabular-nums; white-space: nowrap; }
+#grant .g2-secs .on { border-color: var(--ink); color: var(--ink); }
+#grant .g2-secs .over em { color: var(--ink); text-decoration: underline; }
+
+/* the working copy */
+#grant .g2-body { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 2px 16px 18px; }
+#grant .g2-lab { display: block; margin: 4px 0 6px; font-size: 12px; color: var(--meta); letter-spacing: .02em; }
+#grant .g2-box { display: block; width: 100%; min-height: 46vh; padding: 12px 14px; border-radius: 14px; border: 1px solid var(--hair); background: rgba(255,255,255,.035); color: var(--ink);
+  font: 300 17px/1.55 Poppins, sans-serif; resize: vertical; outline: none; -webkit-user-select: text; user-select: text; }
+#grant .g2-box:focus-visible { border-color: var(--meta); }
+#grant .g2-box::placeholder { color: var(--meta); }
+#grant .g2-count { margin: 6px 2px 0; font-size: 12px; color: var(--meta); font-variant-numeric: tabular-nums; }
+#grant .g2-count.over { color: var(--ink); }
+#grant .g2-link { min-height: 40px; padding: 0; font-size: 13px; color: var(--ink); text-decoration: underline; text-decoration-color: var(--hair); text-underline-offset: 4px; }
+#grant .g2-earlier { margin-top: 6px; }
+#grant .g2-ver { margin: 6px 0; padding: 8px 10px; border-left: 1px solid var(--hair); }
+#grant .g2-ver em, #grant .g2-side em { display: block; font-style: normal; font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--meta); }
+#grant .g2-ver p { margin: 4px 0; font-size: 13.5px; line-height: 1.45; color: var(--dim); white-space: pre-wrap; }
+#grant .g2-small { min-height: 36px; padding: 0 12px; border-radius: 10px; border: 1px solid var(--hair); font-size: 12.5px; color: var(--ink); }
+#grant .g2-soft { border-color: transparent; color: var(--meta); }
+
+/* an offer: beside his text, waiting for a yes */
+#grant .g2-offer { margin: 14px 0; padding: 10px 12px 12px; border: 1px solid var(--ink); border-radius: 14px; }
+#grant .g2-offer h4 { margin-top: 0; color: var(--ink); }
+#grant .g2-why { margin: 0 0 8px; font-size: 12px; color: var(--meta); }
+#grant .g2-side { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+#grant .g2-side p { margin: 4px 0 0; max-height: 34vh; overflow-y: auto; font-size: 13px; line-height: 1.45; white-space: pre-wrap; color: var(--dim); }
+#grant .g2-side div + div p { color: var(--ink); }
+#grant .g2-acts { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+#grant .g2-btn { min-height: 44px; padding: 0 14px; border-radius: 12px; border: 1px solid var(--ink); color: var(--ink); font-size: 14px; }
+#grant .g2-btn.g2-soft { border-color: var(--hair); color: var(--dim); }
+#grant .g2-notes p { margin: 6px 0; font-size: 12.5px; line-height: 1.4; } #grant .g2-notes q { display: block; color: var(--dim); } #grant .g2-notes span { color: var(--meta); }
+#grant .g2-homes { margin-top: 14px; } #grant .g2-home { padding: 8px 0; border-top: 1px solid var(--hair); } #grant .g2-home p { margin: 0 0 6px; font-size: 13.5px; line-height: 1.45; }
+#grant .g2-home div { display: flex; gap: 6px; flex-wrap: wrap; }
+
+/* the final read */
+#grant .g2-fh { margin: 8px 0 2px; font-weight: 300; font-size: 18px; }
+#grant .g2-read { padding: 10px 0; border-top: 1px solid var(--hair); }
+#grant .g2-read h4 { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; text-transform: none; letter-spacing: .02em; font-size: 12px; }
+#grant .g2-read h4 span { color: var(--meta); font-size: 11px; white-space: nowrap; }
+#grant .g2-read.warn h4 span { color: var(--ink); }
+#grant .g2-read p { margin: 4px 0; font-size: 14px; line-height: 1.55; white-space: pre-wrap; }
+
+/* the foot: few buttons, plain words */
+#grant .g2-foot { flex: none; display: flex; gap: 6px; overflow-x: auto; padding: 8px 12px calc(8px + env(safe-area-inset-bottom, 0px)); border-top: 1px solid var(--hair); scrollbar-width: none; }
+#grant .g2-fb { flex: 1 0 auto; min-height: 44px; padding: 0 12px; border-radius: 12px; border: 1px solid var(--hair); color: var(--ink); font-size: 13px; white-space: nowrap; }
+#grant .g2-fb.g2-soft { color: var(--dim); }
+
+/* the drawer: reference, add writing, copy */
+#grant .g2-sheet { position: absolute; left: 0; right: 0; bottom: 0; z-index: 3; max-height: 82%; overflow-y: auto; overscroll-behavior: contain; padding: 8px 16px calc(18px + env(safe-area-inset-bottom, 0px));
+  background: #080a10; border-top: 1px solid var(--hair); transform: translateY(100%); transition: transform .32s cubic-bezier(.2,.7,.2,1); }
+html.red #grant .g2-sheet { background: #100406; } html.day #grant .g2-sheet { background: #2e3e50; }
+#grant .g2-sheet.in { transform: none; }
+#grant .g2-sh { position: sticky; top: -8px; z-index: 1; display: flex; align-items: center; gap: 6px; margin: -8px -16px 4px; padding: 8px 16px; background: inherit; }
+#grant .g2-sh h3 { flex: 1; margin: 0; font-weight: 300; font-size: 16px; }
+#grant .g2-ref { margin: 8px 0 12px; } #grant .g2-ref b { display: block; margin-bottom: 4px; font-weight: 400; font-size: 12px; color: var(--meta); } #grant .g2-ref p { margin: 0; font-size: 13px; line-height: 1.45; color: var(--dim); }
+#grant .g2-line { display: block; width: 100%; min-height: 40px; padding: 7px 10px; margin: 2px 0; border-radius: 10px; text-align: left; font-size: 14px; line-height: 1.45; color: var(--dim); border: 1px solid transparent; }
+#grant .g2-line.on { border-color: var(--ink); color: var(--ink); }
+#grant .g2-line.used { opacity: .7; } #grant .g2-line em { display: block; font-style: normal; font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--meta); }
+#grant .g2-move { position: sticky; bottom: -18px; padding: 10px 0 4px; background: inherit; }
+#grant .g2-move .g2-btn { width: 100%; }
+#grant .g2-none { font-size: 13px; color: var(--meta); }
+#grant .g2-aside { margin-top: 14px; border-top: 1px solid var(--hair); padding-top: 8px; } #grant .g2-aside summary { min-height: 40px; display: flex; align-items: center; font-size: 13px; color: var(--meta); cursor: pointer; }
+#grant .g2-in { display: block; width: 100%; min-height: 40vh; margin: 6px 0 10px; padding: 12px; border-radius: 12px; border: 1px solid var(--hair); background: rgba(255,255,255,.04); color: var(--ink); font: 300 16px/1.5 Poppins, sans-serif; outline: none; }
+#grant .g2-big { display: block; width: 100%; min-height: 64px; margin: 8px 0 10px; border-radius: 14px; border: 1px solid var(--ink); color: var(--ink); font-size: 18px; }
+#grant .g2-bundle { display: block; width: 100%; min-height: 40vh; padding: 10px; border-radius: 12px; border: 1px solid var(--hair); background: rgba(255,255,255,.03); color: var(--dim); font: 300 12.5px/1.45 Poppins, sans-serif; }
+#grant .g2-wide { display: block; width: 100%; min-height: 46px; margin: 6px 0 0; padding: 0 14px; border-radius: 12px; border: 1px solid var(--hair); color: var(--ink); text-align: left; font-size: 14px; }
+#grant .g2-q { display: block; margin: 6px 0 8px; font-size: 13.5px; line-height: 1.45; color: var(--dim); }
+#grant .g2-hres { font-size: 14px; color: var(--dim); }
+html.red #grant input, html.red #grant textarea { color: var(--red-ink); }

@@ -1,0 +1,117 @@
+/* oz Phone (catch-up, 23 Nov): the familiar Phone layout — a field at the top, the list, four tabs at the bottom —
+   in the app's own lights. The Mark, the room's name, the small time and the dot ride above it in the chrome. */
+#phone { position: fixed; z-index: 62; left: 0; right: 0; top: calc(var(--top, 8px) + 52px); bottom: 0; display: flex; flex-direction: column;
+  background: rgba(5,9,18,.94); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); border-top: 1px solid var(--hair);
+  opacity: 0; transform: translateY(14px); transition: opacity .3s ease, transform .45s cubic-bezier(.2,.85,.25,1); }
+#phone.in { opacity: 1; transform: none; }
+#phone[hidden] { display: none; }
+html.red #phone { background: rgba(12,3,5,.95); }
+html.day #phone { background: rgba(52,70,90,.94); }
+html.phoning #chrome { z-index: 66; }
+#phone .ph-find { display: flex; gap: 8px; align-items: center; padding: 12px 16px 6px; }
+#phone .ph-qw { flex: 1; min-width: 0; position: relative; }
+#phone .ph-x { position: absolute; right: 2px; top: 0; width: 44px; height: 44px; display: grid; place-items: center; color: var(--meta); }
+#phone .ph-x svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; }
+#phone .ph-x[hidden] { display: none; }
+#phone .ph-q { width: 100%; height: 44px; padding: 0 44px 0 14px; border-radius: 12px; border: 1px solid var(--hair); background: rgba(255,255,255,.04); color: var(--ink);
+  font: 300 16px/1 Poppins, sans-serif; outline: none; -webkit-appearance: none; appearance: none; }
+#phone .ph-q::placeholder { color: var(--meta); }
+#phone .ph-q:focus-visible { border-color: var(--meta); }
+#phone .ph-mic { width: 44px; height: 44px; display: grid; place-items: center; color: var(--meta); flex: none; }
+#phone .ph-mic svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.3; stroke-linecap: round; }
+#phone .ph-hint { margin: 0 16px 4px; font-size: 12px; color: var(--meta); }
+#phone .ph-body { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; touch-action: pan-y; padding: 4px 16px 16px; }
+#phone h3 { margin: 14px 0 4px; font-size: 10px; font-weight: 400; letter-spacing: .24em; text-transform: uppercase; color: var(--meta); }
+#phone .ph-row { display: flex; align-items: center; border-bottom: 1px solid var(--hair); }
+#phone .ph-call { flex: 1; min-width: 0; min-height: 60px; display: flex; align-items: center; gap: 12px; text-align: left; padding: 7px 0; color: var(--ink);
+  -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
+#phone .ph-tx { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+#phone .ph-call b { font-weight: 300; font-size: 17px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#phone .ph-tx > span { font-size: 12px; color: var(--meta); letter-spacing: .02em; }
+#phone .ph-when { flex: none; font-size: 12px; color: var(--meta); padding-right: 4px; }
+/* the person's initials, in a hairline ring (examples in a dotted one), as the phone shows a face */
+#phone .ph-av { flex: none; width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; font: 300 14px/1 Poppins, sans-serif; font-style: normal; letter-spacing: .04em;
+  color: var(--ink); border: 1px solid var(--hair); background: rgba(255,255,255,.035); }
+#phone .ph-av.ex { border-style: dashed; color: var(--meta); }
+#phone .ph-exm { font-style: normal; padding: 1px 6px; border: 1px solid var(--hair); border-radius: 99px; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; }
+#phone .ph-l { margin: 16px 0 0; padding: 0 0 4px; font: 400 12px/1 Poppins, sans-serif; letter-spacing: .12em; color: var(--meta); border-bottom: 1px solid var(--hair); }
+#phone .ph-i { width: 44px; height: 44px; flex: none; display: grid; place-items: center; font: 400 13px/1 Poppins, sans-serif; color: var(--meta); }
+#phone .ph-i::before { content: ''; position: absolute; width: 22px; height: 22px; border-radius: 50%; border: 1px solid var(--hair); }
+#phone .ph-i { position: relative; }
+#phone .ph-none, #phone .ph-ex, #phone .ph-sub { margin: 14px 0; font-size: 13px; line-height: 1.5; color: var(--meta); }
+#phone .ph-wide { display: block; width: 100%; min-height: 48px; margin: 10px 0 0; padding: 0 14px; border-radius: 12px; border: 1px solid var(--hair); color: var(--ink); font-size: 15px; text-align: left; }
+#phone .ph-wide.ph-soft { border-color: transparent; color: var(--meta); font-size: 14px; }
+#phone .ph-tabs { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--hair); padding-bottom: env(safe-area-inset-bottom, 0px); }
+#phone .ph-tabs button { min-height: 52px; font-size: 12px; letter-spacing: .06em; color: var(--meta); }
+#phone .ph-tabs button.on { color: var(--ink); box-shadow: inset 0 1px 0 var(--ink); }
+#phone .ph-num { min-height: 52px; margin: 10px 0 4px; text-align: center; font: 300 32px/52px Poppins, sans-serif; letter-spacing: .06em; color: var(--ink); font-variant-numeric: tabular-nums; }
+#phone .ph-keys { display: grid; grid-template-columns: repeat(3, 76px); justify-content: center; gap: 14px 26px; }
+#phone .ph-keys button { width: 76px; height: 76px; border-radius: 50%; border: 1px solid var(--hair); display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--ink); }
+#phone .ph-keys b { font: 300 28px/1 Poppins, sans-serif; } #phone .ph-keys span { font-size: 9px; letter-spacing: .2em; color: var(--meta); min-height: 10px; text-transform: uppercase; }
+#phone .ph-keys button:active { background: rgba(255,255,255,.08); }
+#phone .ph-keyact { display: grid; grid-template-columns: repeat(3, 76px); justify-content: center; gap: 26px; margin-top: 16px; }
+#phone .ph-go { grid-column: 2; width: 76px; height: 76px; border-radius: 50%; border: 1px solid var(--ink); display: grid; place-items: center; color: var(--ink); }
+#phone .ph-go svg { width: 30px; height: 30px; fill: none; stroke: currentColor; stroke-width: 1.3; stroke-linejoin: round; }
+#phone .ph-del { width: 76px; height: 76px; color: var(--meta); font-size: 22px; }
+/* the hand-off and details sheet: up from the bottom, inside the room */
+#phone .ph-sheet { position: absolute; left: 0; right: 0; bottom: 0; max-height: 80%; overflow-y: auto; padding: 10px 16px calc(18px + env(safe-area-inset-bottom, 0px));
+  background: rgb(8,6,10); border-top: 1px solid var(--hair); transform: translateY(100%); transition: transform .32s cubic-bezier(.2,.7,.2,1); }
+html.red #phone .ph-sheet { background: rgb(16,4,6); } html.day #phone .ph-sheet { background: rgb(46,62,80); }
+#phone .ph-sheet.in { transform: none; } #phone .ph-sheet[hidden] { display: none; }
+#phone .ph-f { display: flex; flex-direction: column; gap: 6px; margin: 12px 0 0; font-size: 11px; letter-spacing: .14em; color: var(--meta); }
+#phone .ph-f input:not([type=checkbox]) { height: 44px; padding: 0 12px; border-radius: 10px; border: 1px solid var(--hair); background: rgba(255,255,255,.04); color: var(--ink); font: 300 16px/1 Poppins, sans-serif; outline: none; }
+#phone .ph-f.ph-sw { flex-direction: row; align-items: center; justify-content: space-between; min-height: 44px; font-size: 14px; letter-spacing: 0; color: var(--ink); }
+#phone .ph-f.ph-sw input { width: 22px; height: 22px; accent-color: currentColor; }
+/* the same quiet as Messages: the free moon, the leftover dial slivers and the focus ring step aside for typing */
+html.phoning #moonfree, html.phoning .gdial, html.phoning #ozfocus, html.phoning #mark-tip { opacity: 0 !important; pointer-events: none !important; }
+/* red mode: the room's own ink goes red, like every other room */
+html.red #phone { --ink: var(--red-ink); --dim: rgba(255,68,87,.82); --meta: rgba(255,68,87,.58); --hair: var(--red-hair); }
+html.red #phone input { color: var(--red-ink); }
+html.phoning .env-spark, html.phoning #env-spark { opacity: 0 !important; pointer-events: none !important; }   /* the environment spark would sit on the room's own back and search */
+
+/* 24 Nov · one name, one call: the moment before the phone's dialer, which you can stop */
+#phone .ph-arm { display: flex; align-items: center; gap: 12px; margin: 4px 16px 2px; padding: 10px 6px 10px 12px; border: 1px solid var(--ink); border-radius: 14px; color: var(--ink); }
+#phone .ph-arm[hidden] { display: none; }
+#phone .ph-arm p { flex: 1; min-width: 0; margin: 0; display: flex; flex-direction: column; gap: 2px; }
+#phone .ph-arm b { font-weight: 300; font-size: 17px; } #phone .ph-arm p span { font-size: 12px; color: var(--meta); }
+#phone .ph-ring { width: 34px; height: 34px; flex: none; transform: rotate(-90deg); }
+#phone .ph-ring circle { fill: none; stroke: var(--hair); stroke-width: 2.5; }
+#phone .ph-ring .ph-left { stroke: var(--ink); stroke-linecap: round; stroke-dasharray: 100.5; stroke-dashoffset: 0; }
+#phone .ph-arm.go .ph-left { animation: ph-arm var(--arm, 2200ms) linear forwards; }
+@keyframes ph-arm { to { stroke-dashoffset: 100.5; } }
+#phone .ph-stop { flex: none; min-width: 64px; min-height: 44px; padding: 0 14px; border-radius: 10px; border: 1px solid var(--hair); color: var(--ink); font-size: 14px; }
+/* listening for a name: the mic breathes (on the phone only) */
+#phone.ph-listening .ph-mic { color: var(--ink); }
+#phone.ph-listening .ph-mic::after { content: ''; position: absolute; inset: 4px; border-radius: 50%; border: 1px solid var(--ink); animation: ph-breathe 1.4s ease-in-out infinite; }
+#phone .ph-mic { position: relative; }
+@keyframes ph-breathe { 0%, 100% { transform: scale(.82); opacity: .35; } 50% { transform: scale(1); opacity: .9; } }
+/* the keypad's extras: who the number is, or add it */
+#phone .ph-who { min-height: 22px; margin: 0 0 12px; text-align: center; font-size: 13px; color: var(--meta); }
+#phone .ph-add { min-height: 32px; padding: 0 12px; color: var(--ink); font-size: 13px; }
+/* the contact card, as the phone shows it: the face, the name, and message · call · FaceTime */
+#phone .ph-card { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 10px 0 4px; }
+#phone .ph-card .ph-av { width: 76px; height: 76px; font-size: 26px; }
+#phone .ph-cn { margin: 0; font: 300 24px/1.2 Poppins, sans-serif; letter-spacing: 0; text-transform: none; color: var(--ink); }
+#phone .ph-acts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 12px 0 4px; }
+#phone .ph-acts button { min-height: 60px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; border-radius: 12px; border: 1px solid var(--hair); color: var(--ink); font-size: 12px; }
+#phone .ph-acts button[disabled] { opacity: .4; }
+#phone .ph-acts svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.3; stroke-linejoin: round; }
+#phone .ph-f select { height: 36px; max-width: 52%; padding: 0 10px; border-radius: 9px; border: 1px solid var(--hair); background: rgba(255,255,255,.04); color: var(--ink); font: 300 14px/1 Poppins, sans-serif; }
+html.red #phone .ph-f select { color: var(--red-ink); }
+/* the ringer, underneath the keypad: a rotary that rises round the call key */
+#phone .ph-ringer { position: relative; width: 300px; height: 300px; margin: 0 auto 6px; touch-action: none; -webkit-user-select: none; user-select: none;
+  opacity: 0; transform: scale(.55); transition: opacity .32s ease, transform .5s cubic-bezier(.2,.85,.25,1); }
+#phone .ph-ringer.up { opacity: 1; transform: none; }
+#phone .ph-ringer > svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+#phone .ph-ringer .rim { fill: none; stroke: var(--hair); stroke-width: 1; }
+#phone .ph-ringer .nums text { fill: var(--ink); font: 300 22px Poppins, sans-serif; text-anchor: middle; }
+#phone .ph-ringer .plate { transform-origin: 150px 150px; transform-box: view-box; }
+#phone .ph-ringer .pl { fill: none; stroke: var(--ink); stroke-width: 1; stroke-dasharray: 1 5; stroke-linecap: round; opacity: .7; }
+#phone .ph-ringer .hole { fill: rgba(255,255,255,.02); stroke: var(--ink); stroke-width: 1.4; stroke-dasharray: 1.2 3.4; stroke-linecap: round; }
+#phone .ph-ringer .hub { fill: none; stroke: var(--hair); stroke-width: 1; }
+#phone .ph-ringer .stopper { stroke: var(--ink); stroke-width: 3; stroke-linecap: round; }
+#phone .ph-hole { position: absolute; width: 46px; height: 46px; margin: -23px 0 0 -23px; border-radius: 50%; }
+#phone .ph-rcall { position: absolute; left: 50%; top: 50%; width: 76px; height: 76px; margin: -38px 0 0 -38px; border-radius: 50%; border: 1px solid var(--ink); display: grid; place-items: center; color: var(--ink); }
+#phone .ph-rcall svg { width: 30px; height: 30px; fill: none; stroke: currentColor; stroke-width: 1.3; stroke-linejoin: round; }
+#phone .ph-body.ringing .ph-keys { display: none; }
+#phone .ph-body.ringing .ph-go { visibility: hidden; }
