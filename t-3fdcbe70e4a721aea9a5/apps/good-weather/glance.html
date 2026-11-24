@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en" class="red">
+<head>
+<meta charset="utf-8">
+<base href="../../">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#060304">
+<title>good weather · the glance on the phone</title>
+<link rel="icon" href="icons/mark-64.png">
+<!-- catch-up (23 Nov 2026), item 10 · the Good Weather glance, as the phone's own surfaces show it: the home-screen
+     widget (small and medium), the lock screen line, and the Watch face and complication. Every one of them is the same
+     glance as level 1 of Good Weather (GJ.goodWeather.glanceText(), the same reading, the same mark) — not a second
+     weather room. This is a web app: it cannot put a real widget on the home screen or a real face on a Watch, so each
+     one is labelled "picture" here and on the System page. The Watch says "not paired" until one really is. -->
+<style>
+@font-face { font-family: Poppins; font-weight: 300; font-display: swap; src: url("fonts/poppins-300.woff2") format("woff2"); }
+@font-face { font-family: "Julius Sans One"; font-display: swap; src: url("fonts/julius-sans-one.woff2") format("woff2"); }
+:root { --ink: #e8e4dc; --meta: #93a1a6; --hair: rgba(200,225,255,.22); --bg: #04070b; --card: rgba(20,26,36,.92); --sun: radial-gradient(circle at 40% 38%, #fbf1dc, #e9b56e 70%); --glow: rgba(236,182,102,.5); }
+html.red { --ink: #FF4457; --meta: rgba(255,68,87,.6); --hair: rgba(255,68,87,.3); --bg: #060304; --card: rgba(24,6,9,.94); --sun: #FF4457; --glow: rgba(255,68,87,.5); }
+html.day { --ink: #f0ece4; --meta: #c3ccd4; --hair: rgba(232,228,220,.28); --bg: #4b6076; --card: rgba(52,70,90,.92); }
+html, body { margin: 0; background: var(--bg); color: var(--ink); font: 300 14px/1.4 Poppins, sans-serif; -webkit-font-smoothing: antialiased; }
+body { padding: calc(env(safe-area-inset-top, 0px) + 18px) 18px 40px; max-width: 430px; margin: 0 auto; }
+h1 { margin: 6px 0 2px; font: 400 12px/1 "Julius Sans One", sans-serif; letter-spacing: .3em; text-transform: uppercase; }
+.sub { margin: 0 0 18px; font-size: 12px; color: var(--meta); }
+h2 { margin: 26px 0 10px; font: 400 10px/1 "Julius Sans One", sans-serif; letter-spacing: .24em; text-transform: uppercase; color: var(--meta); }
+.pic { font-size: 10px; letter-spacing: .14em; color: var(--meta); margin: 8px 0 0; text-transform: lowercase; }
+.mark { display: inline-block; width: 22px; height: 22px; border-radius: 50%; background: var(--sun); box-shadow: 0 0 14px var(--glow); flex: none; }
+.row { display: flex; gap: 14px; align-items: flex-start; }
+.w-s { width: 158px; height: 158px; border-radius: 26px; background: var(--card); padding: 14px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; box-shadow: inset 0 0 0 1px var(--hair); }
+.w-s p, .w-m p { margin: 0; font-size: 14px; line-height: 1.3; }
+.w-s small, .w-m small { font-size: 10px; letter-spacing: .14em; color: var(--meta); text-transform: lowercase; }
+.w-m { width: 100%; height: 158px; border-radius: 26px; background: var(--card); padding: 16px; box-sizing: border-box; display: flex; gap: 14px; align-items: center; box-shadow: inset 0 0 0 1px var(--hair); }
+.w-m div { display: flex; flex-direction: column; gap: 8px; }
+.lock { width: 100%; border-radius: 26px; background: #000; padding: 26px 18px 30px; box-sizing: border-box; text-align: center; box-shadow: inset 0 0 0 1px var(--hair); }
+.lock .ln { font-size: 13px; display: inline-flex; gap: 6px; align-items: center; color: var(--ink); }
+.lock .ln .mark { width: 10px; height: 10px; box-shadow: none; }
+.lock .tm { font-size: 72px; line-height: 1; margin-top: 6px; letter-spacing: .02em; color: var(--ink); opacity: .92; }
+.watch { width: 198px; height: 242px; border-radius: 46px; background: #15191f; padding: 12px; box-sizing: content-box; box-shadow: 0 0 0 1px #262b33; margin: 0 auto; }
+.face { width: 198px; height: 242px; border-radius: 38px; background: #000; position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; text-align: center; padding: 0 16px; box-sizing: border-box; }
+.face .t { position: absolute; top: 14px; right: 18px; font-size: 14px; color: var(--meta); }
+.face p { margin: 0; font-size: 13px; line-height: 1.35; }
+.comp { margin-top: 14px; display: flex; justify-content: center; }
+.comp div { width: 100%; max-width: 200px; border-radius: 14px; background: #000; padding: 10px 12px; display: flex; gap: 8px; align-items: center; box-shadow: inset 0 0 0 1px var(--hair); font-size: 12px; }
+.comp .mark { width: 12px; height: 12px; box-shadow: none; }
+.state { margin-top: 26px; padding: 12px 14px; border-radius: 14px; box-shadow: inset 0 0 0 1px var(--hair); font-size: 12px; color: var(--meta); line-height: 1.5; }
+.state b { font-weight: 300; color: var(--ink); }
+a.back { display: inline-flex; align-items: center; min-height: 44px; color: var(--meta); text-decoration: none; font-size: 13px; }
+</style>
+</head>
+<body>
+<a class="back" href="apps/oz/index.html">‹ oz</a>
+<h1>the glance</h1>
+<p class="sub">level 1 of good weather · one honest line and one mark · the same everywhere it shows</p>
+
+<h2>home screen widget</h2>
+<div class="row"><div class="w-s" aria-label="the glance as a small widget"><span class="mark" aria-hidden="true"></span><p class="g"></p><small>good weather</small></div></div>
+<p class="pic">picture · a web app can't place a real widget</p>
+<div class="w-m" style="margin-top:14px" aria-label="the glance as a medium widget"><span class="mark" aria-hidden="true"></span><div><p class="g"></p><small class="src"></small></div></div>
+<p class="pic">picture · medium</p>
+
+<h2>lock screen</h2>
+<div class="lock" aria-label="the glance on the lock screen"><span class="ln"><span class="mark" aria-hidden="true"></span><span class="g"></span></span><div class="tm" id="lt"></div></div>
+<p class="pic">picture · the lock screen line</p>
+
+<h2>watch</h2>
+<div class="watch"><div class="face" aria-label="the glance as a watch face"><span class="t" id="wt"></span><span class="mark" aria-hidden="true"></span><p class="g"></p></div></div>
+<div class="comp"><div aria-label="the glance as a complication"><span class="mark" aria-hidden="true"></span><span class="g1"></span></div></div>
+<p class="pic" style="text-align:center">picture · the face and a complication</p>
+
+<div class="state" id="state"></div>
+
+<script src="core/settings.js"></script>
+<script src="core/f3.js"></script>
+<script src="core/core.js"></script>
+<script src="core/sun.js"></script>
+<script>window.GJ.Sun = window.GJ.Sun || window.GJSun;</script>
+<script src="modules/placeMatch/stub.js"></script>
+<script src="modules/feedPicker/stub.js"></script>
+<script src="apps/good-weather/js/weather.js"></script>
+<script src="apps/good-weather/js/goodweather.js"></script>
+<script>
+(function () {
+  'use strict';
+  var GJ = window.GJ, html = document.documentElement;
+  function mode(s) { var day = !!s.dayMode && !s.red; html.classList.toggle('red', !!s.red); html.classList.toggle('day', day); }
+  function hm() { return new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }).replace(/\s?[AP]M/, ''); }
+  // 24 Nov: inside the iPhone app (its bridge is there) the widget and the watch's Light line are real
+  var nat = false; try { nat = !!(window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.oz); } catch (e) {}
+  function paint() {
+    var t = GJ.goodWeather ? GJ.goodWeather.glanceText() : '', first = t.split(' · ')[0], R = GJ.goodWeather ? GJ.goodWeather.read() : null;
+    [].forEach.call(document.querySelectorAll('.g'), function (e) { e.textContent = t; });
+    [].forEach.call(document.querySelectorAll('.g1'), function (e) { e.textContent = first; });
+    [].forEach.call(document.querySelectorAll('.src'), function (e) { e.textContent = R && R.w && R.w.src ? R.w.src : 'the sun only · no forecast here'; });
+    document.getElementById('lt').textContent = hm(); document.getElementById('wt').textContent = hm();
+    var s = GJ.store.get();
+    document.getElementById('state').innerHTML = '<b>what is real here</b><br>the line is the real glance, from the reading the app already has (live, snapshot or sample · it says which).<br>' +
+      (nat ? 'these are pictures. in this app the widget is real: add Good Weather from your Home Screen\'s widget gallery, or to the Lock Screen.<br>' +
+             'watch · the app hands this glance to a paired watch with oz on it, as the Light line'
+           : 'the widget, the lock screen line and the watch face are pictures here: a web page cannot place them on the phone or on a Watch. the iPhone app has the real ones.<br>' +
+             'watch · <b>' + (s.watch === 'paired' ? 'paired' : 'not paired') + '</b>' + (s.watch === 'paired' ? '' : ' · nothing is sent to a watch'));
+  }
+  GJ.store.on(function (s) { mode(s); paint(); }); mode(GJ.store.get()); paint();
+  setInterval(paint, 30000);
+})();
+</script>
+</body>
+</html>

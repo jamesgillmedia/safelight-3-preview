@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 32 32" class="live f80-neon i80 i80-neon" data-i="notes" aria-hidden="true"><style>/* oz 80s icons · colour and life (23 Nov 2026). Used by the app, by Home, and inlined into each exported icon file.
+   Life runs only while an icon is presented (.live, set through the oz viewer hook). It never checks Reduce Motion:
+   oz ignores that flag. Loops are slow and small; one-shots play once and settle. */
+.i80{display:block;width:100%;height:100%;overflow:visible}
+.i80 .p{transform-box:view-box}
+.i80-neon{filter:drop-shadow(0 0 1.1px rgba(255,43,214,.32)) drop-shadow(0 0 .6px rgba(62,240,255,.25))}
+.i80-bit .pf{fill:var(--i80-paper,#f3f3ee)}.i80-bit .pk{fill:var(--i80-ink,#111111)}
+.i80-bit .cr{fill:var(--i80-cr,#e23b2e)}.i80-bit .cy{fill:var(--i80-cy,#f4d35e)}.i80-bit .ct{fill:var(--i80-ct,#2aa9a0)}.i80-bit .ck{fill:var(--i80-ck,#111111)}
+.i80-bit .acc-o .pk,.i80-bit .acc-o .pf{fill:#f46b1b}
+.f80-terminal .i80-bit,.f80-terminal.i80-bit,html.e80-term .i80-bit{--i80-paper:rgba(125,255,106,.07);--i80-ink:#7dff6a;filter:drop-shadow(0 0 1px rgba(125,255,106,.4))}
+.f80-terminal .cf,.f80-terminal.i80-bit .cf,html.e80-term .i80-bit .cf{display:none}
+/* the clock icon's digits (drawn live) */
+.i80 .dg i,.i80 .dg rect{fill:var(--i80-seg,#ffb000)}.i80-bit .dg rect{fill:var(--i80-ink,#111111)}html.e80-term .i80 .dg rect,.f80-terminal .dg rect{fill:#7dff6a}
+/* life */
+@keyframes i80spin{to{transform:rotate(360deg)}}
+@keyframes i80lift{0%,100%{transform:none}30%{transform:translateY(-1.5px) rotate(-4deg)}60%{transform:translateY(-.5px)}}
+@keyframes i80turn{0%{transform:none}45%{transform:rotate(70deg)}100%{transform:none}}
+@keyframes i80glow{0%{opacity:.35}60%{opacity:1}100%{opacity:1}}
+@keyframes i80needle{0%{transform:rotate(-10deg)}35%{transform:rotate(14deg)}60%{transform:rotate(6deg)}80%{transform:rotate(9deg)}100%{transform:rotate(8deg)}}
+@keyframes i80crawl{from{transform:translateY(0)}to{transform:translateY(-3.5px)}}
+@keyframes i80flip{0%{transform:none}100%{transform:rotate(180deg)}}
+@keyframes i80cursor{0%,49%{opacity:1}50%,100%{opacity:0}}
+@keyframes i80pip{0%{opacity:0}25%{opacity:1}60%{opacity:.4}100%{opacity:1}}
+@keyframes i80rec{0%{opacity:0}40%{opacity:1}100%{opacity:1}}
+@keyframes i80creep{from{transform:none}to{transform:rotate(90deg)}}
+@keyframes i80wander{0%,100%{transform:none}40%{transform:translateY(var(--dy,-2px))}70%{transform:translateY(calc(var(--dy,-2px) / -2))}}
+@keyframes i80lamp{0%{opacity:.25}70%{opacity:1}100%{opacity:.9}}
+@keyframes i80walk{0%{transform:none;opacity:1}80%{transform:translateY(var(--dy,9px));opacity:.9}100%{transform:translateY(var(--dy,9px));opacity:.45}}
+@keyframes i80sweep{from{transform:none}to{transform:rotate(360deg)}}
+@keyframes i80platen{0%,100%{transform:none}20%{transform:translateX(var(--dx,-1.5px))}}
+@keyframes i80hum{0%{transform:rotate(-14deg)}25%{transform:rotate(8deg)}45%{transform:rotate(-5deg)}65%{transform:rotate(3deg)}85%,100%{transform:none}}
+@keyframes i80tick{0%,100%{transform:none}35%{transform:rotate(-12deg)}}
+@keyframes i80breathe{0%{opacity:.3}50%{opacity:1}100%{opacity:.7}}
+@keyframes i80step{from{transform:none}to{transform:translate(var(--dx,0px),var(--dy,0px))}}
+@keyframes i80press{from{transform:none}to{transform:translateY(var(--dy,1px))}}
+@keyframes i80rise{from{transform:none}to{transform:translateY(var(--dy,-1px))}}
+@keyframes i80crawlx{0%{transform:none;opacity:0}15%{opacity:1}85%{opacity:1}100%{transform:translateX(var(--dx,14px));opacity:0}}
+@keyframes i80ease{from{transform:scale(1.3)}to{transform:none}}
+@keyframes i80level{0%{transform:translateX(var(--dx,4px))}60%{transform:translateX(-1px)}100%{transform:none}}
+@keyframes i80star{0%{opacity:.15}100%{opacity:1}}
+@keyframes i80drop{from{transform:none;opacity:.2}to{transform:translateY(var(--dy,4px));opacity:1}}
+@keyframes i80drift{from{transform:none}to{transform:translate(-4px,-3px)}}
+.live .a-spin{animation:i80spin var(--sp,6s) linear infinite}
+.live .a-slowspin{animation:i80spin 24s linear infinite}
+.live .a-lift1{animation:i80lift 1.6s ease-in-out .3s 1 both}
+.live .a-turn1{animation:i80turn 2.8s ease-in-out .8s 1 both}
+.live .a-glow1,.live .a-lamp1{animation:i80glow 2.4s ease-out 1 both}
+.live .a-lamp1{animation-name:i80lamp}
+.live .a-needle{animation:i80needle 4s ease-in-out 1 both}
+.live .a-crawl{animation:i80crawl 4s linear infinite}
+.live .a-flip1{animation:i80flip 1.8s ease-in-out .4s 1 both}
+.live .a-cursor{animation:i80cursor 1.2s steps(1) infinite}
+.live .a-pip1{animation:i80pip 1.6s ease-out .3s 1 both}
+.live .a-rec1{animation:i80rec 1.4s ease-out .2s 1 both}
+.live .a-creep1{animation:i80creep 3.2s ease-in-out .4s 1 both}
+.live .a-wander{animation:i80wander 5s ease-in-out var(--d,0s) 1 both}
+.live .a-walk1{animation:i80walk 2.6s ease-in-out .3s 1 both}
+.live .a-sweep1{animation:i80sweep 3.2s ease-in-out .3s 1 both}
+.live .a-platen1{animation:i80platen 1.4s ease-out .5s 1 both}
+.live .a-hum{animation:i80hum 3s ease-in-out .3s 1 both}
+.live .a-tick1{animation:i80tick 1.6s ease-in-out .4s 1 both}
+.live .a-breathe1{animation:i80breathe 3s ease-in-out 1 both}
+.live .a-step1{animation:i80step 1.4s ease-in-out .5s 1 both}
+.live .a-press1{animation:i80press .5s ease-out .6s 1 both}
+.live .a-rise1{animation:i80rise 1.4s ease-in-out .5s 1 both}
+.live .a-crawlx1{animation:i80crawlx 2.6s ease-in-out .4s 1 both}
+.live .a-ease1{animation:i80ease 1.6s cubic-bezier(.2,.8,.3,1) .2s 1 both}
+.live .a-level1{animation:i80level 2.6s ease-in-out .2s 1 both}
+.live .a-star1{animation:i80star .9s ease-out var(--d,0s) 1 both}
+.live .a-drop1{animation:i80drop 1.2s ease-out .5s 1 both}
+.live .cf{animation:i80drift 8s ease-in-out infinite alternate}
+.live .dg .colon{animation:i80cursor 2s steps(1) infinite}
+svg{background:#050208}</style><defs><linearGradient id="sun-notes" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff2bd6"/><stop offset=".33" stop-color="#ff2bd6"/><stop offset=".33" stop-color="#ffb000"/><stop offset=".66" stop-color="#ffb000"/><stop offset=".66" stop-color="#3ef0ff"/><stop offset="1" stop-color="#3ef0ff"/></linearGradient></defs><g class="p"><rect x="5" y="4" width="22" height="24" fill="#c9c9d6" fill-opacity=".14" stroke="#c9c9d6" stroke-width="2.2" stroke-linejoin="round"/></g><g class="p"><line x1="5" y1="9" x2="27" y2="9" fill="none" stroke="#c9c9d6" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><line x1="11" y1="6.5" x2="25" y2="6.5" fill="none" stroke="#c9c9d6" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></g><g class="p"><rect x="7" y="5.5" width="2.5" height="2.5" fill="none" stroke="#c9c9d6" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></g><g class="p"><line x1="9" y1="14" x2="23" y2="14" fill="none" stroke="#3ef0ff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><line x1="9" y1="18" x2="20" y2="18" fill="none" stroke="#3ef0ff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></g><g class="p a-cursor"><line x1="9" y1="22" x2="9" y2="25.5" fill="none" stroke="#ffb000" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></g></svg>

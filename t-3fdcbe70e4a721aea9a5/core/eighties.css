@@ -1,0 +1,270 @@
+/* oz 80s mode · the look (23 Nov 2026). Everything here applies only under html.e80 (off by default). Three flavours:
+   html.e80-term (default) · html.e80-neon · html.e80-bit. Tokens are the pack's (TOKENS.md). The knobs feed
+   --e80-ink, --e80-ground and friends from core/eighties.js. No mint here: mint is the red-mode dot's alone.
+   Scanlines never pass over a photograph: on Home and the sky they are a field; in rooms they sit beneath the content. */
+html.e80 { --e80-ink: #7dff6a; --e80-dim: rgba(125,255,106,.7); --e80-meta: rgba(95,207,85,.6); --e80-hair: rgba(125,255,106,.22); --e80-ground: #0b120c; --e80-panel: #0f1a11;
+  --e80-glass: rgba(11,18,12,.9); --e80-glow: rgba(125,255,106,.4); --e80-lead: #7dff6a; --e80-scan: rgba(125,255,106,.08);
+  --e80-bezel: #d7cbb3; --e80-bezel-lo: #b9a78c; --e80-bezel-hi: #e8decc; --e80-knob: #cfc3ad; --e80-seg: #7dff6a;
+  --e80-scanimg: repeating-linear-gradient(0deg, var(--e80-scan) 0 1px, transparent 1px 4px); }
+html.e80-neon { --e80-bezel: #9a9aaa; --e80-bezel-lo: #3a3a48; --e80-bezel-hi: #f3f3f8; --e80-knob: #9a9aaa; --e80-seg: #ffb000; }
+html.e80-bit { --e80-bezel: #f3f3ee; --e80-bezel-lo: #111111; --e80-bezel-hi: #ffffff; --e80-knob: #f3f3ee; --e80-seg: #111111; --e80-scanimg: none; }
+html.e80.e80-noscan { --e80-scanimg: none; }
+/* Full red stays the safety mode: in it, 80s mode keeps its machines but takes the red light */
+html.e80.fullred, html.e80[data-palette="fullred"] { --e80-ink: #ff4457 !important; --e80-dim: rgba(255,68,87,.75) !important; --e80-meta: rgba(255,68,87,.55) !important; --e80-hair: rgba(255,68,87,.3) !important;
+  --e80-ground: #060304 !important; --e80-panel: #0c0305 !important; --e80-lead: #ff4457 !important; --e80-seg: #ff4457 !important; --e80-scan: rgba(255,68,87,.06) !important; --e80-glow: rgba(255,68,87,.35) !important; }
+
+/* the app's own tokens follow the flavour (and win over red mode's, which set them on html.red and on four rooms) */
+html.e80.e80, html.e80.e80 :is(#phone, #notes, #grant, #pushradio) {
+  --ink: var(--e80-ink); --dim: var(--e80-dim); --meta: var(--e80-meta); --paper: var(--e80-ink); --hair: var(--e80-hair); --glass: var(--e80-glass);
+  --red-ink: var(--e80-ink); --red-hair: var(--e80-hair); --red-glass: var(--e80-glass); --redpage: var(--e80-ground); --crimson: var(--e80-lead); --rose: var(--e80-dim); }
+html.e80, html.e80 body { background: var(--e80-ground) !important; }
+html.e80.e80 { --bg: var(--e80-ground); --here: var(--e80-lead); --near: var(--e80-ink); --mid: var(--e80-dim); --far: var(--e80-meta); --moon: var(--e80-ink); --dk: var(--e80-ink); }   /* Home's own tokens */
+html.e80 body { color: var(--e80-ink); }
+html.e80:not(.e80-bit) body { text-shadow: 0 0 6px var(--e80-glow); }
+html.e80 img, html.e80 video, html.e80 picture, html.e80 canvas.photo { filter: none !important; text-shadow: none; mix-blend-mode: normal !important; }   /* photographs: never tinted */
+
+/* ——— the field: scanlines drifting up (12 s), a faint wireframe (Terminal), a low grid (Neon). Home and the sky only ——— */
+#e80field { display: none; }
+html.e80 #e80field { display: block; position: fixed; inset: 0; z-index: 2; pointer-events: none; overflow: hidden; }
+#e80field i { position: absolute; left: 0; right: 0; }
+#e80field .sc { top: 0; height: calc(100% + 8px); background: repeating-linear-gradient(0deg, var(--e80-scan) 0 1px, transparent 1px 4px), repeating-linear-gradient(0deg, rgba(0,0,0,.10) 0 1px, transparent 1px 4px);
+  background-position: 0 0, 0 2px; animation: e80drift 12s linear infinite; will-change: transform; }
+html.e80-noscan #e80field .sc, html.e80-bit #e80field .sc { display: none; }
+@keyframes e80drift { from { transform: translateY(0); } to { transform: translateY(-4px); } }
+#e80field .wf { display: none; inset: 0; background: linear-gradient(rgba(62,240,255,.1) 1px, transparent 1px) 0 0 / 100% 48px, linear-gradient(90deg, rgba(62,240,255,.1) 1px, transparent 1px) 0 0 / 48px 100%; opacity: .9;
+  -webkit-mask: radial-gradient(120% 70% at 50% 60%, #000 30%, transparent 85%); mask: radial-gradient(120% 70% at 50% 60%, #000 30%, transparent 85%); }
+html.e80-term #e80field .wf { display: block; }
+#e80field .gr { display: none; bottom: 0; height: 26%; background: linear-gradient(rgba(255,43,214,.5) 1px, transparent 1px) 0 0 / 100% 22px, linear-gradient(90deg, rgba(62,240,255,.45) 1px, transparent 1px) 50% 0 / 34px 100%;
+  transform: perspective(240px) rotateX(58deg); transform-origin: 50% 100%; opacity: .12; -webkit-mask: linear-gradient(transparent, #000 60%); mask: linear-gradient(transparent, #000 60%); }
+html.e80-neon #e80field .gr { display: block; }
+html.e80-bit #e80field { background: radial-gradient(#111 .6px, transparent .7px) 0 0 / 3px 3px; opacity: .08; }   /* the 1-bit desktop: a fine dither */
+/* CRT falloff */
+html.e80:not(.e80-bit) #e80field::after { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 50%, transparent 55%, rgba(0,0,0,.35) 100%); }
+
+/* ——— oz READY, once ——— */
+#e80ready { position: fixed; z-index: 120; left: 50%; top: 42%; transform: translateX(-50%); display: flex; align-items: center; gap: 4px; pointer-events: none;
+  font: 300 15px/1 Poppins, sans-serif; letter-spacing: .32em; color: var(--e80-ink); text-shadow: 0 0 6px var(--e80-glow); transition: opacity 1.2s ease, transform 1.2s ease; }
+#e80ready i { width: 9px; height: 15px; background: var(--e80-ink); animation: e80blink 1.06s steps(1) infinite; box-shadow: 0 0 6px var(--e80-glow); }
+#e80ready.settle { opacity: 0; transform: translate(-50%, -6px); }
+html.e80-bit #e80ready { background: #f3f3ee; color: #111; text-shadow: none; padding: 8px 12px; border: 2px solid #111; box-shadow: 3px 3px 0 #111; }
+html.e80-bit #e80ready i { background: #111; box-shadow: none; }
+@keyframes e80blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+
+/* ——— the rocker panel (inside the red-mode pad) ——— */
+.e80-panel { margin-top: 10px; padding: 8px 8px; border-radius: 14px; border: 1px solid rgba(255,68,87,.3); background: rgba(12,3,5,.88); color: rgba(255,68,87,.85); font: 300 10px/1 Poppins, sans-serif; letter-spacing: .2em; text-transform: uppercase; pointer-events: auto; touch-action: none; text-shadow: none; }
+html.e80 .e80-panel { border-color: var(--e80-hair); background: var(--e80-panel); color: var(--e80-ink); }
+html.e80-term .e80-panel { background: linear-gradient(#e8decc, #d7cbb3); color: #3b3428; border-color: #b9a78c; box-shadow: inset 0 1px 0 #fff8, 0 2px 0 #9c8b70; }
+html.e80-bit .e80-panel { background: #f3f3ee; color: #111; border: 2px solid #111; border-radius: 0; box-shadow: 3px 3px 0 #111; }
+.e80-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 40px; }
+.e80-rocker { position: relative; width: 58px; height: 30px; border-radius: 6px; border: 1px solid currentColor; background: linear-gradient(#3a3a48, #1a1a22); box-shadow: inset 0 1px 0 rgba(255,255,255,.12); }
+.e80-rocker i { position: absolute; top: 2px; left: 2px; width: 26px; height: 24px; border-radius: 4px; background: linear-gradient(#f3f3f8, #9a9aaa 60%, #3a3a48); transition: transform .14s ease; box-shadow: 0 1px 0 #000; }
+.e80-rocker[aria-checked=true] i { transform: translateX(26px); }
+.e80-rocker[aria-checked=true] { background: repeating-linear-gradient(180deg, #ff2bd6 0 6px, #ffb000 6px 12px, #3ef0ff 12px 18px); }   /* the sunset stripe, on the rocker's face */
+.e80-rocker:active i { transform: translateY(1px); } .e80-rocker[aria-checked=true]:active i { transform: translate(26px, 1px); }
+html.e80-term .e80-rocker { background: #b9a78c; border-color: #6f6352; } html.e80-term .e80-rocker[aria-checked=true] { background: #2f7a36; }
+html.e80-term .e80-rocker i { background: linear-gradient(#f2ead9, #cfc3ad); }
+html.e80-bit .e80-rocker { border-radius: 0; border: 2px solid #111; background: #f3f3ee; box-shadow: none; } html.e80-bit .e80-rocker i { border-radius: 0; background: #111; box-shadow: none; } html.e80-bit .e80-rocker[aria-checked=true] { background: repeating-linear-gradient(45deg, #111 0 2px, #f3f3ee 2px 4px); }
+.e80-more { display: none; } .e80-panel.on .e80-more { display: block; }
+.e80-fl { display: flex; gap: 4px; margin: 8px 0 4px; }
+.e80-fl button { flex: 1; min-width: 0; min-height: 34px; padding: 0 2px; border: 1px solid currentColor; border-radius: 4px; font: 300 9.5px/1 Poppins, sans-serif; letter-spacing: .14em; text-transform: uppercase; opacity: .55; }
+.e80-fl button[aria-checked=true] { opacity: 1; box-shadow: inset 0 0 0 1px currentColor; }
+.e80-fl button:active { transform: translateY(1px); }
+html.e80-bit .e80-fl button { border-radius: 0; } html.e80-bit .e80-fl button[aria-checked=true] { background: #111; color: #f3f3ee; }
+.e80-knobs { display: flex; align-items: flex-end; justify-content: space-between; gap: 8px; margin-top: 8px; }
+.e80-knob { display: flex; flex-direction: column; align-items: center; gap: 6px; outline: none; touch-action: none; cursor: grab; }
+.e80-knob .cap { position: relative; width: 36px; height: 36px; border-radius: 50%; display: block;
+  background: repeating-conic-gradient(from 0deg, rgba(0,0,0,.22) 0 4deg, transparent 4deg 15deg), radial-gradient(circle at 40% 35%, var(--e80-bezel-hi, #e8decc), var(--e80-knob, #cfc3ad) 55%, var(--e80-bezel-lo, #b9a78c));
+  box-shadow: 0 2px 0 rgba(0,0,0,.45), inset 0 1px 1px rgba(255,255,255,.5); transition: transform .08s linear; }
+.e80-knob .tick { position: absolute; left: 50%; top: 3px; width: 3px; height: 10px; margin-left: -1.5px; border-radius: 2px; background: #3b3428; }
+.e80-knob.held .cap, .e80-knob:focus-visible .cap { box-shadow: 0 1px 0 rgba(0,0,0,.45), 0 0 0 2px currentColor; }
+.e80-knob span { font-size: 7.5px; letter-spacing: .12em; }
+html.e80-bit .e80-knob .cap { background: repeating-conic-gradient(#111 0 6deg, #f3f3ee 6deg 18deg); border: 2px solid #111; box-shadow: none; } html.e80-bit .e80-knob .tick { background: #e23b2e; }
+.e80-toggle { display: flex; flex-direction: column; align-items: center; gap: 6px; min-width: 34px; min-height: 44px; justify-content: flex-end; }
+.e80-toggle i { width: 14px; height: 30px; border-radius: 3px; border: 1px solid currentColor; position: relative; background: rgba(0,0,0,.25); }
+.e80-toggle i::after { content: ''; position: absolute; left: 1px; right: 1px; height: 14px; bottom: 1px; border-radius: 2px; background: linear-gradient(#f3f3f8, #9a9aaa); transition: transform .12s ease; }
+.e80-toggle[aria-checked=true] i::after { transform: translateY(-13px); }
+.e80-toggle span { font-size: 7.5px; letter-spacing: .12em; }
+
+/* ——— seven segments ——— */
+.e80seg { display: block; height: 100%; width: auto; fill: var(--e80-seg); filter: drop-shadow(0 0 3px var(--e80-glow)); overflow: visible; }
+html.e80-bit .e80seg { filter: none; }
+.e80seg .colon { animation: e80colon 1s ease-in-out infinite; }
+@keyframes e80colon { 0%, 100% { opacity: 1; } 50% { opacity: .35; } }   /* a soft pulse, once a second */
+
+/* ——— living icons (they sit beside the ordinary ones, which step aside while the mode is on) ——— */
+.e80i { display: none; }
+html.e80 .e80i { display: block; width: 26px; height: 26px; }
+html.e80 #arcDock .ad > b:not(.e80i), html.e80 #dock button > svg, html.e80 #dock button > :not(.e80i) { display: none !important; }
+html.e80 #arcDock .ad .e80i { width: 28px; height: 28px; }
+html.e80 #dock button .e80i { width: 30px; height: 30px; }
+html.e80 #camO .cst .e80i { position: absolute; width: 18px; height: 18px; left: -22px; top: 50%; margin-top: -9px; } html.e80 #camO .cst > i { opacity: 0 !important; }
+
+/* ——— the dock and the dials: hardware, a 1 px press, no bounce ——— */
+html.e80 #dock button, html.e80 #arcDock .ad { transition: transform .06s linear !important; }
+html.e80 #dock button { border-radius: 8px !important; background: linear-gradient(var(--e80-bezel-hi), var(--e80-bezel) 60%, var(--e80-bezel-lo)) !important; border: 1px solid var(--e80-bezel-lo) !important; box-shadow: 0 2px 0 rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.35) !important; }
+html.e80-term #dock button { background: linear-gradient(#e8decc, #d7cbb3 60%, #b9a78c) !important; }
+html.e80-term #dock button .e80i { background: #0b120c; border-radius: 4px; padding: 2px; box-shadow: inset 0 0 0 1px #3a4a3a; }
+html.e80-neon #dock button { background: #120814 !important; border-color: rgba(255,43,214,.45) !important; box-shadow: 0 0 6px rgba(255,43,214,.25), inset 0 0 0 1px rgba(62,240,255,.15) !important; }
+html.e80-bit #dock button { border-radius: 0 !important; background: #f3f3ee !important; border: 2px solid #111 !important; box-shadow: 2px 2px 0 #111 !important; }
+html.e80 #dock button:active, html.e80 #arcDock .ad:active { transform: translateY(1px) !important; box-shadow: 0 1px 0 rgba(0,0,0,.5) !important; }
+html.e80 #arcDock .ad span { letter-spacing: .14em; text-transform: uppercase; font-size: 8.5px; }
+/* Home's dials: the camera dial at the right edge a ridged knob, the dimmer at the left a fader rail */
+html.e80 #cam .mk svg path { stroke-dasharray: 2 3; stroke-width: 2.2; }
+html.e80 #camO .ln { opacity: .6; }
+html.e80 #dimmer .ln { background: repeating-linear-gradient(0deg, var(--e80-ink) 0 1px, transparent 1px 6px) !important; width: 6px !important; opacity: .5; }
+html.e80 #moon svg { filter: drop-shadow(0 0 4px var(--e80-glow)); }
+
+/* ——— the clock: Home's big time and the room bar's small one, as segmented LED ——— */
+.e80clock { display: none; }
+html.e80 #rest .t { display: none !important; }
+html.e80 #rest .e80clock { display: flex; justify-content: center; height: 52px; margin: 0 auto 6px; }
+html.e80 #ozbar-time { color: transparent !important; }
+html.e80 #ozbar-time .e80clock { display: block; position: absolute; right: 0; top: 50%; height: 12px; margin-top: -6px; }
+
+/* ——— rooms: each a skinned machine. A ground, scanlines beneath the content (stepping up slowly), the flavour's chrome ——— */
+html.e80 :is(#phone, #gw, #msg, #notes, #grant, #pushradio, #fr, .gpanel, #shrink, #bal, #about, .oz-sheet, #br, #nm, #tune, #plan, #picks, #decide, #sweep, #demos) {
+  background: var(--e80-scanimg), var(--e80-ground) !important; animation: e80step 12s steps(4) infinite; -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
+@keyframes e80step { from { background-position: 0 0, 0 0; } to { background-position: 0 -4px, 0 0; } }
+html.e80 #rooms .room.on { background: var(--e80-scanimg), color-mix(in srgb, var(--e80-ground) 86%, transparent); animation: e80step 12s steps(4) infinite; }
+html.e80 #about .ab-bg { display: none; }
+html.e80 :is(#phone, #gw, #msg, #notes, #grant, #pushradio, #fr, #bal, #nm, #br, #tune) { border-top: 2px solid var(--e80-bezel) !important; }
+html.e80-term :is(#phone, #gw, #msg, #notes, #grant, #pushradio, #fr, #bal, #nm, #br, #tune) { box-shadow: inset 0 0 0 6px #d7cbb3, inset 0 0 0 7px #b9a78c, inset 0 0 40px rgba(0,0,0,.6) !important; }   /* the beige bezel round the glass */
+html.e80-neon :is(#phone, #gw, #msg, #notes, #grant, #pushradio, #fr, #bal, #nm, #br, #tune) { box-shadow: inset 0 1px 0 rgba(255,43,214,.35), inset 0 0 60px rgba(255,43,214,.05) !important; }
+/* 1-bit: white windows, black ink, a striped title bar, a close box */
+html.e80-bit :is(#phone, #gw, #msg, #notes, #grant, #pushradio, #fr, #bal, #nm, #br, #tune, .oz-sheet, .gpanel, #about) { background: #f3f3ee !important; color: #111 !important; border: 2px solid #111 !important; text-shadow: none !important; }
+html.e80-bit :is(#phone, #gw, #msg, #notes, #grant, #pushradio, #fr, #bal, #nm, #br, #tune)::before { content: ''; position: absolute; left: 0; right: 0; top: 0; height: 12px; z-index: 3; pointer-events: none;
+  background: repeating-linear-gradient(180deg, #111 0 1px, #f3f3ee 1px 3px) 22px 1px / calc(100% - 44px) 10px no-repeat, linear-gradient(#111, #111) 6px 1px / 10px 10px no-repeat; }
+html.e80-bit #chrome, html.e80-bit #chrome * { text-shadow: none; }
+
+/* the room bar: chrome, and room names like motel signs in Neon (they flicker on once, then hold) */
+html.e80 #back { letter-spacing: .26em; }
+html.e80-neon #back, html.e80-neon .gr-head h2, html.e80-neon #pushradio h3, html.e80-neon .jul { color: #ff2bd6; text-shadow: 0 0 6px rgba(255,43,214,.35); }
+html.e80-neon.fh-in #back, html.e80-neon.e80-flick #back { animation: e80flick 1.4s steps(1) 1 both; }
+@keyframes e80flick { 0% { opacity: .15; } 8% { opacity: 1; } 14% { opacity: .3; } 22% { opacity: 1; } 30% { opacity: .55; } 38%, 100% { opacity: 1; } }
+html.e80-term #back { color: #7dff6a; }
+
+/* ——— the marked rooms ——— */
+/* Phone: a handset; on a call the rotary turns once and CONNECTING… types in green, then holds */
+.e80-call { display: none; }
+html.e80 .e80-call { display: flex; position: absolute; z-index: 5; left: 50%; bottom: 96px; transform: translateX(-50%); align-items: center; gap: 12px; padding: 10px 14px; border-radius: 10px;
+  background: var(--e80-panel); border: 1px solid var(--e80-hair); pointer-events: none; font: 300 12px/1 Poppins, sans-serif; letter-spacing: .24em; color: #7dff6a; text-shadow: 0 0 5px rgba(125,255,106,.45); }
+html.e80-bit .e80-call { color: #111; text-shadow: none; background: #f3f3ee; border: 2px solid #111; border-radius: 0; }
+.e80-call .dial { width: 34px; height: 34px; } .e80-call .dial g { transform-box: view-box; transform-origin: 16px 16px; animation: e80rotary 2.4s ease-in-out 1 both; }
+@keyframes e80rotary { 0% { transform: none; } 45% { transform: rotate(150deg); } 100% { transform: none; } }
+/* Sound: the cassette player, reels turning while it plays, a VU needle that leans and settles */
+.e80-walk { display: none; }
+html.e80 #r-player .e80-walk { display: block; position: absolute; left: 50%; top: calc(var(--top, 8px) + 62px); width: 132px; height: 132px; margin-left: -66px; z-index: 2; pointer-events: none; }
+html.e80 #r-player .e80-walk .live .a-spin { animation-play-state: paused; } html.e80 #r-player.playing .e80-walk .live .a-spin { animation-play-state: running; }
+html.e80 #r-player .e80-walk .a-needle { transform: rotate(-10deg); } html.e80 #r-player.playing .e80-walk .live .a-needle { animation: i80needle 4s ease-in-out 1 both; }
+html.e80 #r-player #sp-go { border-radius: 6px !important; background: #f46b1b !important; color: #111 !important; box-shadow: 0 2px 0 #9a3c08 !important; }   /* the orange button stays orange */
+html.e80 #r-player #sp-go:active { transform: translateY(1px); box-shadow: 0 1px 0 #9a3c08 !important; }
+/* Good Weather: a pixel sun with scanlines, the forecast typed once */
+html.e80 #gw .gw-mark { background: none !important; -webkit-mask: none !important; mask: none !important; }
+html.e80 #gw .e80-sun { display: block; width: 64px; height: 64px; margin: 0 auto 8px; }
+html.e80 #gw .e80-typing::after { content: '▌'; margin-left: 2px; animation: e80blink 1.06s steps(1) infinite; }
+/* Camera: a viewfinder, a REC dot that comes on once, a date stamp. Over the live view: chrome only, never a tint */
+.e80-vf { display: none; }
+html.e80.camming .e80-vf { display: block; position: fixed; inset: calc(var(--top, 8px) + 60px) 18px 150px; z-index: 67; pointer-events: none; }
+.e80-vf i { position: absolute; width: 26px; height: 26px; border: 3px solid #ffb000; filter: drop-shadow(0 0 2px rgba(0,0,0,.6)); }
+.e80-vf .a { left: 0; top: 0; border-right: 0; border-bottom: 0; } .e80-vf .b { right: 0; top: 0; border-left: 0; border-bottom: 0; } .e80-vf .c { left: 0; bottom: 0; border-right: 0; border-top: 0; } .e80-vf .d { right: 0; bottom: 0; border-left: 0; border-top: 0; }
+.e80-vf b { position: absolute; right: 34px; top: 4px; display: flex; align-items: center; gap: 6px; font: 400 12px/1 Poppins, sans-serif; letter-spacing: .2em; color: #f3f3ee; text-shadow: 0 1px 2px #000; }
+.e80-vf b::before { content: ''; width: 10px; height: 10px; border-radius: 50%; background: #ff2b4a; animation: e80rec 1.4s ease-out 1 both; }
+@keyframes e80rec { 0% { opacity: 0; } 40%, 100% { opacity: 1; } }
+.e80-vf em { position: absolute; right: 34px; bottom: 6px; font: 400 13px/1 Poppins, sans-serif; font-style: normal; letter-spacing: .16em; color: #ffb000; text-shadow: 0 0 3px rgba(255,176,0,.5), 0 1px 2px #000; }
+/* Notes: a 1-bit window, a blinking cursor; the page is still */
+html.e80 #notes textarea, html.e80 #notes [contenteditable] { caret-color: var(--e80-ink); }
+html.e80 #notes .nt-text { background: transparent !important; }
+html.e80 #notes .e80-cur { display: inline-block; width: 8px; height: 15px; margin-left: 2px; vertical-align: -2px; background: var(--e80-ink); animation: e80blink 1.06s steps(1) infinite; }
+html.e80-bit #notes .e80-cur { background: #111; }
+/* Messages: a pager screen; one pip, then rest */
+html.e80 #msg .e80-pager { display: flex; } .e80-pager { display: none; position: absolute; z-index: 5; right: 16px; top: calc(var(--top, 8px) + 60px); align-items: center; gap: 8px; padding: 6px 10px; border-radius: 6px;
+  background: #9fb08a; color: #1c2418; font: 400 10px/1 Poppins, sans-serif; letter-spacing: .2em; box-shadow: inset 0 0 0 2px #39432f, 0 2px 0 #000; pointer-events: none; text-shadow: none; }
+.e80-pager i { width: 8px; height: 8px; border-radius: 50%; background: #1c2418; opacity: .2; animation: e80pip 1.8s ease-out .3s 1 both; }
+@keyframes e80pip { 0% { opacity: .2; } 20% { opacity: 1; } 100% { opacity: .35; } }
+/* Timer: flip numbers, ticking calmly. Never an alarm flare */
+.e80-flip { display: none; }
+html.e80 #r-red .e80-flip { display: flex; position: absolute; inset: 0; align-items: center; justify-content: center; gap: 4px; pointer-events: none; }
+html.e80 #r-red #rm-tap { color: transparent !important; text-shadow: none !important; }
+.e80-flip b { position: relative; display: grid; place-items: center; width: 34px; height: 48px; border-radius: 4px; background: linear-gradient(#1a1a22 0 49%, #000 49% 51%, #121218 51%); color: var(--e80-ink);
+  font: 300 34px/1 Poppins, sans-serif; font-variant-numeric: tabular-nums; box-shadow: 0 2px 0 #000, inset 0 0 0 1px rgba(255,255,255,.06); perspective: 120px; }
+.e80-flip b.turn { animation: e80flip .5s ease-in-out 1; } .e80-flip .cl { width: 6px; color: var(--e80-ink); font: 300 28px/1 Poppins, sans-serif; }
+@keyframes e80flip { 0% { transform: rotateX(0); } 50% { transform: rotateX(-80deg); } 100% { transform: rotateX(0); } }
+html.e80-bit .e80-flip b { background: #f3f3ee; color: #111; border: 2px solid #111; border-radius: 0; box-shadow: 2px 2px 0 #111; }
+html.e80-term .e80-flip b { background: linear-gradient(#0f1a11 0 49%, #000 49% 51%, #0b120c 51%); }
+
+/* ——— Home's own dot pad (the same pad as the app's, so the way in is the same on Home) ——— */
+#hpad { position: fixed; z-index: 70; top: calc(var(--top, 14px) + 46px); right: 10px; width: 176px; padding: 18px 8px 16px; border-radius: 18px; background: rgba(6,3,4,.92); border: 1px solid rgba(255,68,87,.22);
+  opacity: 0; transform: translateY(-6px) scale(.97); transform-origin: 90% 0; transition: opacity .22s ease, transform .22s ease; pointer-events: none; text-shadow: none; }
+#hpad.on { opacity: 1; transform: none; pointer-events: auto; }
+#hpad svg { display: block; width: 160px; height: 160px; }
+#hpad .rp-ring { fill: none; stroke: rgba(255,68,87,.35); } #hpad .rp-ax { stroke: rgba(255,68,87,.22); } #hpad .rp-stop { fill: rgba(255,68,87,.6); }
+#hpad .rp-notch { fill: none; stroke: rgba(255,68,87,.25); } #hpad .rp-notch.lit { stroke: rgba(255,68,87,.7); }
+#hpad .rp-dot { fill: #FF4457; transition: cx .12s linear, cy .18s cubic-bezier(.22,.7,.2,1); filter: drop-shadow(0 0 4px rgba(255,68,87,.8)); }
+#hpad .rp-tone { position: absolute; left: 0; right: 0; top: 6px; text-align: center; font: 400 10px Julius, "Julius Sans One", Poppins, sans-serif; letter-spacing: .24em; text-transform: uppercase; color: #FF4457; }
+#hpad .rp-l, #hpad .rp-v { position: absolute; top: 96px; font-size: 8.5px; letter-spacing: .16em; text-transform: uppercase; color: rgba(255,68,87,.6); font-style: normal; } #hpad .rp-l { left: 16px; } #hpad .rp-v { right: 16px; }
+#hpad .e80-panel[hidden], #redpad .e80-panel[hidden] { display: none; }
+#redpad .e80-panel { margin: 10px 2px 0; }
+
+/* rooms that write their words in red mode's own red: in 80s mode they take the flavour's ink (Full red keeps red) */
+html.e80:not(.fullred) :is(#br, #coned, #msg, #gw, #r-red, #r-archive, #r-player, #r-golden, #r-loupe, #r-feed, #r-objects, #r-loops, #r-tonecheck, .gpanel, .oz-sheet, #shrink, #bal, #fr, #nm, #about)
+  :is(p, span, small, b, em, strong, h1, h2, h3, h4, label, figcaption, button, div, time, a, li, td, th, input, select, textarea) { color: var(--e80-ink) !important; border-color: var(--e80-hair) !important; }
+html.e80:not(.fullred) #r-red svg circle, html.e80:not(.fullred) #r-red svg path { stroke: var(--e80-ink) !important; }
+html.e80:not(.fullred) #r-red .lamp { background: radial-gradient(circle, var(--e80-glow), transparent 70%) !important; }
+html.e80 #r-player .e80-walk { top: calc(var(--top, 8px) + 118px) !important; left: auto !important; right: 14px; width: 76px !important; height: 76px !important; margin-left: 0 !important; }
+
+/* 1-bit: inside a window everything is paper and ink. Inner sheets and cards drop their dark grounds; photographs keep theirs */
+html.e80-bit:not(.fullred) :is(#phone, #gw, #msg, #notes, #grant, #pushradio, #fr, #bal, #nm, #br, #tune, .oz-sheet, .gpanel, #about, #shrink, #rooms .room.on)
+  :is(div, section, aside, nav, header, footer, p, span, small, b, em, strong, h1, h2, h3, h4, label, figcaption, figure, button, time, a, li, input, select, textarea, details, summary, q):not([class^="e80"]):not(.e80seg):not(#sp-go):not(.pr-sheet):not(.gr-sheet):not(.nt-sheet) {
+  color: #111 !important; border-color: #111 !important; background-color: transparent !important; text-shadow: none !important; -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
+html.e80-bit :is(.pr-sheet, .gr-sheet, .nt-sheet, .ph-sheet) { background: #f3f3ee !important; border-top: 2px solid #111 !important; box-shadow: 0 -3px 0 #111 !important; }
+html.e80-bit #rooms .room.on { background: #f3f3ee !important; }
+
+/* the sky itself (the app's): drawn, never a photograph, so it may take the flavour's light. Terminal: phosphor green ·
+   Neon: magenta · 1-bit: black lines on paper. Full red keeps red */
+html.e80:not(.fullred) :is(#sky, #stage, #moonfree, .mpath, .horizon, #ozcmp, #ozcmp-note, #title, #sub, #poem, #foot, #master, #master2, #dimmer, #rail, #mark) { transition: filter .6s ease; }
+html.e80-term:not(.fullred) :is(#sky, #stage, #moonfree, .mpath, .horizon, #ozcmp, #ozcmp-note, #title, #sub, #poem, #foot, #master, #master2, #dimmer, #rail, #mark) { filter: hue-rotate(118deg) saturate(.85) brightness(1.05); }
+html.e80-neon:not(.fullred) :is(#sky, #stage, #moonfree, .mpath, .horizon, #ozcmp, #ozcmp-note, #title, #sub, #poem, #foot, #master, #master2, #dimmer, #rail, #mark) { filter: hue-rotate(-42deg) saturate(1.15); }
+html.e80-bit:not(.fullred) :is(#sky, #stage, #moonfree, .mpath, .horizon, #ozcmp, #ozcmp-note, #title, #sub, #poem, #foot, #master, #master2, #dimmer, #rail, #mark) { filter: grayscale(1) invert(1) contrast(1.15); }
+html.e80-bit:not(.fullred) #stage { opacity: .35; }
+html.e80 #sky img, html.e80 #sky video { filter: none !important; }
+.e80-fl button { letter-spacing: .06em !important; }
+
+/* ——— after the reference sheet (pack v2) ——— */
+/* BRIGHT and CONTRAST, two small knobs under the mint dot, on Home and on the sky. In rooms they step aside (they are in the dot's pad) */
+#e80knobs { display: none; }
+html.e80 #e80knobs { display: flex; flex-direction: column; gap: 8px; position: fixed; z-index: 30; right: 12px; top: calc(var(--top, 14px) + 52px); }
+html.e80 :is(.phoning, .noting, .messaging, .granting, .radioing, .camming, .gw-on, .befriending, .planning, .picking, .deciding, .sweeping, .demoing, .shrinking, .balancing, .welcoming, .abouting, .aplaying, .marking, .browsing, .mapping, .tune, .room-on) #e80knobs,
+html.e80:is(.phoning, .noting, .messaging, .granting, .radioing, .camming, .gw-on, .befriending, .planning, .picking, .deciding, .sweeping, .demoing, .shrinking, .balancing, .welcoming, .abouting, .aplaying, .marking, .browsing, .mapping, .fromhome) #e80knobs { display: none; }
+#e80knobs .e80-knob { gap: 3px; } #e80knobs .e80-knob .cap { width: 26px; height: 26px; } #e80knobs .e80-knob .tick { top: 2px; height: 8px; width: 2px; margin-left: -1px; }
+#e80knobs .e80-knob span { font: 300 6.5px/1 Poppins, sans-serif; letter-spacing: .14em; color: var(--e80-meta); text-shadow: none; }
+/* Terminal: the beige bezel round the whole glass (an edge only, never over the middle of anything) */
+html.e80-term:not(.fullred) body::after { content: ''; position: fixed; inset: 0; z-index: 200; pointer-events: none; border: 5px solid #d7cbb3; border-radius: 6px; box-shadow: inset 0 0 0 1px #b9a78c, inset 0 0 24px rgba(0,0,0,.55); }
+/* Home's quiet line gets a small VU, wandering softly */
+.e80vu { display: none; }
+html.e80 #rest .q .e80vu { display: inline-flex; align-items: flex-end; gap: 2px; height: 10px; margin-left: 10px; vertical-align: middle; }
+.e80vu b { width: 2px; height: 3px; background: var(--e80-seg); opacity: .7; animation: e80vu 2.6s ease-in-out infinite alternate; }
+.e80vu b:nth-child(2) { animation-delay: -.4s; } .e80vu b:nth-child(3) { animation-delay: -1.1s; } .e80vu b:nth-child(4) { animation-delay: -.7s; } .e80vu b:nth-child(5) { animation-delay: -1.6s; } .e80vu b:nth-child(6) { animation-delay: -.2s; } .e80vu b:nth-child(7) { animation-delay: -1.3s; } .e80vu b:nth-child(8) { animation-delay: -.9s; }
+@keyframes e80vu { from { height: 2px; } to { height: 9px; } }
+/* Phone: a call is a handset and a chrome ring (the rotary turns once) and CONNECTING… */
+html.e80 #phone .e80-call { inset: 64px 0 0; left: 0; right: 0; bottom: 0; transform: none; flex-direction: column; justify-content: flex-start; gap: 26px; padding-top: 40px; border: 0; border-radius: 0; background: var(--e80-scanimg), var(--e80-ground); pointer-events: auto; color: var(--e80-lead); }
+html.e80-term #phone .e80-call { color: #7dff6a; } html.e80-neon #phone .e80-call { color: #ff2bd6; } html.e80-bit #phone .e80-call { color: #111; background: #f3f3ee; }
+.e80-call .hs { width: 110px; height: 150px; filter: drop-shadow(0 0 6px currentColor); } html.e80-bit .e80-call .hs { filter: none; }
+.e80-call .ring { position: relative; width: 150px; height: 150px; border-radius: 50%; background: conic-gradient(from 200deg, #3a3a48, #f3f3f8 18%, #9a9aaa 35%, #3a3a48 52%, #f3f3f8 70%, #9a9aaa 86%, #3a3a48); padding: 9px; box-shadow: 0 4px 10px rgba(0,0,0,.6); }
+.e80-call .ring > i { display: block; width: 100%; height: 100%; border-radius: 50%; background: var(--e80-ground); box-shadow: inset 0 2px 8px rgba(0,0,0,.8); }
+html.e80-bit .e80-call .ring > i { background: #f3f3ee; }
+.e80-call .ring .dial { position: absolute; inset: 22px; width: auto; height: auto; color: var(--e80-meta); }
+.e80-call span { font: 300 12px/1 Poppins, sans-serif; letter-spacing: .3em; color: #7dff6a; text-shadow: 0 0 5px rgba(125,255,106,.45); min-height: 12px; }
+html.e80-bit .e80-call span { color: #111; text-shadow: none; }
+/* Sound: the big cassette player */
+html.e80 #r-player .e80-walk { top: calc(var(--top, 8px) + 66px) !important; left: 50% !important; right: auto; width: 270px !important; height: 136px !important; margin-left: -135px !important; }
+html.e80 #r-player .e80-walk svg { width: 100%; height: 100%; display: block; }
+.e80-walk .reel { transform-box: fill-box; transform-origin: center; } html.e80 #r-player.playing .e80-walk .reel { animation: i80spin 6s linear infinite; } html.e80 #r-player.playing .e80-walk .reel.r2 { animation-duration: 5.4s; }
+.e80-walk .needle { transform-box: view-box; transform-origin: 168px 118px; transform: rotate(-24deg); transition: transform 1.6s ease; } html.e80 #r-player.playing .e80-walk .needle { animation: e80needle 4s ease-in-out 1 both; }
+@keyframes e80needle { 0% { transform: rotate(-24deg); } 35% { transform: rotate(12deg); } 60% { transform: rotate(2deg); } 100% { transform: rotate(6deg); } }
+/* Good Weather: the big amber pixel sun, with a scan line across it */
+html.e80 #gw .e80-sun { width: 150px !important; height: 150px !important; margin: 4px auto 12px; }
+html.e80 #gw .e80-sun .i80-bit { --i80-ink: #ffb000; --i80-paper: #ffb000; filter: drop-shadow(0 0 4px rgba(255,176,0,.45)); }
+html.e80 #gw .e80-sun .i80-bit .cf { display: none; } html.e80 #gw .e80-sun .i80-bit .a-crawl .pk { fill: #3ef0ff; }
+html.e80-bit #gw .e80-sun .i80-bit { filter: none; }
+html.e80:has(#rooms .room.on) #e80knobs, html.e80:has(.oz-sheet.in) #e80knobs { display: none; }
+html.e80 #r-player .e80-walk { z-index: 6 !important; }
