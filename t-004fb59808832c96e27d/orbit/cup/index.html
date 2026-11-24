@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>ceramic cup · 3D · Gill James</title>
+<meta name="theme-color" content="#04070b">
+<link rel="icon" href="../../icons/icon-192.png">
+<style>
+  :root{--bg:#04070b;--ink:#e8e4dc}
+  html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font:300 14px/1.4 Poppins,sans-serif}
+  @font-face{font-family:Poppins;font-weight:300;font-display:swap;src:url(../../fonts/poppins-300.woff2) format("woff2")}
+  @font-face{font-family:"Julius Sans One";font-display:swap;src:url(../../fonts/julius-sans-one.woff2) format("woff2")}
+  header{position:fixed;top:0;left:0;right:0;display:flex;align-items:center;gap:14px;padding:14px 16px;z-index:2}
+  header a{color:var(--ink);text-decoration:none;border:1px solid rgba(255,255,255,.25);border-radius:16px;padding:6px 12px}
+  .here{margin-left:auto;font-size:11px;letter-spacing:.12em;opacity:.7}
+  canvas#orbit{position:fixed;inset:0;width:100%;height:100%}
+  #cap{position:fixed;left:16px;right:16px;bottom:max(16px,env(safe-area-inset-bottom));text-align:center;font-size:13px;letter-spacing:.04em}
+  .nbr{position:fixed;left:16px;bottom:max(48px,calc(env(safe-area-inset-bottom) + 40px));font-size:13px}
+  .nbr a{color:#bff5df}
+
+/* red-mode disc from js/theme.js: top right, 44px hit, 8px dot. red while Night, mint once Red is on. */
+#themeBtn{position:fixed;z-index:70;right:calc(8px + env(safe-area-inset-right,0px));top:calc(4px + env(safe-area-inset-top,0px));width:44px;height:44px;border:0;border-radius:0;display:grid;place-items:center;background:none;padding:0;cursor:pointer;opacity:1;-webkit-tap-highlight-color:transparent}
+#themeBtn i{display:block;width:8px;height:8px;border-radius:50%;background:#FF4457;opacity:.9;box-shadow:0 0 6px rgba(255,68,87,.45);transition:background .3s,box-shadow .3s}
+html[data-theme=red] #themeBtn i{background:#55daa1;opacity:1;box-shadow:0 0 7px 1px rgba(85,218,161,.7)}
+#themeBtn:focus-visible{outline:1px solid #eef3f5;outline-offset:2px}
+
+</style>
+<script type="importmap">{"imports":{"three":"../../vendor/three.module.min.js"}}</script>
+<script src="../../js/theme.js"></script>
+</head><body>
+<header>
+  <a href="../../#cup">‹ back</a>
+  <span>ceramic cup</span>
+  <span class="here">you are here · 3D</span>
+  <a href="../../list/">list</a>
+</header>
+<canvas id="orbit" aria-label="the ceramic cup, drag to turn it"></canvas>
+<p id="cap">The same ceramic cup, as a 3D model. Drag to turn it.</p>
+<p class="nbr"><a href="../">the scoop, next to it</a></p>
+<script type="module" src="orbit.js"></script>
+</body></html>

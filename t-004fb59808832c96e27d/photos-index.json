@@ -1,0 +1,650 @@
+[
+  {
+    "chapter": "scoop",
+    "slug": "scoop-hand-2aea8932",
+    "title": "ice cream scoop",
+    "cap": "Ceramic ice cream scoop with a dark handle, held in the hand.",
+    "src": "media/photos/scoop-hand-2aea8932.jpg",
+    "w": 1536,
+    "h": 2048
+  },
+  {
+    "chapter": "scoop",
+    "slug": "scoop-three-quarter",
+    "title": "ice cream scoop, three quarter",
+    "cap": "",
+    "src": "media/photos/scoop-three-quarter.webp",
+    "w": 960,
+    "h": 1200
+  },
+  {
+    "chapter": "scoop",
+    "slug": "scoop-side",
+    "title": "ice cream scoop, side",
+    "cap": "",
+    "src": "media/photos/scoop-side.webp",
+    "w": 960,
+    "h": 1200
+  },
+  {
+    "chapter": "scoop",
+    "slug": "scoop-whole",
+    "title": "ice cream scoop",
+    "cap": "",
+    "src": "media/photos/scoop-whole.webp",
+    "w": 960,
+    "h": 1200
+  },
+  {
+    "chapter": "scoop",
+    "slug": "scoop-in-hand",
+    "title": "ice cream scoop in the hand",
+    "cap": "",
+    "src": "media/photos/scoop-in-hand.webp",
+    "w": 960,
+    "h": 1200
+  },
+  {
+    "chapter": "scoop",
+    "slug": "scoop-context",
+    "title": "ice cream scoop",
+    "cap": "",
+    "src": "media/photos/scoop-context.webp",
+    "w": 900,
+    "h": 1200
+  },
+  {
+    "chapter": "scoop",
+    "slug": "scoop-cut",
+    "title": "ice cream scoop",
+    "cap": "",
+    "src": "media/photos/scoop-cut.webp",
+    "w": 361,
+    "h": 699
+  },
+  {
+    "chapter": "scoop",
+    "slug": "scoop-bowl",
+    "title": "ice cream scoop, the bowl",
+    "cap": "",
+    "src": "media/photos/scoop-bowl.webp",
+    "w": 403,
+    "h": 468
+  },
+  {
+    "chapter": "scoop",
+    "slug": "scoop-surface-side",
+    "title": "ice cream scoop, side",
+    "cap": "",
+    "src": "media/photos/scoop-surface-side.webp",
+    "w": 518,
+    "h": 480
+  },
+  {
+    "chapter": "scoop",
+    "slug": "scoop-handle",
+    "title": "ice cream scoop, the handle",
+    "cap": "",
+    "src": "media/photos/scoop-handle.webp",
+    "w": 422,
+    "h": 432
+  },
+  {
+    "chapter": "scoop",
+    "slug": "scoop-hanging",
+    "title": "A wooden scoop. Held in slat-window light, its shadow falling across the slats.",
+    "cap": "",
+    "src": "media/photos/scoop-hanging.jpg",
+    "w": 1536,
+    "h": 2048
+  },
+  {
+    "chapter": "paddle",
+    "slug": "paddle-blade-grain",
+    "title": "carved paddle",
+    "cap": "A carved paddle. Close on the blade, the grain and the carved hollow catching the light.",
+    "src": "media/photos/paddle-blade-grain-2023.jpg",
+    "w": 1536,
+    "h": 2048
+  },
+  {
+    "chapter": "paddle",
+    "slug": "paddle-close-grain",
+    "title": "paddle close grain",
+    "cap": "",
+    "src": "media/photos/paddle-close-grain.webp",
+    "w": 900,
+    "h": 1200
+  },
+  {
+    "chapter": "paddle",
+    "slug": "paddle-product",
+    "title": "single paddle, product view",
+    "cap": "",
+    "src": "media/photos/paddle-product.webp",
+    "w": 900,
+    "h": 1200
+  },
+  {
+    "chapter": "paddle",
+    "slug": "paddle-against-wall",
+    "title": "long dark paddle against a wall",
+    "cap": "",
+    "src": "media/photos/paddle-against-wall.webp",
+    "w": 900,
+    "h": 1200
+  },
+  {
+    "chapter": "paddle",
+    "slug": "paddle-window-light",
+    "title": "dark paddle in window light",
+    "cap": "",
+    "src": "media/photos/paddle-window-light.webp",
+    "w": 960,
+    "h": 1200
+  },
+  {
+    "chapter": "paddle",
+    "slug": "paddle-in-hand",
+    "title": "long dark paddle in hand",
+    "cap": "",
+    "src": "media/photos/paddle-in-hand.webp",
+    "w": 960,
+    "h": 1200
+  },
+  {
+    "chapter": "cup",
+    "slug": "cup-hand-cd63215d",
+    "title": "joio cup",
+    "cap": "The ceramic cup, held in the hand.",
+    "src": "media/photos/cup-hand-cd63215d.jpg",
+    "w": 1536,
+    "h": 2048
+  },
+  {
+    "chapter": "cup",
+    "slug": "cup-hand-5565e963",
+    "title": "joio cup",
+    "cap": "The ceramic cup, held in the hand.",
+    "src": "media/photos/cup-hand-5565e963.jpg",
+    "w": 1536,
+    "h": 2048
+  },
+  {
+    "chapter": "cup",
+    "slug": "cup-speckled",
+    "title": "A ceramic cup. A small cup of coffee on a wooden board, the glaze catching the light.",
+    "cap": "",
+    "src": "media/photos/cup-speckled.jpg",
+    "w": 1536,
+    "h": 2048
+  },
+  {
+    "chapter": "cup",
+    "slug": "cup-on-a-board",
+    "title": "joio.co cup on a board",
+    "cap": "",
+    "src": "media/photos/cup-on-a-board.webp",
+    "w": 960,
+    "h": 1200
+  },
+  {
+    "chapter": "cup",
+    "slug": "cup-holding",
+    "title": "holding a joio.co cup",
+    "cap": "",
+    "src": "media/photos/cup-holding.webp",
+    "w": 960,
+    "h": 1200
+  },
+  {
+    "chapter": "cup",
+    "slug": "cup-latte",
+    "title": "latte in a joio.co cup",
+    "cap": "",
+    "src": "media/photos/cup-latte.webp",
+    "w": 960,
+    "h": 1200
+  },
+  {
+    "chapter": "cup",
+    "slug": "cup-from-above",
+    "title": "joio.co cup from above",
+    "cap": "",
+    "src": "media/photos/cup-from-above.webp",
+    "w": 960,
+    "h": 1198
+  },
+  {
+    "chapter": "cup",
+    "slug": "cup-glaze",
+    "title": "glazed joio.co cup in hand",
+    "cap": "",
+    "src": "media/photos/cup-glaze.webp",
+    "w": 900,
+    "h": 1125
+  },
+  {
+    "chapter": "cup",
+    "slug": "cup-pour",
+    "title": "joio.co cup",
+    "cap": "",
+    "src": "media/photos/cup-pour.webp",
+    "w": 960,
+    "h": 1200
+  },
+  {
+    "chapter": "cup",
+    "slug": "cup-cut-img_5841",
+    "title": "joio cup",
+    "cap": "",
+    "src": "media/photos/cup-cut-img_5841.webp",
+    "w": 750,
+    "h": 660
+  },
+  {
+    "chapter": "cup",
+    "slug": "cup-making-img_5881",
+    "title": "joio cup",
+    "cap": "",
+    "src": "media/photos/cup-making-img_5881.webp",
+    "w": 900,
+    "h": 1200
+  },
+  {
+    "chapter": "cup",
+    "slug": "cup-making-img_5892",
+    "title": "joio cup",
+    "cap": "",
+    "src": "media/photos/cup-making-img_5892.webp",
+    "w": 900,
+    "h": 1200
+  },
+  {
+    "chapter": "cup",
+    "slug": "cup-making-img_5901",
+    "title": "joio cup",
+    "cap": "",
+    "src": "media/photos/cup-making-img_5901.webp",
+    "w": 900,
+    "h": 1200
+  },
+  {
+    "chapter": "cup",
+    "slug": "cup-surface-img_5841",
+    "title": "joio cup",
+    "cap": "",
+    "src": "media/photos/cup-surface-img_5841.webp",
+    "w": 810,
+    "h": 660
+  },
+  {
+    "chapter": "cup",
+    "slug": "cup-surface-img_5892",
+    "title": "joio cup",
+    "cap": "",
+    "src": "media/photos/cup-surface-img_5892.webp",
+    "w": 765,
+    "h": 780
+  },
+  {
+    "chapter": "cup",
+    "slug": "cup-surface-img_5901",
+    "title": "joio cup",
+    "cap": "",
+    "src": "media/photos/cup-surface-img_5901.webp",
+    "w": 558,
+    "h": 576
+  },
+  {
+    "chapter": "cup",
+    "slug": "cup-surface-e2aa7ba0",
+    "title": "joio cup",
+    "cap": "",
+    "src": "media/photos/cup-surface-e2aa7ba0.webp",
+    "w": 960,
+    "h": 840
+  },
+  {
+    "chapter": "cup",
+    "slug": "cup-use-16b39e13",
+    "title": "joio cup",
+    "cap": "",
+    "src": "media/photos/cup-use-16b39e13.webp",
+    "w": 960,
+    "h": 1200
+  },
+  {
+    "chapter": "cup",
+    "slug": "cup-use-img_0952",
+    "title": "joio cup",
+    "cap": "",
+    "src": "media/photos/cup-use-img_0952.webp",
+    "w": 900,
+    "h": 1200
+  },
+  {
+    "chapter": "cup",
+    "slug": "cup-use-img_5925",
+    "title": "joio cup",
+    "cap": "",
+    "src": "media/photos/cup-use-img_5925.webp",
+    "w": 900,
+    "h": 1200
+  },
+  {
+    "chapter": "cup",
+    "slug": "cup-use-img_6136",
+    "title": "joio cup",
+    "cap": "",
+    "src": "media/photos/cup-use-img_6136.webp",
+    "w": 900,
+    "h": 1200
+  },
+  {
+    "chapter": "cup",
+    "slug": "cup-use-img_6166",
+    "title": "joio cup",
+    "cap": "",
+    "src": "media/photos/cup-use-img_6166.webp",
+    "w": 900,
+    "h": 1200
+  },
+  {
+    "chapter": "cup",
+    "slug": "cup-use-img_9126",
+    "title": "joio cup",
+    "cap": "",
+    "src": "media/photos/cup-use-img_9126.webp",
+    "w": 900,
+    "h": 1200
+  },
+  {
+    "chapter": "moss",
+    "slug": "moss-vessel",
+    "title": "moss vessel",
+    "cap": "Moss and pinecones in a small vessel. Window light throws the plant's shadow on the wall.",
+    "src": "media/photos/moss-vessel.jpg",
+    "w": 1536,
+    "h": 2048
+  },
+  {
+    "chapter": "moss",
+    "slug": "planter-cup-with-moss",
+    "title": "planter cup with moss",
+    "cap": "",
+    "src": "media/photos/planter-cup-with-moss.webp",
+    "w": 900,
+    "h": 1125
+  },
+  {
+    "chapter": "rim",
+    "slug": "crescent-rim",
+    "title": "bowl rim",
+    "cap": "The rim of a bowl. A thin crescent of light along the edge, like a moon.",
+    "src": "media/photos/crescent-rim.jpg",
+    "w": 2048,
+    "h": 2048
+  },
+  {
+    "chapter": "rim",
+    "slug": "crescent-rim-object",
+    "title": "crescent rim of a cup",
+    "cap": "",
+    "src": "media/photos/crescent-rim-object.webp",
+    "w": 960,
+    "h": 960
+  },
+  {
+    "chapter": "sculpture",
+    "slug": "hanging-sculpture-sunlight-d290ef9b",
+    "title": "hanging sculpture",
+    "cap": "A hanging sculpture in a blade of sunlight, with a long curved shadow on the wall.",
+    "src": "media/photos/hanging-sculpture-sunlight-d290ef9b.jpg",
+    "w": 1536,
+    "h": 2048
+  },
+  {
+    "chapter": "sculpture",
+    "slug": "hanging-sculpture-bw-1824da0d",
+    "title": "hanging sculpture",
+    "cap": "A hanging sculpture. The piece on a plain wall, a branch curving down.",
+    "src": "media/photos/hanging-sculpture-bw-1824da0d.jpg",
+    "w": 1638,
+    "h": 2048
+  },
+  {
+    "chapter": "sculpture",
+    "slug": "hanging-sculpture-head-9a457e08",
+    "title": "hanging sculpture",
+    "cap": "Hanging sculpture, close on the head.",
+    "src": "media/photos/hanging-sculpture-head-9a457e08.jpg",
+    "w": 1585,
+    "h": 1585
+  },
+  {
+    "chapter": "sculpture",
+    "slug": "hanging-sculpture-head-4ba2ab74",
+    "title": "hanging sculpture",
+    "cap": "Hanging sculpture, close on the head.",
+    "src": "media/photos/hanging-sculpture-head-4ba2ab74.jpg",
+    "w": 1712,
+    "h": 1712
+  },
+  {
+    "chapter": "sculpture",
+    "slug": "hanging-sculpture-head-dbe3a28a",
+    "title": "hanging sculpture",
+    "cap": "Hanging sculpture, close on the head.",
+    "src": "media/photos/hanging-sculpture-head-dbe3a28a.jpg",
+    "w": 1711,
+    "h": 1711
+  },
+  {
+    "chapter": "canopy",
+    "slug": "forest-canopy",
+    "title": "forest canopy",
+    "cap": "Forest canopy in mist. Looking straight up, light falling through the fog.",
+    "src": "media/photos/forest-canopy.jpg",
+    "w": 1536,
+    "h": 2048
+  },
+  {
+    "chapter": "rosebuds",
+    "slug": "rosebuds",
+    "title": "rosebuds",
+    "cap": "Rosebuds. Two buds in a bar of window light, their shadows on the wall.",
+    "src": "media/photos/rosebuds.jpg",
+    "w": 1536,
+    "h": 2048
+  },
+  {
+    "chapter": "spirit-eye",
+    "slug": "spirit-eye-from-above",
+    "title": "Spirit Eye of skwácháýs",
+    "cap": "Spirit Eye of skwácháýs, the whole work from above. 2025. Public art concept, with Joshua Ngenda, BIDC Public Art Intensive, Vancouver.",
+    "src": "media/photos/spirit-eye-from-above-2025.jpg",
+    "w": 1219,
+    "h": 761
+  },
+  {
+    "chapter": "spirit-eye",
+    "slug": "spirit-eye-section",
+    "title": "Spirit Eye of skwácháýs",
+    "cap": "Spirit Eye of skwácháýs, a cross-section. 2025. The lens sits on the surface and a column carries its light down to a forest garden underground.",
+    "src": "media/photos/spirit-eye-section-2025.jpg",
+    "w": 1219,
+    "h": 761
+  },
+  {
+    "chapter": "spirit-eye",
+    "slug": "spirit-eye-object",
+    "title": "Spirit Eye of skwácháýs",
+    "cap": "",
+    "src": "media/photos/spirit-eye-object.webp",
+    "w": 494,
+    "h": 494
+  },
+  {
+    "chapter": "weird-kid",
+    "slug": "wk-forest-floor",
+    "title": "Weird Kid",
+    "cap": "",
+    "src": "media/weird-kid/stills/wk-forest-floor.jpg",
+    "w": 2048,
+    "h": 1080
+  },
+  {
+    "chapter": "weird-kid",
+    "slug": "wk-forest-path",
+    "title": "Weird Kid",
+    "cap": "",
+    "src": "media/weird-kid/stills/wk-forest-path.jpg",
+    "w": 2048,
+    "h": 1080
+  },
+  {
+    "chapter": "weird-kid",
+    "slug": "wk-raven",
+    "title": "Weird Kid",
+    "cap": "",
+    "src": "media/weird-kid/stills/wk-raven.jpg",
+    "w": 2048,
+    "h": 1080
+  },
+  {
+    "chapter": "owtd",
+    "slug": "owtd-01_wood_chop",
+    "title": "One With the Devil",
+    "cap": "",
+    "src": "media/owtd/stills/01_wood_chop.jpg",
+    "w": 1280,
+    "h": 544
+  },
+  {
+    "chapter": "owtd",
+    "slug": "owtd-02_dallas_snow",
+    "title": "One With the Devil",
+    "cap": "",
+    "src": "media/owtd/stills/02_dallas_snow.jpg",
+    "w": 1280,
+    "h": 544
+  },
+  {
+    "chapter": "owtd",
+    "slug": "owtd-03_colton_snow_trees",
+    "title": "One With the Devil",
+    "cap": "",
+    "src": "media/owtd/stills/03_colton_snow_trees.jpg",
+    "w": 1280,
+    "h": 544
+  },
+  {
+    "chapter": "owtd",
+    "slug": "owtd-04_table_twoshot",
+    "title": "One With the Devil",
+    "cap": "",
+    "src": "media/owtd/stills/04_table_twoshot.jpg",
+    "w": 1280,
+    "h": 544
+  },
+  {
+    "chapter": "owtd",
+    "slug": "owtd-05_lantern_portrait",
+    "title": "One With the Devil",
+    "cap": "",
+    "src": "media/owtd/stills/05_lantern_portrait.jpg",
+    "w": 1280,
+    "h": 544
+  },
+  {
+    "chapter": "owtd",
+    "slug": "owtd-06_colton_cabin",
+    "title": "One With the Devil",
+    "cap": "",
+    "src": "media/owtd/stills/06_colton_cabin.jpg",
+    "w": 1280,
+    "h": 544
+  },
+  {
+    "chapter": "owtd",
+    "slug": "owtd-07_dallas_cu",
+    "title": "One With the Devil",
+    "cap": "",
+    "src": "media/owtd/stills/07_dallas_cu.jpg",
+    "w": 1280,
+    "h": 544
+  },
+  {
+    "chapter": "owtd",
+    "slug": "owtd-08_rose",
+    "title": "One With the Devil",
+    "cap": "",
+    "src": "media/owtd/stills/08_rose.jpg",
+    "w": 1280,
+    "h": 544
+  },
+  {
+    "chapter": "owtd",
+    "slug": "owtd-09_landscape",
+    "title": "One With the Devil",
+    "cap": "",
+    "src": "media/owtd/stills/09_landscape.jpg",
+    "w": 1280,
+    "h": 544
+  },
+  {
+    "chapter": "owtd",
+    "slug": "owtd-10_rifle_doorway",
+    "title": "One With the Devil",
+    "cap": "",
+    "src": "media/owtd/stills/10_rifle_doorway.jpg",
+    "w": 1280,
+    "h": 544
+  },
+  {
+    "chapter": "owtd",
+    "slug": "owtd-11_night_cabin",
+    "title": "One With the Devil",
+    "cap": "",
+    "src": "media/owtd/stills/11_night_cabin.jpg",
+    "w": 1280,
+    "h": 544
+  },
+  {
+    "chapter": "owtd",
+    "slug": "owtd-12_candlelight",
+    "title": "One With the Devil",
+    "cap": "",
+    "src": "media/owtd/stills/12_candlelight.jpg",
+    "w": 1280,
+    "h": 544
+  },
+  {
+    "chapter": "colour-field",
+    "slug": "colour-field-poster",
+    "title": "untitled colour work",
+    "cap": "Untitled colour work. 2022. Moving image, 8 seconds.",
+    "src": "media/photos/colour-field-poster.jpg",
+    "w": 720,
+    "h": 1280
+  },
+  {
+    "chapter": "lost-in-time",
+    "slug": "lost-in-time",
+    "title": "Lost in Time",
+    "cap": "Lost Coffee. The full track, 3 minutes 36 seconds.",
+    "src": "media/photos/moonloop.webp",
+    "w": 4,
+    "h": 5
+  },
+  {
+    "chapter": "cv",
+    "slug": "cv",
+    "title": "CV",
+    "cap": "",
+    "src": "media/photos/spirit-eye-from-above-2025.jpg",
+    "w": 4,
+    "h": 5
+  }
+]
