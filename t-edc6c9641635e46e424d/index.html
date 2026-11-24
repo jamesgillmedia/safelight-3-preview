@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en" class="red">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="theme-color" content="#060304">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>oz · 80s mode</title>
+<link rel="stylesheet" href="proto.css">
+</head>
+<body>
+  <div id="phone">
+    <div id="sky" aria-hidden="true"></div>
+    <div id="scan" aria-hidden="true"></div>
+    <div id="crt" aria-hidden="true"></div>
+    <div id="wire" aria-hidden="true"></div>
+    <div id="memphis" aria-hidden="true"></div>
+
+    <div id="corner" class="on">
+      <button class="oz" id="homeBtn" aria-label="home">oz</button>
+    </div>
+    <button id="tuneBtn" class="lbl" aria-label="settings">tune</button>
+    <button id="disc" aria-label="red mode" aria-pressed="true" aria-description="tap to toggle red mode · hold for the colour and lightness pad">
+      <i></i>
+    </button>
+
+    <div id="ready" hidden>
+      <span>oz READY</span><i class="cur"></i>
+    </div>
+    <div id="dimmer" hidden>
+      <button type="button" class="hw-knob" id="knobBright" data-knob="bright" aria-label="bright"></button>
+      <span class="hw-lab">bright</span>
+      <button type="button" class="hw-knob" id="knobContrast" data-knob="contrast" aria-label="contrast"></button>
+      <span class="hw-lab">contrast</span>
+    </div>
+    <main id="open" aria-label="home">
+      <div id="moon" role="button" tabindex="0" aria-label="the moon dial · tap to open">
+        <svg viewBox="-40 -40 80 80" aria-hidden="true">
+          <defs>
+            <radialGradient id="mh"><stop offset="0" stop-color="currentColor" stop-opacity=".30"/><stop offset=".42" stop-color="currentColor" stop-opacity=".10"/><stop offset="1" stop-color="currentColor" stop-opacity="0"/></radialGradient>
+            <filter id="ms" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation=".55"/></filter>
+            <mask id="mm"><rect x="-40" y="-40" width="80" height="80" fill="#000"/><circle r="13" fill="#fff"/><circle cx="-5.2" cy="-2.6" r="12.6" fill="#000" filter="url(#ms)"/></mask>
+          </defs>
+          <circle r="34" fill="url(#mh)" class="halo"/><circle r="13" fill="currentColor" mask="url(#mm)" filter="url(#ms)"/>
+        </svg>
+      </div>
+
+      <div id="homeIcons" aria-label="rooms"></div>
+
+      <div id="rest">
+        <div class="t" id="clockPop" role="timer" aria-live="off"></div>
+        <div class="seg" id="clockSeg" hidden role="timer" aria-live="off" aria-label="the time"></div>
+        <button class="q" id="quiet" aria-label="the quiet line">
+          <i></i>
+          <span id="qtext">a late red evening</span>
+          <span class="vu" id="vu" aria-hidden="true"><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b></span>
+        </button>
+      </div>
+
+      <nav id="arcDock" aria-label="your places">
+        <button class="ad" data-room="phone" aria-label="phone"><i></i><span>phone</span></button>
+        <button class="ad" data-room="notes" aria-label="notes"><i></i><span>notes</span></button>
+        <button class="ad" data-room="messages" aria-label="messages"><i></i><span>messages</span></button>
+        <button class="ad" data-room="archive" aria-label="archive"><i></i><span>archive</span></button>
+      </nav>
+    </main>
+
+    <section id="room" hidden>
+      <header class="rh">
+        <button type="button" id="roomBack" aria-label="back">oz</button>
+        <h1 id="roomTitle"></h1>
+      </header>
+      <div id="roomFace"></div>
+    </section>
+
+    <section id="grid" hidden aria-label="all rooms">
+      <header class="rh">
+        <button type="button" id="gridBack" aria-label="back">oz</button>
+        <h1>rooms</h1>
+      </header>
+      <div id="gridFace"></div>
+    </section>
+
+    <div id="dial" hidden>
+      <div class="knob" id="knob">
+        <div class="lip" aria-hidden="true"></div>
+        <div class="ring" id="dialRing"></div>
+        <p class="stub-lab">preview stub</p>
+      </div>
+    </div>
+
+    <div id="pad" class="pad" aria-hidden="true">
+      <div class="pad-ring" aria-label="red mode pad">
+        <div class="axis y" aria-hidden="true"></div>
+        <div class="axis x" aria-hidden="true"></div>
+        <span class="tone-lab t0">bright</span>
+        <span class="tone-lab t1">crimson</span>
+        <span class="tone-lab t2">rose</span>
+        <span class="tone-lab t3 on">dim</span>
+        <span class="light-lab">lightness</span>
+        <span class="light-val" id="lightVal">100%</span>
+        <button type="button" class="notch" id="notch" aria-label="slide past dim, or hold here, for a hidden option"></button>
+      </div>
+      <div class="egg" id="egg" hidden>
+        <span class="egg-lab">80s</span>
+        <button type="button" class="rocker" id="rocker" role="switch" aria-checked="false" aria-label="80s mode">
+          <i></i>
+        </button>
+        <div class="flav" id="flav" role="radiogroup" aria-label="80s flavour" hidden>
+          <button type="button" role="radio" data-flav="terminal" aria-checked="true">terminal</button>
+          <button type="button" role="radio" data-flav="neon" aria-checked="false">neon</button>
+          <button type="button" role="radio" data-flav="bit" aria-checked="false">1-bit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<script src="icons.js"></script>
+<script src="proto.js"></script>
+</body>
+</html>
