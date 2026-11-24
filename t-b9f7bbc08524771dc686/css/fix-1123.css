@@ -1,0 +1,47 @@
+/* catch-up fixes, 23 Nov: opaque room surfaces (like Messages), and Loved Ones only in owner builds.
+   Do not change the Mark bar, the dock room set, or the light-mode colour. */
+/* 1. Hide the app sky / constellation map while Phone, Notes or Tune is open — the same way Messages already hides #ozcmp. */
+html.phoning #ozcmp, html.phoning #ozcmp-note,
+html.noting  #ozcmp, html.noting  #ozcmp-note,
+html.tune    #ozcmp, html.tune    #ozcmp-note,
+html.phoning #rooms, html.noting #rooms, html.tune #rooms,
+html.phoning #title, html.noting #title, html.tune #title,
+html.phoning #sub,   html.noting #sub,   html.tune #sub,
+html.phoning #poem,  html.noting #poem,  html.tune #poem,
+html.phoning #foot,  html.noting #foot,  html.tune #foot {
+  display: none !important;
+}
+/* Opaque surfaces: no sky showing through. */
+#phone { background: #050912; -webkit-backdrop-filter: none; backdrop-filter: none; }
+html.red #phone { background: #0c0305; }
+html.day #phone { background: #34465a; }
+#notes { background: #050912; -webkit-backdrop-filter: none; backdrop-filter: none; }
+html.red #notes { background: #0c0305; }
+html.day #notes { background: #34465a; }
+#tune { background: #050912; -webkit-backdrop-filter: none; backdrop-filter: none; }
+html.red #tune { background: #0c0305; border-left-color: var(--red-hair); }
+html.day #tune { background: #34465a; }
+
+/* 3. Notes: the inner title bar is gone; a single familiar Done sits at the right, the date is quiet. */
+#notes .nt-bar { display: flex; align-items: center; justify-content: flex-end; min-height: 44px; padding: 0 6px 0 16px; }
+#notes .nt-when { flex: 1; text-align: left; font-size: 11px; letter-spacing: .08em; color: var(--meta); }
+#notes .nt-done { min-height: 44px; padding: 0 12px; font-size: 15px; color: var(--ink); }
+#notes .nt-back { display: none; } /* the Mark is back */
+
+/* 4. Loved Ones: public builds never show the Tune rows. */
+html:not(.owner) .row:has([data-t="loved"]),
+html:not(.owner) .row:has([data-t="lovedex"]) { display: none !important; }
+
+/* Tune is a 360px drawer on a 390-wide phone, so a strip of the sky and the moon were still sitting beside and over it. Cover the screen the way Messages does, and hide the moon while Tune is open. */
+html.tune #tune { width: 100%; left: 0; right: 0; max-width: none; border-left: none; }
+html.tune #moonfree, html.tune #moon, html.tune #sky, html.tune #dimmer,
+html.phoning #sky, html.noting #sky {
+  opacity: 0 !important; pointer-events: none !important;
+}
+
+/* my call (builder, 23 Nov): push radio is a room of the same kind as Phone, so it gets the same opaque surface and the same sky hiding */
+html.radioing #ozcmp, html.radioing #ozcmp-note, html.radioing #rooms, html.radioing #title, html.radioing #sub, html.radioing #poem, html.radioing #foot { display: none !important; }
+html.radioing #sky { opacity: 0 !important; pointer-events: none !important; }
+#pushradio { background: #050912; -webkit-backdrop-filter: none; backdrop-filter: none; }
+html.red #pushradio { background: #0c0305; }
+html.day #pushradio { background: #34465a; }
