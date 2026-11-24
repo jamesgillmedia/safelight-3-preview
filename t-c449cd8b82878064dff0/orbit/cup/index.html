@@ -18,6 +18,13 @@
   #cap{position:fixed;left:16px;right:16px;bottom:max(16px,env(safe-area-inset-bottom));text-align:center;font-size:13px;letter-spacing:.04em}
   .nbr{position:fixed;left:16px;bottom:max(48px,calc(env(safe-area-inset-bottom) + 40px));font-size:13px}
   .nbr a{color:#bff5df}
+
+/* red-mode disc from js/theme.js: top right, 44px hit, 8px dot. red while Night, mint once Red is on. */
+#themeBtn{position:fixed;z-index:70;right:calc(8px + env(safe-area-inset-right,0px));top:calc(4px + env(safe-area-inset-top,0px));width:44px;height:44px;border:0;border-radius:0;display:grid;place-items:center;background:none;padding:0;cursor:pointer;opacity:1;-webkit-tap-highlight-color:transparent}
+#themeBtn i{display:block;width:8px;height:8px;border-radius:50%;background:#FF4457;opacity:.9;box-shadow:0 0 6px rgba(255,68,87,.45);transition:background .3s,box-shadow .3s}
+html[data-theme=red] #themeBtn i{background:#55daa1;opacity:1;box-shadow:0 0 7px 1px rgba(85,218,161,.7)}
+#themeBtn:focus-visible{outline:1px solid #eef3f5;outline-offset:2px}
+
 </style>
 <script type="importmap">{"imports":{"three":"../../vendor/three.module.min.js"}}</script>
 <script src="../../js/theme.js"></script>

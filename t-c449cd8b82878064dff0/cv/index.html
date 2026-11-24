@@ -39,6 +39,13 @@ footer{margin-top:40px;padding-top:16px;border-top:1px solid #d9d5cf;text-align:
 @media (max-width:640px){main{padding:36px 20px 40px} h1{font-size:38px} section{grid-template-columns:1fr;row-gap:12px} .sk{grid-template-columns:1fr} .stmt{font-size:18px}}
 @media print{@page{size:Letter;margin:0.36in 0.6in 0.3in} main{padding:0;max-width:none} body{font-size:8.6pt;line-height:1.3} i{font-size:9.9pt} .r{font-size:8.2pt} .y{font-size:7.8pt} h1{font-size:28pt} h1 .m{font-size:14pt;vertical-align:4pt} .desc{font-size:8.2pt;margin-top:5pt} .wm{font-size:7.4pt} .stmt{font-size:10.6pt;margin:10pt 0 2pt} section{padding-top:6pt;margin-top:6pt;grid-template-columns:1.2in 1fr;column-gap:16pt} section>h2,h3{font-size:6.8pt} section>h2{letter-spacing:.1em} h3{margin-bottom:2.5pt} .it{margin-bottom:1.6pt} .grp{margin-bottom:5pt} .sk{gap:4pt 12pt;grid-template-columns:repeat(4,1fr)} .sk b{font-size:6.6pt} header{padding-bottom:10pt} footer{display:none}}
 
+
+/* red-mode disc from js/theme.js: top right, 44px hit, 8px dot. red while Night, mint once Red is on. */
+#themeBtn{position:fixed;z-index:70;right:calc(8px + env(safe-area-inset-right,0px));top:calc(4px + env(safe-area-inset-top,0px));width:44px;height:44px;border:0;border-radius:0;display:grid;place-items:center;background:none;padding:0;cursor:pointer;opacity:1;-webkit-tap-highlight-color:transparent}
+#themeBtn i{display:block;width:8px;height:8px;border-radius:50%;background:#FF4457;opacity:.9;box-shadow:0 0 6px rgba(255,68,87,.45);transition:background .3s,box-shadow .3s}
+html[data-theme=red] #themeBtn i{background:#55daa1;opacity:1;box-shadow:0 0 7px 1px rgba(85,218,161,.7)}
+#themeBtn:focus-visible{outline:1px solid #eef3f5;outline-offset:2px}
+
 </style>
 <script src="../js/theme.js"></script>
 </head><body>

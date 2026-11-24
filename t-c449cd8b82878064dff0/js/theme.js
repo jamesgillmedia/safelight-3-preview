@@ -94,7 +94,7 @@ var T={get pref(){return pref},get eff(){return eff},get room(){return room},pal
   setRoom:function(k){k=k||null;if(k===room)return;room=k;apply();label()},
   adjust:function(){},adjInfo:null,
   on:function(f){hooks.push(f)},
-  mount:function(){if(btn||w.top!==w.self||!document.querySelector('link[rel=stylesheet]'))return;btn=document.createElement('button');btn.type='button';btn.id='themeBtn';btn.innerHTML='<i></i>';
+  mount:function(){if(btn||w.top!==w.self)return;btn=document.createElement('button');btn.type='button';btn.id='themeBtn';btn.innerHTML='<i></i>';
     btn.addEventListener('click',function(e){e.stopPropagation();T.toggle()});btn.addEventListener('pointerdown',function(e){e.stopPropagation()});
     document.body.appendChild(btn);label()}};
 w.GJ_THEME=T;
