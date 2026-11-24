@@ -1,0 +1,402 @@
+window.OZ_CKS_LAYERS = {
+  "v": 1,
+  "practice": [
+    {
+      "id": "always-there",
+      "title": "always been there",
+      "quote": "When we are done it should feel like it was always there, but be a space people want to spend time in. A hub, a gathering place. It can be activated or left to rest",
+      "echo": "When we are done it should feel like it was always there, but be a space people want to spend time in",
+      "source": "typed, 21 Nov 2026, 7:51 a.m. (America/Cambridge_Bay)",
+      "secs": [
+        "summary",
+        "describe",
+        "impact",
+        "why"
+      ]
+    },
+    {
+      "id": "infra",
+      "title": "art as infrastructure",
+      "quote": "My work is art as infrastructure",
+      "source": "typed, 13 Nov 2026",
+      "also": {
+        "quote": "my whole like philosophy for public art as, art as infrastructure",
+        "source": "spoken, 13 Nov 2026 call (Grant transcript)"
+      },
+      "secs": [
+        "summary",
+        "describe",
+        "why",
+        "impact"
+      ]
+    },
+    {
+      "id": "human-infra",
+      "title": "what stays behind",
+      "quote": "Human centred art as infracture, ecosytem where possible",
+      "source": "typed, 13 Nov 2026 (spelling as written)",
+      "secs": [
+        "impact",
+        "describe",
+        "timeline"
+      ]
+    },
+    {
+      "id": "permanent",
+      "title": "permanent impermanence",
+      "quote": "Even set it up like a “stage” “set” elements to transform space but transferable. Understand? Permanent impermanence",
+      "echo": "Permanent impermanence",
+      "source": "typed, 9 Nov 2026, ~4:46 p.m. PST (Artist Agent chat)",
+      "secs": [
+        "name",
+        "summary",
+        "describe"
+      ]
+    },
+    {
+      "id": "inhabitants",
+      "title": "inhabitants of the space",
+      "quote": "They also consider the audience or inhabitants of the space. Not just a stage but a whole space tour enter transformed yet integrated.",
+      "echo": "Not just a stage but a whole space tour enter transformed yet integrated",
+      "source": "typed, 9 Nov 2026 (Artist Agent chat)",
+      "secs": [
+        "describe",
+        "impact"
+      ]
+    },
+    {
+      "id": "leftover",
+      "title": "activations, and what is left",
+      "quote": "It both using the existing space in an unexpected way or adds the elements in a way that feels permanent but also like it always a been there. Activations are repeatable but what’s left behind is improved public space that’s already exists.",
+      "echo": "Activations are repeatable but what’s left behind is improved public space that’s already exists",
+      "source": "typed, 9 Nov 2026 (Artist Agent chat; wording as written)",
+      "secs": [
+        "describe",
+        "impact",
+        "timeline"
+      ]
+    },
+    {
+      "id": "seer-seen",
+      "title": "the seer and the seen",
+      "quote": "I like the idea of it being a space that can be activated, more than just a stage for performance but imagining and considering how both the seer and the seen are considered. For example a venue with an elevated stage and dance floor going back doesn’t create an ideal environment for the watchers. But what if we were to consider the audience as an important piece and create different spaces and elevations for them to settle in.",
+      "echo": "imagining and considering how both the seer and the seen are considered",
+      "source": "typed, 21 Nov 2026, 8:39–8:40 a.m. (recorded in CKS V5.8 notes)",
+      "secs": [
+        "describe",
+        "impact",
+        "timeline"
+      ]
+    },
+    {
+      "id": "space-to-be",
+      "title": "a space to be",
+      "quote": "Basically the principles developed with spirit eye could apply to this project. Art as infrastructure, ecosystem ethnobotany, using existing public space that through my treatment become a space to be. Human centred design, taking concrete foundations adding warmth through wood, art, landscape, “framing”, existing or suplemented lighting. Ect ect",
+      "echo": "using existing public space that through my treatment become a space to be",
+      "source": "typed, 21 Nov 2026, 8:33–8:35 a.m. (recorded in CKS V5.6 notes; spelling as written)",
+      "secs": [
+        "describe",
+        "summary",
+        "impact"
+      ]
+    },
+    {
+      "id": "form-open",
+      "title": "the form stays open",
+      "quote": "Maybe it’s just an artful bench or framing or a carving piece. Who knows!!",
+      "source": "typed, 21 Nov 2026, 8:33–8:35 a.m. (recorded in CKS V5.6 notes)",
+      "secs": [
+        "describe",
+        "summary"
+      ]
+    },
+    {
+      "id": "existing-space",
+      "title": "use what’s already there",
+      "quote": "take space in the city that is already has like, for example, like lighting or an interesting space, but it's just not being utilized",
+      "source": "spoken, 13 Nov 2026 call (Grant transcript; wording as spoken)",
+      "secs": [
+        "describe",
+        "capacity",
+        "timeline",
+        "why"
+      ]
+    },
+    {
+      "id": "not-overpower",
+      "title": "improved, not overpowered",
+      "quote": "it would transform the space, and then afterwards it would like leave the space improved but not, um, not, it wouldn't like, um, overpower it",
+      "echo": "leave the space improved but not overpower it",
+      "source": "spoken, 13 Nov 2026 call (Grant transcript; wording as spoken)",
+      "secs": [
+        "describe",
+        "impact"
+      ]
+    },
+    {
+      "id": "invisible",
+      "title": "invisible elements",
+      "quote": "adding thoughtful art as infrastructure, a diverse ecosystem and other “invisible” elements",
+      "source": "typed, 21 Nov 2026, 7:51 a.m. (America/Cambridge_Bay)",
+      "secs": [
+        "describe",
+        "summary"
+      ]
+    },
+    {
+      "id": "framing",
+      "title": "light, composition, framing",
+      "quote": "perhaps some qualities of fi like light, composition and “framing” of the piece/installation",
+      "echo": "light, composition and “framing” of the piece/installation",
+      "source": "typed, 21 Nov 2026, 7:51 a.m. (America/Cambridge_Bay; wording as written)",
+      "secs": [
+        "describe",
+        "summary",
+        "capacity",
+        "budget"
+      ]
+    },
+    {
+      "id": "self-directed",
+      "title": "self directed creation",
+      "quote": "I enjoy self directed creation I am also an excellent collaborator.",
+      "echo": "I enjoy self directed creation",
+      "source": "SOCAN application, May 2025, as recorded in GILL-VOICE-VERBATIM.md",
+      "secs": [
+        "capacity",
+        "why"
+      ]
+    },
+    {
+      "id": "hands-on",
+      "title": "hands on",
+      "quote": "I am a hands on learner",
+      "source": "SOCAN application, May 2025, as recorded in GILL-VOICE-VERBATIM.md",
+      "secs": [
+        "capacity"
+      ]
+    },
+    {
+      "id": "artful-eye",
+      "title": "artful eye and practical nature",
+      "quote": "His artful eye and practical nature creates immersive design that fuse art, natural materials, and functionality, redefining spaces + experiences with a culturally resonant human-centred perspective.",
+      "echo": "artful eye and practical nature creates immersive design that fuse art, natural materials, and functionality",
+      "source": "Wix artist page bio (gilljames.com/artist), archive saved 7 Nov 2026",
+      "secs": [
+        "capacity",
+        "describe",
+        "why"
+      ]
+    },
+    {
+      "id": "evolving",
+      "title": "an ever evolving artist",
+      "quote": "enrich and continue my practice while an ever evolving artist",
+      "source": "excerpt recorded on the Page “Gill James · Artist practice & path,” 9 Nov 2026 (cite: Gill · 9 Nov 2026). Typed original not separately filed.",
+      "secs": [
+        "why",
+        "capacity",
+        "impact"
+      ]
+    },
+    {
+      "id": "spirit-eye-lines",
+      "title": "two lines written with Joshua Ngenda",
+      "quote": "imagining essential infrastructure as art",
+      "also": {
+        "quote": "basic human need for light & nature",
+        "source": "same source"
+      },
+      "source": "Spirit Eye of skwácháýs, written with Joshua Ngenda: 2025 BIDC presentation text (27 Jun 2025) and Spirit Eye deck (11 Jul 2025)",
+      "note": "co-written, not his words alone",
+      "secs": [
+        "describe",
+        "impact"
+      ]
+    },
+    {
+      "id": "live-album",
+      "title": "a live album to open the space",
+      "quote": "We will be mounting a piece to open the \"space\" probably going to use alternate name for that music project. Run it like mounting a theatre run but with an album, live.",
+      "echo": "Run it like mounting a theatre run but with an album, live",
+      "source": "typed, 13 Nov 2026",
+      "secs": [
+        "impact",
+        "timeline",
+        "describe"
+      ]
+    },
+    {
+      "id": "relations",
+      "title": "all my relations",
+      "quote": "All my relations,\nin all my creations",
+      "source": "Wix artist page poem (gilljames.com/artist), [GILL'S WORDS], archive saved 7 Nov 2026",
+      "secs": [
+        "why",
+        "describe",
+        "impact"
+      ]
+    }
+  ],
+  "paths": [
+    {
+      "id": "title",
+      "title": "Permanent Impermanence",
+      "status": "chosen-for-now",
+      "why": "His own name for transferable “stage” “set” elements, typed 9 Nov 2026. Other titles taken from his words are still available if he wants to change it.",
+      "secs": [
+        "name",
+        "summary"
+      ]
+    },
+    {
+      "id": "split",
+      "title": "what this grant holds after the ISO split",
+      "status": "chosen-for-now",
+      "why": "The first split put light with the ISO application. Light, composition and framing were later brought into this grant; film, projection and spatial sound stay in ISO.",
+      "fork": "split",
+      "secs": [
+        "summary",
+        "describe",
+        "budget",
+        "timeline"
+      ]
+    },
+    {
+      "id": "space",
+      "title": "an existing space, cedar and light",
+      "status": "chosen-for-now",
+      "why": "A more fixed spatial approach (planes, panels, forced perspective) was tried, then set aside. On 21 Nov he asked to rework it “before the ideas of plans and forced perspective. We have a better direction before.” The earlier direction: an existing space, cedar and light, a place that feels as if it was always there.",
+      "fork": "space",
+      "secs": [
+        "summary",
+        "describe",
+        "impact",
+        "capacity",
+        "budget",
+        "timeline"
+      ]
+    },
+    {
+      "id": "refs",
+      "title": "keep the principles, take out the names",
+      "status": "chosen-for-now",
+      "why": "Named references to an earlier public-art concept were removed while their principles were kept, and the draft was made art-forward (CKS v6, 21 Nov 2026).",
+      "fork": "refs",
+      "secs": [
+        "summary",
+        "describe",
+        "impact",
+        "capacity"
+      ]
+    },
+    {
+      "id": "form",
+      "title": "the form of the work stays open",
+      "status": "chosen-for-now",
+      "why": "In his words, 21 Nov 2026: “Maybe it’s just an artful bench or framing or a carving piece. Who knows!!” The site and the making decide.",
+      "secs": [
+        "describe",
+        "summary"
+      ]
+    },
+    {
+      "id": "wood",
+      "title": "wood as one warm layer",
+      "status": "chosen-for-now",
+      "why": "Carved yellow cedar was taken off the lead (21 Nov 2026). Wood stays as one warm layer with plants, art, framing and light. He wrote: “We are sure hung up on carved yellow cedar eh..”",
+      "secs": [
+        "describe",
+        "summary",
+        "budget"
+      ]
+    },
+    {
+      "id": "seer",
+      "title": "the seer and the seen",
+      "status": "leaning",
+      "why": "In the current draft. He wrote, 21 Nov 2026, about considering how both the seer and the seen are considered, and the audience as part of the design, with different spaces and elevations to settle in. Still changeable.",
+      "secs": [
+        "describe",
+        "impact",
+        "timeline"
+      ]
+    },
+    {
+      "id": "living",
+      "title": "how far the living, planted part goes",
+      "status": "leaning",
+      "why": "The current draft treats the living part as art — it can sit inside what’s already growing, or become a new forest garden. How much planting, and with whom, is still to confirm. A choice still offers none, a small element, or a planted part that stays.",
+      "fork": "living",
+      "secs": [
+        "describe",
+        "timeline",
+        "budget",
+        "impact",
+        "tk"
+      ]
+    },
+    {
+      "id": "site",
+      "title": "the exact site and partners",
+      "status": "leaning",
+      "why": "Vancouver site types are named (an underused plaza, a lit underpass, a park edge); no locked location. Feasibility rests on a clear process, not an invented location. A confirmed site can still be named later.",
+      "fork": "site",
+      "secs": [
+        "describe",
+        "capacity",
+        "timeline",
+        "collab",
+        "budget"
+      ]
+    },
+    {
+      "id": "knowing",
+      "title": "is Knowing in?",
+      "status": "open",
+      "why": "Creating and Sharing are in. Whether this application also holds a Knowing activity is still open. It decides what Describe, Timeline and Traditional knowledge need.",
+      "fork": "knowing",
+      "secs": [
+        "types",
+        "describe",
+        "timeline",
+        "tk",
+        "budget"
+      ]
+    },
+    {
+      "id": "opening",
+      "title": "how the opening is shared",
+      "status": "open",
+      "why": "A live album, run like a theatre run, under a name still to be chosen. Whether it is free or ticketed, and whether it is the CKS public sharing, is still open. Timeline, Sharing, Budget and Impact stay provisional until then.",
+      "fork": "opening",
+      "secs": [
+        "types",
+        "timeline",
+        "impact",
+        "budget",
+        "describe"
+      ]
+    },
+    {
+      "id": "understory",
+      "title": "a forest garden, or a line in this work",
+      "status": "open",
+      "why": "Native-plant forest garden work was discussed as its own project. It is out as a standalone in this grant; it could still feed the “ecosystem” line if he wants, with Host Nation and plant-knowledge guidance.",
+      "secs": [
+        "describe",
+        "impact",
+        "tk"
+      ]
+    }
+  ],
+  "sources": [
+    "GILL-VOICE-VERBATIM.md (Wix poem and bio, SOCAN May 2025, 9 Nov 2026 typed messages)",
+    "cks-ideas-audit.md (13 Nov 2026 call, 21 Nov 2026 typed lines, Spirit Eye credits)",
+    "CKS draft notes V5.6 and V5.8 (cks-cedar-draft-v5.pre-v9.md) for 21 Nov typed passages",
+    "CKS V5 clean / V9 draft for what is currently in the writing",
+    "GRANT-ROOM.md (23 Nov 2026) for paths already taken, then changed, and still open",
+    "title-options-1113.md for other titles from his words",
+    "Page “Gill James · Artist practice & path” (9 Nov 2026) for the evolving-practice excerpt only; family and private details left out"
+  ]
+};
