@@ -39,7 +39,7 @@ const WORKS = [
       { kind: 'photo', src: 'media/stills/cup-espresso-6153.jpg', cap: 'On the table, with other vessels.' },
       { kind: 'photo', src: 'media/stills/cup-board-paddles-6690.jpg', cap: 'On a board with carved paddles.' },
       { kind: 'photo', src: 'media/stills/cup-display-sunlight-1170.jpg', cap: 'On a display board in sunlight.' },
-      { kind: '3d', src: 'media/3d/joio-cup.glb', cap: 'The same cup, as a 3D model. Drag to turn it.' }
+      { kind: '3d', src: '../t-a3651f5fb300f03d9533/media/3d/joio-cup.glb', cap: 'The same cup, as a 3D model. Drag to turn it.' }
     ]
   },
   {
@@ -157,7 +157,7 @@ const WORKS = [
     x: 48, y: 74,
     thumb: 'media/posters/owtd.jpg',
     versions: [
-      { kind: 'film', src: 'media/av/AV1-one-with-the-devil-excerpt-cinematography.mp4', poster: 'media/posters/owtd.jpg',
+      { kind: 'film', src: '../t-a3651f5fb300f03d9533/media/av/AV1-one-with-the-devil-excerpt-cinematography.mp4', poster: 'media/posters/owtd.jpg',
         cap: 'A 1 minute 52 second excerpt from the opening.' },
       { kind: 'photo', src: 'media/owtd/stills/01_wood_chop.jpg', cap: '' },
       { kind: 'photo', src: 'media/owtd/stills/02_dallas_snow.jpg', cap: '' },
@@ -181,7 +181,7 @@ const WORKS = [
     x: 70, y: 80,
     thumb: 'media/stills/moonloop.webp',
     versions: [
-      { kind: 'sound', src: 'media/av/AV2-lost-coffee-lost-in-time.wav', cap: '' }
+      { kind: 'sound', src: '../t-a3651f5fb300f03d9533/media/av/AV2-lost-coffee-lost-in-time.wav', cap: '' }
     ]
   },
   {
@@ -192,7 +192,7 @@ const WORKS = [
     x: 88, y: 70,
     thumb: 'media/posters/colour-field.jpg',
     versions: [
-      { kind: 'film', src: 'media/av/AV3-untitled-colour-field.mov', poster: 'media/posters/colour-field.jpg', cap: '' }
+      { kind: 'film', src: '../t-a3651f5fb300f03d9533/media/av/AV3-untitled-colour-field.mov', poster: 'media/posters/colour-field.jpg', cap: '' }
     ]
   }
 ];
