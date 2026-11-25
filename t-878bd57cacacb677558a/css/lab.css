@@ -1,0 +1,24 @@
+/* Photolab look (v1), scoped to #lab so it can share one page with the Constellation.
+   Dark sky #04070b, mint #55DAA1, Julius Sans One + Poppins, Syl for syllabics. Photographs are never tinted. Motion is the same with Reduce Motion on. */
+#lab{--bg:#04070b;--ink:#eef3f5;--dim:#c9d3d6;--mute:#8fa3aa;--mint:#55DAA1;--line:rgba(255,255,255,.16);--ease:cubic-bezier(.22,.61,.36,1);
+ --st:env(safe-area-inset-top,0px);--sb:env(safe-area-inset-bottom,0px);--sl:env(safe-area-inset-left,0px);--sr:env(safe-area-inset-right,0px);
+ --cell:200px;--star:1;
+ position:fixed;inset:0;z-index:20;background:var(--bg);color:var(--ink);font:300 14px/1.5 Poppins,system-ui,sans-serif;-webkit-font-smoothing:antialiased;-webkit-user-select:none;user-select:none}
+#lab *{box-sizing:border-box}
+#lab button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer;-webkit-tap-highlight-color:transparent}
+#lab a{color:inherit;text-decoration:none;-webkit-tap-highlight-color:transparent}
+#lab img,#lab video{-webkit-user-drag:none;user-select:none}
+#lab .ju{font-family:"Julius Sans One",Poppins,sans-serif;letter-spacing:.14em;text-transform:uppercase}
+#lab .lab-top{position:absolute;z-index:50;left:0;right:0;top:0;display:flex;align-items:center;gap:10px;padding:calc(6px + var(--st)) calc(60px + var(--sr)) 6px calc(14px + var(--sl))}
+#lab .lab-top .sig{font:700 22px/1 Syl,Poppins,sans-serif;color:var(--ink);opacity:.92}
+#lab .lab-top .crumb{flex:1;min-width:0;font-size:10.5px;letter-spacing:.2em;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#lab .lab-top .crumb b{font-weight:300;color:var(--mute)}
+#lab .lab-btn{display:inline-grid;place-items:center;min-width:44px;min-height:44px;padding:0 14px;border:1px solid var(--line);border-radius:22px;background:rgba(4,7,11,.42);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);font-size:12px;letter-spacing:.12em;color:var(--ink);white-space:nowrap}
+#lab .lab-btn:hover{border-color:rgba(255,255,255,.34)}
+#lab .lab-btn.on{border-color:rgba(85,218,161,.7);color:var(--mint)}
+#lab .lab-btn.ic{padding:0;font-size:18px}
+#lab .lab-btn.sm{min-height:36px;font-size:11px;padding:0 12px;color:var(--dim)}
+#lab [hidden]{display:none!important}
+#lab .lab-hint{position:absolute;z-index:40;left:50%;bottom:calc(16px + var(--sb));transform:translateX(-50%);max-width:calc(100% - 32px);padding:8px 16px;border-radius:20px;background:rgba(4,7,11,.55);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid var(--line);font-size:11.5px;letter-spacing:.06em;color:var(--dim);text-align:center;pointer-events:none}
+#lab .view{position:absolute;inset:0;z-index:1;opacity:0;pointer-events:none;visibility:hidden;transition:opacity .7s var(--ease),visibility 0s .7s}
+#lab .view.on{z-index:2;opacity:1;pointer-events:auto;visibility:visible;transition:opacity .7s var(--ease)}

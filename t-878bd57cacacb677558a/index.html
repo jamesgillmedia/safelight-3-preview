@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1,user-scalable=no">
+<meta name="robots" content="noindex,nofollow">
+<title>Work examples · Permanent Impermanence · Gill James</title>
+<meta name="theme-color" content="#04060c">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="stylesheet" href="css/3d.css">
+<link rel="stylesheet" href="css/lab.css">
+<link rel="stylesheet" href="css/cks.css">
+<script>(function(){try{var c=document.createElement('canvas');if(!(c.getContext('webgl2')||c.getContext('webgl'))||/[?&]nogl\b/.test(location.search))throw 0}catch(e){document.documentElement.className='nogl'}})();</script>
+<script src="js/theme.js"></script>
+<script src="js/view-switch.js"></script>
+</head><body>
+<div id="lab" aria-label="Photolab: the work examples as a simple sheet">
+<header class="lab-top">
+  <button type="button" class="lab-btn ic" id="lback" hidden aria-label="back">‹</button>
+  <span class="sig" lang="cr" aria-label="Gill James">ᑕᐣᓯ</span>
+  <span class="crumb ju"><b>you are here · </b><span id="lwhere">photolab</span></span>
+  <a class="lab-btn sm" id="llist" href="list/">list</a>
+  <button type="button" class="lab-btn sm" id="sheetBtn" aria-pressed="false">sheet</button>
+</header>
+<main class="view sky" id="lsky" aria-label="the works as stars"><div class="starfield" id="starfield" aria-hidden="true"></div><div class="constel" id="constel"></div></main>
+<section class="view" id="lsheet" aria-label="sheet of every work"><div class="sheet-sc"><div class="proof" id="proof"><div class="phd"><span class="ju" id="phd">work examples</span><span class="ju">Gill James · Permanent Impermanence</span></div></div></div></section>
+<section class="view work" id="lwork" aria-label="one work">
+  <div class="stage" id="lstage"></div>
+  <div class="dock">
+    <div class="nav-row"><button type="button" class="lab-btn ic" id="lprev" hidden aria-label="previous photograph">‹</button><span class="count ju" id="lcount"></span><button type="button" class="lab-btn ic" id="lnext" hidden aria-label="next photograph">›</button></div>
+    <p class="cap" id="lcap"></p>
+    <div class="types" id="ltypes" hidden></div>
+    <div class="nearrow" id="lnear" hidden></div>
+  </div>
+</section>
+<p class="lab-hint" id="lhint" hidden></p>
+</div>
+<svg id="eye" aria-hidden="true" focusable="false"><path id="eyeMask"/><path id="eyeLine"/></svg>
+<canvas id="c" aria-label="Work examples in a night sky. Tap a star to open a work. Pinch or scroll to zoom, drag to look around, pinch out or back to go up a level."></canvas>
+<button id="home" aria-label="home" lang="cr">ᑕᐣᓯ</button>
+<button id="back" aria-label="back one step">‹</button>
+<div id="where"></div>
+<a id="site" href="list/">list</a>
+<div id="viewsw" role="group" aria-label="view"><button type="button" data-v="lab" aria-pressed="false">Photolab</button><button type="button" data-v="sky" aria-pressed="true">Constellation</button></div>
+<div id="setext" class="sx" aria-live="polite"></div>
+<div id="semeasure" class="sx" aria-hidden="true"></div>
+<div id="seprog"><span class="t"></span><button class="nx" aria-label="next page">›</button></div>
+<div id="sedial" aria-label="Spirit Eye: the PDF around the whorl; drag to move with the sun, one page at a time"></div>
+<div id="panel" hidden><span class="n"></span><span class="m"></span><a href="#"></a><a id="also" href="#" hidden></a><div class="near" id="near" hidden></div></div>
+<p id="hint">tap a star</p>
+<p id="hereCue">you are here · the sky</p>
+<div id="fb"><div class="se"></div><ul></ul></div>
+<script src="js/eyepiece.js"></script>
+<script src="js/photos.js"></script>
+<script src="js/reel.js"></script>
+<script src="js/app.js"></script>
+</body></html>
