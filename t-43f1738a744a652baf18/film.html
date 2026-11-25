@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en" data-theme="night">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#04070b">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<title>Gill James · One With the Devil</title>
+<link rel="stylesheet" href="css/cks-v19.css">
+<link rel="stylesheet" href="css/lab.css">
+<link rel="stylesheet" href="css/cks-pages.css">
+<link rel="stylesheet" href="css/tune.css">
+<link rel="stylesheet" href="css/dial.css">
+<link rel="stylesheet" href="css/one.css">
+<link rel="stylesheet" href="css/moon.css">
+<script src="js/tune.js"></script>
+<script>(function(){var n=1;try{n=parseFloat(sessionStorage.getItem('cks-v19m.text')||'1')}catch(e){}if(!isFinite(n))n=1;document.documentElement.style.setProperty('--text-scale',Math.max(.9,Math.min(1.5,n)).toFixed(3))})();</script>
+</head>
+<body data-piece="film">
+<div id="wash" aria-hidden="true"></div>
+<header class="top">
+  <a class="brand" href="index.html" aria-label="Gill James, One With the Devil">
+    <span class="sig" lang="cr">ᑕᐣᓯ</span>
+    <span class="brand-text">
+      <span class="brand-name">Gill James</span>
+      <span class="brand-page" id="pageTitle">One With the Devil</span>
+    </span>
+  </a>
+  <div class="top-right">
+    <a class="txt-btn" href="index.html">All works</a>
+    <a class="txt-btn" href="cv/gill-james-arts-cv.pdf" target="_blank" rel="noopener">CV</a>
+  </div>
+</header>
+<main class="one film-page">
+  <section class="intro">
+    <h1>One With the Devil</h1>
+    <p class="lede">Short drama, cinematography. A 1 minute 52 second excerpt from the opening.</p>
+  </section>
+  <figure class="film-stage r235">
+    <video id="filmVid" playsinline controls preload="metadata"></video>
+  </figure>
+  <p class="credits">Gill James, cinematographer. Drew Pollins, director. Leo Award, Best Cinematography in a Short Drama, 2015.</p>
+  <div class="film-stills" id="stills"></div>
+</main>
+<footer class="mark-foot"><a class="sig" href="index.html" lang="cr" aria-label="Gill James">ᑕᐣᓯ</a></footer>
+<script src="js/ghostdial.js"></script>
+<script src="js/scrub.js"></script>
+<script src="js/wash.js"></script>
+<script>
+(function(){
+  var PUB=window.CKS_PUBLISH||null;
+  function src(path){
+    if(!PUB) return path;
+    if(path.indexOf('media/av/')===0) return PUB.av + path.slice(9);
+    if(path.indexOf('media/owtd/')===0) return PUB.owtd + path.slice(11);
+    if(path.indexOf('media/posters/')===0) return PUB.posters + path.slice(14);
+    if(path.indexOf('media/stills/')===0) return PUB.photos + path.slice(13);
+    return path;
+  }
+  var stills=[
+    'media/owtd/stills/02_dallas_snow.jpg',
+    'media/owtd/stills/03_colton_snow_trees.jpg',
+    'media/owtd/stills/05_lantern_portrait.jpg',
+    'media/owtd/stills/09_landscape.jpg'
+  ];
+  var vid=document.getElementById('filmVid');
+  vid.poster=src('media/owtd/stills/02_dallas_snow.jpg');
+  vid.src=src('media/av/one-with-the-devil-excerpt.mp4');
+  if(window.CKS_WASH) window.CKS_WASH.from(vid.poster);
+  var box=document.getElementById('stills');
+  stills.forEach(function(p){
+    var im=document.createElement('img');
+    im.src=src(p);
+    im.alt='';
+    box.appendChild(im);
+  });
+})();
+</script>
+<script src="js/moon.js"></script>
+<script src="js/cks-esc.js"></script>
+</body>
+</html>
