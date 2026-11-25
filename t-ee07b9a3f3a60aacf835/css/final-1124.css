@@ -1,0 +1,66 @@
+/* oz · the final pass (24 Nov 2026). Small, room-by-room finishing rules that sit after everything else.
+   Gill's own files stay as he sent them; anything here can be removed on its own. */
+
+/* 3 · Messages: swipe a chat (left: alerts, delete · right: pin), as the phone's Messages does */
+#msg .mz-sw { position: relative; overflow: hidden; }
+#msg .mz-sw > .mz-row { position: relative; z-index: 1; background: #030509; transition: transform .28s cubic-bezier(.2,.7,.2,1); touch-action: pan-y; }
+html.red #msg .mz-sw > .mz-row { background: rgb(6,3,4); }
+html.day #msg .mz-sw > .mz-row { background: #f4eee8; }
+#msg .mz-swl, #msg .mz-swr { position: absolute; top: 0; bottom: 0; display: flex; }
+#msg .mz-swl { left: 0; } #msg .mz-swr { right: 0; }
+#msg .mz-sw:not(.lft) .mz-swl, #msg .mz-sw.lft .mz-swr { visibility: hidden; }
+#msg .mz-swl button, #msg .mz-swr button { width: 76px; font-size: 12px; letter-spacing: .04em; color: #e8e4dc; background: rgba(140,150,170,.28); }
+#msg .mz-swl button { background: rgba(232,200,120,.28); }
+#msg .mz-swr button[data-sw=del] { background: rgba(255,68,87,.34); }
+html.red #msg .mz-swl button, html.red #msg .mz-swr button { color: var(--red-ink, #ff4457); background: rgba(255,68,87,.12); }
+html.red #msg .mz-swr button[data-sw=del] { background: rgba(255,68,87,.3); }
+html.day #msg .mz-swl button, html.day #msg .mz-swr button { color: #2a2226; }
+
+/* 3 · Messages in light: the small grey words read clearly on the pale room (they were 3.5 : 1) */
+html.day #msg .mz-say, html.day #msg .mz-row time, html.day #msg .mz-mid span, html.day #msg .mz-status, html.day #msg .mz-b small, html.day #msg .mz-note { color: #6e5d61; }
+
+/* 3 · Messages as a room from Home: one bar (the room bar names it and is back), so the inner "messages" title and its
+   "done" step aside, as Notes' did on 23 Nov; "new" stays where the phone keeps it. The chat's own header gets its full
+   width back (the right-hand space was kept for the floating chrome, which sits in the room bar now) */
+html.fromhome #msg .mz-list > .mz-h > b.jul, html.fromhome #msg .mz-list > .mz-h > [data-a=close] { display: none; }
+html.fromhome #msg .mz-list > .mz-h { justify-content: flex-end; }
+html.fromhome #msg .mz-h { padding-right: 10px; }
+
+/* 4 · the red camera: the live view is never tinted except in Full red. The frame keeps its hairline; the inner glow
+   that lay over the picture's edges (red in red mode, dark at night) is gone. Full red keeps its own */
+html:not([data-palette="fullred"]):not(.day) #cam::after { box-shadow: inset 0 0 0 1px rgba(232,228,220,.08); }
+html.red:not([data-palette="fullred"]):not(.day) #cam::after { box-shadow: inset 0 0 0 1px rgba(255,68,87,.22); }
+
+/* 5 · Good Weather as a room from Home: one bar (the room bar names it and is back); the level dots stay, they are the
+   honest way deeper. The day's light under the line: one hairline, the windows brighter, a dot for now */
+html.fromhome #gw .gw-h > b.jul, html.fromhome #gw .gw-h > .gw-x { display: none; }
+html.fromhome #gw .gw-h { justify-content: center; padding-left: 16px; padding-right: 16px; } html.fromhome #gw .gw-h .gw-lv { margin: 0 auto; }
+#gw .gw-day { display: block; width: 100%; height: 20px; margin: 18px 0 2px; overflow: visible; color: #e8e4dc; }
+#gw .gw-day line { stroke: currentColor; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+#gw .gw-day .all { stroke-width: 1; opacity: .18; }
+#gw .gw-day .day { stroke-width: 1.4; opacity: .42; }
+#gw .gw-day .gold { stroke-width: 3; opacity: .9; stroke: #e9c27a; }
+#gw .gw-day .blue { stroke-width: 3; opacity: .8; stroke: #7f9cc8; }
+#gw .gw-day .now { fill: currentColor; }
+html.red #gw .gw-day { color: var(--red-ink, #ff4457); } html.red #gw .gw-day .gold, html.red #gw .gw-day .blue { stroke: currentColor; }
+html.red #gw .gw-day .blue { opacity: .5; }
+html.day #gw .gw-day { color: #f4eee8; }
+
+/* 8 · the production timer in light: its words sat at 1.7–2.4 : 1 on the day sky. Full light ink now (about 4.3 : 1 or better) */
+html.day #r-red :is(#rm-estb, #rm-go, #rm-plus, #rm-al, #rm-lockb, #rm-redb) { color: #f8f5ef; opacity: .96; }
+html.day #r-red #rm-pre { opacity: 1; } html.day #r-red #rm-pre button { color: #f8f5ef; }
+html.day #r-red #rm-title { color: #f5e3e5; }
+
+/* 10 · Circle as a room from Home: the shared room bar shows (the Mark is back, the name, the time), Circle sits under it,
+   and its own close and title step aside (the bar does both) */
+html.fromhome.circling #chrome #mark, html.fromhome.circling #chrome #back { visibility: visible; }
+html.fromhome #circle { padding-top: calc(var(--top, 8px) + 52px); }
+html.fromhome #circle .ci-head .im-back, html.fromhome #circle .ci-head h1 { display: none; }
+html.fromhome #circle .ci-head { justify-content: flex-end; padding-right: 12px; }
+
+/* 19 · 80s mode reaches Circle (new on Home this pass): the same ground and lead ink as the other rooms; the stars keep their own colour */
+html.e80 #circle { background: var(--e80-scanimg), var(--e80-ground) !important; }
+html.e80 #circle .ci-hint, html.e80 #circle .ci-layers button, html.e80 #circle .ci-mic { color: var(--e80-lead) !important; }
+
+/* light mode: Circle and the Browser keep their own pale look, so the room bar's name and time take dark ink there too */
+html.day.fromhome:is(.circling, .browsing) #back, html.day.fromhome:is(.circling, .browsing) #ozbar-time { color: rgba(28,32,40,.74); }

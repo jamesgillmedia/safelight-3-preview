@@ -1,0 +1,2 @@
+2026-11-20T21:50:34-07:00 r6.1: Messages (ours) tools in familiar iOS patterns: hold a bubble menu, swipe a chat, hold Send for later, + icon row, hold the mic, short info sheet; on r6 merged 84ada5d
+2026-11-25 shrink a zip: a zip or a folder, smaller, on this device. Open from Home, from Make on the map, or with ?tool=zip.
