@@ -1,0 +1,136 @@
+/* Live A/B/C options, tuners, and red mode for the work examples preview. */
+:root{
+  --photo:1;--space:1;--type:1;--motion:1;
+  --fade:calc(.7s * var(--motion));
+}
+.view{transition:opacity var(--fade) var(--ease)}
+html[data-motion="0"] .view{transition:none}
+
+.stage img,.stage video{
+  max-width:min(92vw, calc(1400px * var(--photo)));
+  max-height:calc(100% * var(--photo));
+}
+.grid{gap:calc(10px * var(--space))}
+.dock{gap:calc(10px * var(--space));padding-bottom:calc(72px + var(--sb))}
+.rail{gap:calc(6px * var(--space))}
+.constel{padding-bottom:calc(96px + var(--sb))}
+.sheet-sc{padding-bottom:calc(110px + var(--sb))}
+body{font-size:calc(14px * var(--type))}
+.work-id h1{font-size:calc(13px * var(--type))}
+.work-id .line,.cap{font-size:calc(13px * var(--type))}
+.star .nm{font-size:calc(10.5px * var(--type))}
+.cell span{font-size:calc(10px * var(--type))}
+.phd{margin-bottom:calc(16px * var(--space))}
+
+/* B: always the works sheet, no constellation */
+html[data-opt=b] #sky{display:none !important}
+html[data-opt=b] #sheetBtn{display:none}
+
+/* C: a typographic list of names */
+html[data-opt=c] #sky{display:none !important}
+html[data-opt=c] .grid{
+  display:flex;flex-direction:column;gap:0;max-width:560px;
+}
+html[data-opt=c] .cell{
+  aspect-ratio:auto;background:transparent;border:0;border-bottom:1px solid var(--line);
+  border-radius:0;display:flex;align-items:baseline;justify-content:flex-start;
+  padding:calc(12px * var(--space)) 4px;gap:16px;text-align:left;
+}
+html[data-opt=c] .cell img,html[data-opt=c] .cell::after{display:none}
+html[data-opt=c] .cell span{
+  position:static;left:auto;right:auto;bottom:auto;text-shadow:none;
+  color:var(--ink);font-family:"Julius Sans One",Poppins,sans-serif;
+  letter-spacing:.14em;text-transform:uppercase;
+  font-size:calc(15px * var(--type));line-height:1.35;
+}
+html[data-opt=c] .cell:hover,html[data-opt=c] .cell:focus-visible{border-color:var(--mint);color:var(--mint)}
+html[data-opt=c] .cell:hover span,html[data-opt=c] .cell:focus-visible span{color:var(--mint)}
+
+/* Red: chrome only. Full red: photographs and film are tinted too. */
+html[data-theme=red],html[data-theme=full]{
+  --bg:#080203;--ink:#ffd6d9;--dim:#e8b4b8;--mute:#c4848a;
+  --line:rgba(255,68,87,.3);
+}
+html[data-theme=red] body,html[data-theme=full] body{background:#080203;color:var(--ink)}
+html[data-theme=red] .sky,html[data-theme=full] .sky{
+  background:radial-gradient(ellipse 80% 60% at 50% 40%, #1a080c 0%, #080203 70%),#080203;
+}
+html[data-theme=red] #sheet,html[data-theme=red] #work,
+html[data-theme=full] #sheet,html[data-theme=full] #work{background:var(--bg)}
+html[data-theme=red] .star .dot,html[data-theme=full] .star .dot{
+  background:#ffd6d9;box-shadow:0 0 10px rgba(255,68,87,.55);
+}
+html[data-theme=red] .starfield i,html[data-theme=full] .starfield i{background:#ffd6d9}
+html[data-theme=red] img,html[data-theme=red] video,
+html[data-theme=red] .stage img,html[data-theme=red] .stage video,
+html[data-theme=red] .cell img,html[data-theme=red] .rail img{filter:none !important}
+html[data-theme=full] .stage img,html[data-theme=full] .stage video,
+html[data-theme=full] .cell img,html[data-theme=full] .rail img{
+  filter:grayscale(1) contrast(1.08) brightness(.92) sepia(1) hue-rotate(-20deg) saturate(2.1);
+}
+
+/* Options bar and panel */
+.tune{position:fixed;z-index:80;left:0;right:0;bottom:0;pointer-events:none}
+.tune-bar,.tune-panel{
+  pointer-events:auto;
+  margin:0 auto;
+  max-width:720px;
+  background:rgba(4,7,11,.78);
+  -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
+  border:1px solid var(--line);
+}
+.tune-bar{
+  display:flex;align-items:center;gap:8px;
+  margin:0 auto calc(10px + var(--sb));
+  padding:6px 8px 6px 10px;border-radius:24px;
+  width:max-content;max-width:calc(100% - 20px);
+}
+.tune-opts{display:flex;gap:6px}
+.tune-opts .opt{
+  min-width:44px;min-height:36px;padding:0 12px;border-radius:18px;
+  border:1px solid var(--line);background:transparent;color:var(--ink);
+  font:300 calc(11px * var(--type))/1 Poppins,system-ui,sans-serif;letter-spacing:.12em;
+  text-transform:uppercase;cursor:pointer;
+}
+.tune-opts .opt.on{border-color:rgba(85,218,161,.7);color:var(--mint)}
+.tune-opts .opt .lab{display:block;font-size:8.5px;letter-spacing:.14em;color:var(--mute);margin-top:2px}
+.tune-opts .opt.on .lab{color:var(--mint)}
+.tune-panel{
+  width:calc(100% - 20px);max-width:520px;
+  margin:0 auto calc(8px + var(--sb));
+  padding:14px 16px 16px;border-radius:16px;
+  max-height:calc(70svh - var(--sb));overflow:auto;
+}
+.tune-why{margin:0 0 12px;font-size:12.5px;line-height:1.45;color:var(--dim)}
+.tune-keep{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.keep-card{
+  flex:1 1 28%;min-width:90px;padding:8px 8px 10px;border:1px solid var(--line);
+  border-radius:10px;text-align:center;
+}
+.keep-card .nm{display:block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px}
+.keep-card button{
+  margin:0 3px;padding:4px 8px;border:1px solid var(--line);border-radius:12px;
+  background:transparent;color:var(--ink);font:300 10.5px/1 Poppins,system-ui,sans-serif;letter-spacing:.08em;cursor:pointer;
+}
+.keep-card button.on{border-color:rgba(85,218,161,.7);color:var(--mint)}
+.tune-hidden{margin:0 0 12px;font-size:12px;color:var(--dim)}
+.tune-hidden button{margin-left:6px}
+.tune-row{
+  display:flex;align-items:center;gap:10px;margin:8px 0;
+  font-size:11.5px;letter-spacing:.06em;color:var(--dim);
+}
+.tune-row input[type=range]{flex:1;accent-color:var(--mint)}
+.tune-note{min-width:36px;font-size:10.5px;letter-spacing:.1em;color:var(--mute);text-transform:uppercase}
+.tune-themes{align-items:center}
+.tune-theme-btns{display:flex;gap:6px;margin-left:auto}
+.tune-theme-btns .lab-btn{min-width:0;min-height:36px;padding:0 10px;font-size:11px}
+.tune-theme-btns .lab-btn.on{border-color:rgba(85,218,161,.7);color:var(--mint)}
+#cvBtn{text-decoration:none;color:inherit}
+
+@media (max-width:720px){
+  .tune-opts .opt{padding:0 9px}
+  .tune-opts .opt .lab{display:none}
+}
+
+html[data-opt=c] .proof{max-width:560px}
+html[data-opt=c] .phd{justify-content:flex-start;gap:18px}
