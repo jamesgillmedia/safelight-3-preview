@@ -1,0 +1,20 @@
+/* Archive eyepiece: only the outer silhouette. Mask is the room colour, so it is invisible at rest; the hairline edge shows while moving. From the archive-index style. Ported from site-v3/css/3d.css. */
+#eye{position:fixed;inset:0;width:100%;height:100%;z-index:15;pointer-events:none;overflow:visible}
+#eyeMask{fill:#04070b;fill-rule:evenodd}
+#eyeLine{fill:none;stroke:rgba(238,240,242,.42);stroke-width:1;shape-rendering:geometricPrecision;opacity:0}
+html[data-theme=red] #eyeLine,html[data-theme=full] #eyeLine,html.red #eyeLine{stroke:rgba(190,40,56,.85)}
+html[data-theme=red] #eyeMask,html[data-theme=full] #eyeMask,html.red #eyeMask{fill:#060304}
+#archive:not(.on) #eye,#archive[hidden] #eye{display:none}
+#vp{position:fixed;inset:0;z-index:4;touch-action:none;cursor:grab}
+#vp.drag{cursor:grabbing}
+#cv{position:absolute;inset:0;width:100%;height:100%;display:block}
+#lt{position:fixed;inset:0;z-index:20}
+#lt[hidden]{display:none !important}
+#ltbg{position:absolute;inset:0;background:rgba(4,7,11,.55)}
+#ltfig{position:absolute;left:0;top:0;transform-origin:0 0;overflow:hidden}
+#ltfig.anim{transition:transform .42s cubic-bezier(.22,.61,.36,1)}
+#ltfig img,#ltfig video{width:100%;height:100%;object-fit:contain;filter:none;display:block;background:#050506}
+#ltbar{position:fixed;left:0;right:0;bottom:calc(16px + var(--sb,0px));display:flex;justify-content:center;gap:22px;z-index:21}
+#archive .archive-head,#archive .work-nav{position:relative;z-index:16;pointer-events:none}
+#archive .archive-head .txt-btn,#archive .work-nav .txt-btn,#archive .archive-head h1{pointer-events:auto}
+#archiveGrid{display:none}
