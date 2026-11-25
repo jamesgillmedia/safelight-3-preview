@@ -1,0 +1,32 @@
+/* Floating moon dial: visual style from the site moon dial. A soft full moon,
+   wanes to a crescent, rests as a dot at the edge. Dark red in red mode.
+   Tap opens a ring of shortcuts. Nothing here tints a photograph. */
+#moon{position:fixed;left:0;top:0;width:0;height:0;z-index:66;transition:left .5s cubic-bezier(.2,.85,.25,1),top .5s cubic-bezier(.2,.85,.25,1);-webkit-user-select:none;user-select:none}
+#moon[hidden],#moon.gone{display:none}
+#moon.drag{transition:none}
+#moon .mn-m{position:absolute;left:-22px;top:-22px;width:44px;height:44px;padding:0;border:0;background:none;touch-action:none;cursor:grab;transform:scale(var(--mn-s,1));transform-origin:50% 50%}
+#moon.locked .mn-m{cursor:pointer}
+#moon .mn-m i{position:absolute;left:50%;top:50%;width:38px;height:38px;margin:-19px 0 0 -19px;border-radius:50%;overflow:hidden;background:radial-gradient(circle at 34% 30%,rgba(200,196,188,.55) 0 9%,transparent 10%),radial-gradient(circle at 64% 58%,rgba(196,192,184,.5) 0 13%,transparent 14%),radial-gradient(circle at 42% 72%,rgba(204,200,192,.45) 0 7%,transparent 8%),radial-gradient(circle at 38% 34%,#f2efe8,#d9d5cc 70%,#bdb9b0);box-shadow:0 0 14px rgba(232,228,220,.45),0 0 2px rgba(232,228,220,.8);transition:width .45s,height .45s,margin .45s,opacity .45s,box-shadow .45s}
+#moon .mn-m i::after{content:"";position:absolute;inset:-2px;border-radius:50%;background:#05080f;transform:translateX(110%);transition:transform .65s ease-in-out}
+#moon.wane .mn-m i::after{transform:translateX(34%)}
+#moon.dot .mn-m i{width:8px;height:8px;margin:-4px 0 0 -4px;opacity:var(--mn-rest,.7);box-shadow:0 0 6px rgba(232,228,220,.4)}
+#moon.dot .mn-m i::after{display:none}
+#moon.dot:not(.left) .mn-m i{margin-left:12px}
+#moon.dot.left .mn-m i{margin-left:-20px}
+#moon.found .mn-m i{box-shadow:0 0 30px rgba(232,228,220,.8),0 0 2px #fff}
+#moon.lift .mn-m i{width:46px;height:46px;margin:-23px 0 0 -23px;box-shadow:0 0 26px rgba(232,228,220,.6);opacity:1 !important}
+#moon.lift .mn-m i::after{transform:translateX(110%)}
+html[data-theme=red] #moon .mn-m i,html[data-theme=full] #moon .mn-m i,html.red #moon .mn-m i{background:radial-gradient(circle at 34% 30%,rgba(90,14,24,.6) 0 9%,transparent 10%),radial-gradient(circle at 64% 58%,rgba(86,12,22,.55) 0 13%,transparent 14%),radial-gradient(circle at 38% 34%,#b02a3a,#8a1e2c 70%,#5e121c);box-shadow:0 0 14px rgba(255,68,87,.35)}
+html[data-theme=red] #moon .mn-m i::after,html[data-theme=full] #moon .mn-m i::after,html.red #moon .mn-m i::after{background:#140204}
+#moon .mn-hint{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+#moon .mn-nav{position:absolute;left:0;top:0;width:0;height:0;pointer-events:none;opacity:0;transition:opacity .25s}
+#moon.open .mn-nav{opacity:1;pointer-events:auto}
+#moon.open .mn-m i{opacity:.35}
+#moon .mn-nav a,#moon .mn-nav button{position:absolute;left:0;top:0;transform:translate(-50%,-50%);min-height:36px;padding:8px 12px;border:1px solid rgba(232,228,220,.2);border-radius:16px;background:rgba(8,12,22,.78);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);color:#e8e4dc;font:300 11px/1 Poppins,system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;white-space:nowrap;cursor:pointer}
+#moon .mn-nav a:hover,#moon .mn-nav button:hover,#moon .mn-nav a:focus-visible,#moon .mn-nav button:focus-visible{background:rgba(232,228,220,.16);color:#fff}
+html[data-theme=red] #moon .mn-nav a,html[data-theme=red] #moon .mn-nav button,
+html[data-theme=full] #moon .mn-nav a,html[data-theme=full] #moon .mn-nav button,
+html.red #moon .mn-nav a,html.red #moon .mn-nav button{color:#FF4457;border-color:rgba(255,68,87,.3);background:rgba(10,2,4,.85)}
+@media (prefers-reduced-motion:reduce){
+  #moon,#moon .mn-m i,#moon .mn-m i::after,#moon .mn-nav{transition:none}
+}

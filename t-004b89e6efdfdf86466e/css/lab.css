@@ -1,0 +1,16 @@
+/* Photo lab type and colour. Photographs are never tinted except in full red mode. */
+@font-face{font-family:Poppins;font-weight:300;font-display:swap;src:url(../fonts/poppins-300.woff2) format("woff2")}
+@font-face{font-family:"Noto Sans Canadian Aboriginal";font-weight:100 900;font-style:normal;font-display:block;src:url(../fonts/NotoSansCanAb.ttf) format("truetype")}
+@font-face{font-family:Syl;font-weight:400 700;font-style:normal;font-display:block;src:url(../fonts/noto-canadian-aboriginal-subset.woff2) format("woff2"),url(../fonts/NotoSansCanAb.ttf) format("truetype");unicode-range:U+1400-167F}
+:root{--bg:#04070b;--ink:#eef3f5;--dim:#c9d3d6;--mute:#8fa3aa;--mint:#55DAA1;--line:rgba(255,255,255,.16);
+ --ease:cubic-bezier(.22,.61,.36,1);
+ --st:env(safe-area-inset-top,0px);--sb:env(safe-area-inset-bottom,0px);--sl:env(safe-area-inset-left,0px);--sr:env(safe-area-inset-right,0px);
+ --photo:1;--space:1;--type:1;--motion:1;--fade:calc(.5s * var(--motion))}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:300 calc(15px * var(--type))/1.5 Poppins,system-ui,sans-serif;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%}
+body{min-height:100svh}
+button,a.txt-btn{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer;-webkit-tap-highlight-color:transparent}
+img,video{-webkit-user-drag:none;user-select:none}
+img,video{filter:none}
+
+[hidden]{display:none !important}
