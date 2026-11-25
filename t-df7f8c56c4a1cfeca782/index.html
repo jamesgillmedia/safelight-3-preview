@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en" data-theme="night">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#04070b">
+<title>Gill James · Work examples · Permanent Impermanence</title>
+<link rel="stylesheet" href="css/lab.css">
+<link rel="stylesheet" href="css/site.css">
+<link rel="stylesheet" href="css/tune.css">
+<script src="js/tune.js"></script>
+</head>
+<body>
+<header class="top">
+  <button type="button" class="txt-btn" id="back" hidden>All works</button>
+  <a class="sig" href="#home" lang="cr" aria-label="Gill James">ᑕᐣᓯ</a>
+  <span class="top-space"></span>
+  <a class="txt-btn" id="cvBtn" href="cv/gill-james-arts-cv.pdf" target="_blank" rel="noopener">CV</a>
+</header>
+
+<main id="home" class="page on">
+  <section class="intro">
+    <h1>Gill James</h1>
+    <p class="lede">Work examples for Permanent Impermanence</p>
+  </section>
+
+  <section class="works" aria-label="works">
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <section class="film-sec" id="film" aria-label="Film">
+    <h2>Film</h2>
+    <div class="film-list" id="filmList"></div>
+  </section>
+
+  <section class="sound-sec" id="sound" aria-label="Sound">
+    <h2>Sound</h2>
+    <div class="sound-list" id="soundList"></div>
+    <div class="player" id="player" hidden>
+      <p class="player-now" id="playerNow"></p>
+      <audio id="audio" controls playsinline></audio>
+    </div>
+  </section>
+</main>
+
+<article id="work" class="page" hidden>
+  <div class="hero" id="hero"></div>
+  <div class="work-copy">
+    <h1 id="workName"></h1>
+    <p class="meta" id="workMeta"></p>
+    <p class="about" id="workAbout"></p>
+  </div>
+  <div class="gallery" id="gallery"></div>
+  <div class="av-block" id="avBlock" hidden></div>
+  <nav class="work-nav">
+    <a class="txt-btn" href="#home">All works</a>
+    <div class="pn">
+      <button type="button" class="txt-btn" id="prev">Previous</button>
+      <button type="button" class="txt-btn" id="next">Next</button>
+    </div>
+  </nav>
+</article>
+
+<button type="button" class="tune-fab" id="tuneOpen" aria-expanded="false">tune</button>
+<aside id="tunePanel" class="tune-panel" hidden>
+  <p class="tune-why">Photo size, spacing, type and motion. Colour: night, red, or full red (photographs tint only in full red).</p>
+  <label class="tune-row">Photo size <input type="range" id="tPhoto" min="80" max="120" value="100"></label>
+  <label class="tune-row">Spacing <input type="range" id="tSpace" min="70" max="160" value="100"></label>
+  <label class="tune-row">Text size <input type="range" id="tType" min="90" max="120" value="100"></label>
+  <label class="tune-row">Motion <input type="range" id="tMotion" min="0" max="100" value="100"><span class="tune-note" id="tMotionNote">full</span></label>
+  <div class="tune-row tune-themes">
+    <span>Colour</span>
+    <div class="tune-theme-btns" id="tuneTheme">
+      <button type="button" data-theme="night">night</button>
+      <button type="button" data-theme="red">red</button>
+      <button type="button" data-theme="full">full red</button>
+    </div>
+  </div>
+</aside>
+
+<script src="js/media.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
