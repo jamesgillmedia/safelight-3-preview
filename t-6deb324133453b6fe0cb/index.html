@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#04070b">
+<title>Work examples · Permanent Impermanence · Gill James</title>
+<link rel="stylesheet" href="css/lab.css">
+<link rel="stylesheet" href="css/cks.css">
+</head>
+<body>
+<header class="lab-top">
+  <button type="button" class="lab-btn ic" id="back" hidden aria-label="back">‹</button>
+  <span class="sig" lang="cr" aria-label="Gill James">ᑕᐣᓯ</span>
+  <span class="crumb ju" id="crumb"><b>work examples · </b><span id="where">Permanent Impermanence</span></span>
+  <button type="button" class="lab-btn" id="sheetBtn" aria-pressed="false">works</button>
+  <a class="lab-btn" id="cvBtn" href="cv/gill-james-arts-cv.pdf" target="_blank" rel="noopener">CV</a>
+</header>
+
+<main class="view on sky" id="sky" aria-label="constellation of work examples">
+  <div class="starfield" id="starfield" aria-hidden="true"></div>
+  <div class="constel" id="constel"></div>
+</main>
+
+<section class="view" id="sheet" aria-label="all works">
+  <div class="sheet-sc">
+    <div class="proof">
+      <div class="phd"><span class="ju" id="phd">work examples</span><span>Permanent Impermanence</span></div>
+      <div class="grid" id="grid"></div>
+    </div>
+  </div>
+</section>
+
+<section class="view work" id="work" aria-label="one work">
+  <div class="stage" id="stage"></div>
+  <div class="dock">
+    <div class="work-id">
+      <h1 class="ju" id="workName"></h1>
+      <p class="line" id="workLine"></p>
+    </div>
+    <div class="types" id="types" hidden></div>
+    <div class="nav-row">
+      <button type="button" class="lab-btn ic" id="prev" hidden aria-label="previous">‹</button>
+      <span class="count ju" id="count"></span>
+      <button type="button" class="lab-btn ic" id="next" hidden aria-label="next">›</button>
+    </div>
+    <p class="cap" id="cap"></p>
+    <div class="rail" id="rail" hidden></div>
+  </div>
+</section>
+
+<p class="lab-hint" id="hint">tap a star</p>
+
+<script type="importmap">{"imports":{"three":"./vendor/three.module.min.js"}}</script>
+<script type="module" src="js/app.js"></script>
+</body>
+</html>
