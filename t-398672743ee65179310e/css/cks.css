@@ -1,0 +1,133 @@
+/* Photolab star field, grouped sheet and the one-work view. The view switch and tune panel styles are at the end. */
+#lab .sky{background:radial-gradient(ellipse 80% 60% at 50% 40%,#0c1218 0%,#04070b 70%),#04070b}
+#lab .starfield{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+#lab .starfield i{position:absolute;width:2px;height:2px;border-radius:50%;background:#eef3f5;opacity:.35}
+#lab .constel{position:absolute;left:4%;right:4%;top:calc(112px + var(--st));bottom:calc(64px + var(--sb))}
+#lab .constel svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+#lab .constel line{stroke:rgba(201,211,214,.16);stroke-width:1;vector-effect:non-scaling-stroke}
+#lab .star{position:absolute;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:8px;min-width:44px;min-height:44px;padding-top:16px;color:var(--ink);text-align:center}
+#lab .star .dot{width:calc(11px*var(--star));height:calc(11px*var(--star));border-radius:50%;background:#eef3f5;box-shadow:0 0 10px rgba(238,243,245,.55),0 0 22px rgba(85,218,161,.18)}
+#lab .star.feat .dot{width:calc(17px*var(--star));height:calc(17px*var(--star));box-shadow:0 0 14px rgba(238,243,245,.8),0 0 30px rgba(85,218,161,.3)}
+#lab .star:hover .dot,#lab .star:focus-visible .dot,#lab .star.here .dot{background:var(--mint);box-shadow:0 0 12px rgba(85,218,161,.8)}
+#lab .star .nm{font-size:10.5px;letter-spacing:.12em;color:var(--dim);max-width:150px;line-height:1.3}
+#lab .star.feat .nm{color:var(--ink);font-size:11.5px}
+#lab .star:hover .nm,#lab .star:focus-visible .nm,#lab .star.here .nm{color:var(--ink)}
+#lab #lsheet,#lab #lwork{background:var(--bg)}
+#lab .sheet-sc{position:absolute;inset:0;overflow:auto;-webkit-overflow-scrolling:touch;padding:calc(112px + var(--st)) 24px calc(80px + var(--sb))}
+#lab .proof{max-width:1100px;margin:0 auto}
+#lab .hero{margin:6px 0 4px}
+#lab .hero h1{margin:0;font-size:clamp(26px,5.2vw,44px);line-height:1.05;font-weight:400;letter-spacing:.14em;color:var(--ink)}
+#lab .hero p{margin:10px 0 0;font-size:10.5px;letter-spacing:.2em;color:var(--dim)}
+#lab .gnav{position:sticky;top:calc(94px + var(--st));z-index:5;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin:14px -24px 0;padding:10px 24px;background:linear-gradient(rgba(4,7,11,.94) 70%,rgba(4,7,11,0))}
+#lab .gnav::-webkit-scrollbar{display:none}
+#lab .gnav[hidden]{display:none}
+#lab .chip{flex:none;min-height:36px;padding:0 13px;border:1px solid var(--line);border-radius:18px;font-size:10px;letter-spacing:.16em;color:var(--dim);background:rgba(4,7,11,.5);white-space:nowrap}
+#lab .chip.on{border-color:rgba(85,218,161,.7);color:var(--mint)}
+#lab .gsec{scroll-margin-top:170px}
+#lab #lsheet::before{content:"";position:absolute;left:0;right:0;top:0;height:calc(104px + var(--st));background:linear-gradient(#04070b 82%,rgba(4,7,11,0));z-index:3;pointer-events:none}
+#lab .grp{display:flex;align-items:baseline;gap:12px;margin:26px 0 10px;font-size:12px;letter-spacing:.24em;color:var(--ink);font-weight:400}
+#lab .grp small{font:300 10px/1 Poppins,sans-serif;letter-spacing:.12em;color:var(--mute);text-transform:none}
+#lab .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(var(--cell),1fr));gap:10px}
+#lab .cell{position:relative;background:#0b0e10;aspect-ratio:1;overflow:hidden;border-radius:2px;cursor:pointer;border:1px solid transparent;padding:0;display:block;width:100%;color:inherit}
+#lab .cell.feat{grid-column:span 2;grid-row:span 2}
+#lab .cell:hover,#lab .cell:focus-visible,#lab .cell.here{border-color:var(--mint)}
+#lab .cell img{width:100%;height:100%;object-fit:cover;display:block;filter:none}
+#lab .cell::after{content:"";position:absolute;left:0;right:0;bottom:0;height:42%;background:linear-gradient(to top,rgba(4,7,11,.72),transparent);pointer-events:none}
+#lab .cell span{position:absolute;left:8px;right:8px;bottom:7px;font-size:10px;letter-spacing:.12em;color:#eef3f5;text-shadow:0 1px 4px #000;z-index:1;text-align:left}
+#lab .cell span small{display:block;font-size:9px;letter-spacing:.1em;color:#c9d3d6;opacity:.85;margin-top:2px;text-transform:none;font-family:Poppins,sans-serif}
+#lab .cell.txt{display:grid;place-items:center}
+#lab .cell.txt em{font-style:normal;letter-spacing:.16em;color:#c9d3d6;font-size:15px}
+#lab .work{display:flex;flex-direction:column}
+#lab .stage{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;padding:calc(108px + var(--st)) 20px 8px;position:relative;touch-action:pan-y}
+#lab .stage img,#lab .stage video{max-width:min(92vw,1400px);max-height:100%;object-fit:contain;filter:none;background:#000}
+#lab .stage .cvcard{max-width:520px;text-align:center;color:var(--dim);font-size:14px;line-height:1.6}
+#lab .stage .cvcard b{display:block;font:400 28px/1.1 "Julius Sans One",sans-serif;letter-spacing:.14em;color:var(--ink);margin-bottom:12px}
+#lab .dock{padding:8px 16px calc(14px + var(--sb));display:flex;flex-direction:column;align-items:center;gap:8px}
+#lab .types,#lab .nearrow{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center}
+#lab .nearrow .lab-btn{flex:none}
+#lab .nearrow i{font-style:normal;font-size:10px;letter-spacing:.16em;color:var(--mute);text-transform:uppercase}
+#lab .nav-row{display:flex;gap:8px;align-items:center;justify-content:center;min-height:44px;flex-wrap:wrap}
+#lab .tabs{display:flex;gap:6px;margin-right:6px}
+#lab .tabs[hidden]{display:none}
+#lab .tab.on{border-color:rgba(85,218,161,.7);color:var(--mint)}
+#lab .strip{display:flex;align-items:center;gap:5px;max-width:min(100%,900px);overflow-x:auto;scrollbar-width:none;padding:2px 2px 4px;-webkit-overflow-scrolling:touch}
+#lab .strip::-webkit-scrollbar{display:none}
+#lab .strip .set{flex:none;font-style:normal;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--mute);margin:0 4px 0 10px;white-space:nowrap}
+#lab .strip .set:first-child{margin-left:2px}
+#lab .strip .th{flex:none;width:46px;height:46px;border-radius:3px;overflow:hidden;border:1px solid transparent;opacity:.62;background:#0b0e10}
+#lab .strip .th img{width:100%;height:100%;object-fit:cover;display:block}
+#lab .strip .th.on{border-color:var(--mint);opacity:1}
+#lab.strip-b .strip .th{width:9px;height:9px;border-radius:50%;background:#8fa3aa;border:0;opacity:.5;margin:8px 3px}
+#lab.strip-b .strip .th img{display:none}
+#lab.strip-b .strip .th.on{background:var(--mint);opacity:1}
+#lab.strip-c .strip{display:none}
+#lab .turn-cv{width:min(92vw,900px);height:100%;max-height:720px;touch-action:none;display:block;cursor:grab;background:radial-gradient(ellipse 50% 42% at 50% 56%,rgba(255,236,205,.07),transparent 70%)}
+#lab .turn-ph{position:relative;width:min(92vw,720px);height:100%;touch-action:pan-y;cursor:grab;outline:0}
+#lab .turn-ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:none;opacity:0;pointer-events:none}
+#lab .turn-dots{position:absolute;left:0;right:0;bottom:6px;display:flex;justify-content:center;gap:7px;pointer-events:none}
+#lab .turn-dots i{width:6px;height:6px;border-radius:50%;background:#eef3f5;opacity:.4}
+#lab .turn-dots i.on{background:var(--mint);opacity:1;box-shadow:0 0 6px rgba(85,218,161,.7)}
+#lab .turn-wait{color:var(--mute);font-size:12px;letter-spacing:.12em}
+#lab.turning .stage{touch-action:none}
+#lab .nearrow{flex-wrap:nowrap;overflow-x:auto;max-width:100%;scrollbar-width:none;justify-content:flex-start}
+#lab .nearrow::-webkit-scrollbar{display:none}
+#lab .cap{max-width:640px;margin:0;text-align:center;font-size:13px;line-height:1.45;color:var(--dim)}
+#lab .count{font-size:10.5px;letter-spacing:.16em;color:var(--mute);min-width:64px;text-align:center}
+@media (max-width:720px){
+  #lab{--cellmin:150px}
+  #lab .grid{grid-template-columns:repeat(2,1fr)}
+  #lab .sheet-sc{padding-left:14px;padding-right:14px}
+  #lab .gnav{margin-left:-14px;margin-right:-14px;padding-left:14px;padding-right:14px}
+  #lab .strip .th{width:40px;height:40px}
+  #lab .tabs:not([hidden]) ~ .ic{display:none}
+  #lab .dock{gap:6px}
+  #lab #sheetBtn{display:none}
+  #lab .lab-top .crumb{font-size:9.5px;letter-spacing:.14em}
+}
+#lab.lay-a #sheetBtn,#lab.lay-c #sheetBtn{display:none}
+
+/* ---- the one new piece: Photolab / Constellation switch (same place on both views) ---- */
+#viewsw{position:fixed;z-index:60;left:50%;transform:translateX(-50%);top:calc(54px + env(safe-area-inset-top,0px));display:flex;gap:0;border:1px solid rgba(255,255,255,.2);border-radius:22px;background:rgba(4,7,11,.62);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);padding:3px;-webkit-user-select:none;user-select:none}
+#viewsw button{font:300 11.5px/1 "Julius Sans One",Poppins,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#c9d3d6;background:none;border:0;border-radius:19px;min-height:38px;padding:0 14px;cursor:pointer;-webkit-tap-highlight-color:transparent;white-space:nowrap}
+#viewsw button[aria-pressed=true]{background:rgba(85,218,161,.14);color:#55DAA1;box-shadow:inset 0 0 0 1px rgba(85,218,161,.55)}
+#viewsw button:focus-visible{outline:1px solid #eef3f5;outline-offset:1px}
+#viewsw.sw-b{border-color:transparent;background:none;-webkit-backdrop-filter:none;backdrop-filter:none;gap:14px}
+#viewsw.sw-b button{border-radius:0;padding:0 4px;border-bottom:1px solid transparent}
+#viewsw.sw-b button[aria-pressed=true]{background:none;box-shadow:none;border-bottom-color:#55DAA1}
+#viewsw.sw-c button[aria-pressed=true]{display:none}
+#viewsw.sw-c button::after{content:" ›"}
+html.reelon #viewsw{display:none}
+html.v-lab #c,html.v-lab #home,html.v-lab #back,html.v-lab #where,html.v-lab #site,html.v-lab #panel,html.v-lab #hint,html.v-lab #hereCue,html.v-lab #eye,html.v-lab #fb,html.v-lab .sx,html.v-lab #sedial,html.v-lab #seprog{display:none!important}
+html.v-sky #lab{display:none}
+/* the sky's own chrome makes room for the switch and the red-mode disc */
+html.v-sky #site{right:calc(60px + env(safe-area-inset-right,0px))}
+html.v-sky #where{padding:0 118px}
+html.v-sky.nogl #fb{display:flex;flex-direction:column;padding-top:118px}
+html.v-sky.nogl #fb ul{order:-1;margin:0 auto 28px}
+
+/* ---- tune panel: only on Gill's ?tune link ---- */
+#tuneBtn{position:fixed;z-index:80;left:12px;bottom:12px;font:300 11px/1 Poppins,sans-serif;letter-spacing:.14em;color:#04070b;background:#55DAA1;border:0;border-radius:16px;padding:9px 14px;cursor:pointer}
+#tune{position:fixed;z-index:81;left:8px;right:8px;bottom:8px;max-width:440px;max-height:76vh;overflow:auto;background:rgba(6,10,14,.96);border:1px solid rgba(255,255,255,.2);border-radius:14px;padding:14px 14px 16px;color:#eef3f5;font:300 12.5px/1.45 Poppins,sans-serif;-webkit-user-select:none;user-select:none}
+#tune[hidden]{display:none}
+#tune h3{margin:14px 0 6px;font:400 11px/1 "Julius Sans One",sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#c9d3d6}
+#tune h3:first-of-type{margin-top:4px}
+#tune .x{position:absolute;right:8px;top:6px;width:44px;height:44px;background:none;border:0;color:#eef3f5;font-size:20px;cursor:pointer}
+#tune .opt{display:flex;align-items:flex-start;gap:8px;padding:6px 0;border-top:1px solid rgba(255,255,255,.08)}
+#tune .opt.hid{opacity:.4}
+#tune .opt .pick{flex:1;text-align:left;background:none;border:0;color:inherit;font:inherit;cursor:pointer;padding:4px 0}
+#tune .opt .pick b{font-weight:300;color:#eef3f5}
+#tune .opt.cur .pick b{color:#55DAA1}
+#tune .opt .pick small{display:block;color:#8fa3aa;font-size:11px}
+#tune .opt .kh{background:none;border:1px solid rgba(255,255,255,.22);border-radius:14px;color:#c9d3d6;font:inherit;font-size:11px;padding:5px 10px;cursor:pointer;min-width:52px}
+#tune label{display:grid;grid-template-columns:110px 1fr 44px;gap:8px;align-items:center;padding:5px 0}
+#tune input[type=range]{width:100%;accent-color:#55DAA1}
+#tune .row{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+#tune .row button{background:none;border:1px solid rgba(255,255,255,.22);border-radius:14px;color:#eef3f5;font:inherit;padding:8px 12px;cursor:pointer}
+#tune textarea{width:100%;height:84px;margin-top:8px;background:#04070b;color:#c9d3d6;border:1px solid rgba(255,255,255,.16);border-radius:8px;font:11px/1.4 ui-monospace,monospace;padding:6px;-webkit-user-select:text;user-select:text}
+
+/* v4 fixes to the sky's cluster panel: it wraps inside a phone screen, neighbour links sit in one row, and it no longer covers the "you are here" cue */
+#panel{flex-wrap:wrap;justify-content:center;row-gap:8px;box-sizing:border-box;max-width:calc(100vw - 20px);bottom:max(32px,calc(env(safe-area-inset-bottom) + 24px))}
+#panel .near{margin-top:0;gap:8px;justify-content:center;flex-basis:100%}
+#panel .near a{padding:7px 11px;font-size:12px}
+@media (max-width:720px){#lab.inwork #llist{display:none}}
+@media (max-width:720px){#panel{width:calc(100vw - 20px)}}
