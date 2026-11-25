@@ -1,0 +1,52 @@
+/* Small tucked tuners and red mode. Photographs tint only in full red. */
+.tune-fab{position:fixed;z-index:80;left:calc(12px + var(--sl));bottom:calc(12px + var(--sb));
+  min-width:44px;min-height:44px;padding:0 14px;border:1px solid var(--line);border-radius:22px;
+  background:rgba(4,7,11,.72);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+  letter-spacing:.12em;font-size:12px;color:var(--dim)}
+.tune-fab.on,.tune-fab:hover{color:var(--ink);border-color:rgba(255,255,255,.34)}
+.tune-panel{position:fixed;z-index:80;left:calc(12px + var(--sl));bottom:calc(60px + var(--sb));
+  width:min(320px,calc(100% - 24px));padding:14px 16px 16px;border:1px solid var(--line);border-radius:16px;
+  background:rgba(4,7,11,.86);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+.tune-why{margin:0 0 12px;font-size:12px;line-height:1.4;color:var(--dim)}
+.tune-row{display:flex;align-items:center;gap:8px;margin:8px 0;font-size:12px;color:var(--dim)}
+.tune-row input[type=range]{flex:1;accent-color:var(--mint)}
+.tune-note{min-width:32px;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}
+.tune-theme-btns{display:flex;gap:6px;margin-left:auto}
+.tune-theme-btns button{min-height:32px;padding:0 8px;border:1px solid var(--line);border-radius:16px;background:none;color:var(--ink);font:inherit;font-size:11px;letter-spacing:.08em;cursor:pointer}
+.tune-theme-btns button.on{border-color:rgba(85,218,161,.7);color:var(--mint)}
+
+html[data-theme=red],html[data-theme=full]{
+  --bg:#060304;--ink:#FF4457;--dim:#FFB0B8;--mute:#c4848a;--line:rgba(255,68,87,.34);
+}
+html[data-theme=red] body,html[data-theme=full] body{background:#060304}
+html[data-theme=red] .tune-panel,html[data-theme=full] .tune-panel,
+html[data-theme=red] .deep-tune,html[data-theme=full] .deep-tune,
+html[data-theme=red] .tune-fab,html[data-theme=full] .tune-fab{
+  background:rgba(6,3,4,.66);border-color:rgba(255,68,87,.34)
+}
+html[data-theme=red] img,html[data-theme=red] video{filter:none}
+html[data-theme=full] img,html[data-theme=full] video,
+html[data-theme=full] #hero img,html[data-theme=full] #hero video,
+html[data-theme=full] .tile img,html[data-theme=full] .gallery img,
+html[data-theme=full] .film-poster img,html[data-theme=full] .film-poster video,
+html[data-theme=full] .av-block video,html[data-theme=full] .film-stills img,
+html[data-theme=full] .archive-grid img,html[data-theme=full] .archive-grid video,
+html[data-theme=full] .lightbox-stage img,html[data-theme=full] .lightbox-stage video{
+  filter:grayscale(1) contrast(1.08) brightness(.9) sepia(1) hue-rotate(-20deg) saturate(2.2);
+}
+html[data-motion="0"] *{transition:none !important}
+
+.deep-tune{position:fixed;z-index:85;left:calc(12px + var(--sl));bottom:calc(60px + var(--sb));
+  width:min(360px,calc(100% - 24px));max-height:calc(100svh - 90px);overflow:auto;
+  padding:16px;border:1px solid var(--line);border-radius:16px;
+  background:rgba(4,7,11,.92);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+.deep-tune[hidden],.hold-tune[hidden]{display:none !important}
+.deep-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.deep-head .kicker,.name-edit .kicker{margin:0 0 8px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--mute)}
+.name-edit{margin-top:16px;border-top:1px solid var(--line);padding-top:12px}
+.name-edit label{display:block;margin:8px 0 4px;font-size:11px;color:var(--mute)}
+.name-edit input,.name-edit textarea{width:100%;background:transparent;border:0;border-bottom:1px solid var(--line);
+  color:var(--ink);font:inherit;padding:6px 0;resize:vertical}
+.hold-tune{position:fixed;z-index:86;left:calc(12px + var(--sl));bottom:calc(60px + var(--sb));
+  width:min(280px,calc(100% - 24px));padding:14px 16px;border:1px solid var(--line);border-radius:16px;
+  background:rgba(4,7,11,.92);color:var(--dim);font-size:13px;line-height:1.45}

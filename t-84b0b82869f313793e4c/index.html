@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en" data-theme="night">
+<head>
+<script>window.CKS_PUBLISH={av:"../t-a3651f5fb300f03d9533/media/av/",stills:"../t-a3651f5fb300f03d9533/media/stills/",posters:"../t-a3651f5fb300f03d9533/media/posters/",audio:"../t-f963431f2ab72fb48d84/media/audio/",wk:"../t-398672743ee65179310e/media/weird-kid/",owtd:"../t-398672743ee65179310e/media/owtd/",photos:"../t-398672743ee65179310e/media/photos/",orbit:"../t-398672743ee65179310e/media/orbit/",se:"../t-398672743ee65179310e/media/spirit-eye/",thumbs:"../t-398672743ee65179310e/media/thumbs/"};</script>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#04070b">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<title>Gill James · Work examples · Permanent Impermanence</title>
+<link rel="stylesheet" href="css/lab.css">
+<link rel="stylesheet" href="css/site.css">
+<link rel="stylesheet" href="css/tune.css">
+<link rel="stylesheet" href="css/dial.css">
+<link rel="stylesheet" href="css/eye.css">
+<link rel="stylesheet" href="css/moon.css">
+<script src="js/tune.js"></script>
+</head>
+<body data-piece="home">
+<div id="wash" aria-hidden="true"></div>
+<header class="top">
+  <a class="brand" href="#home" aria-label="Gill James, work examples">
+    <span class="sig" lang="cr">ᑕᐣᓯ</span>
+    <span class="brand-text">
+      <span class="brand-name">Gill James</span>
+      <span class="brand-page" id="pageTitle">Work examples</span>
+    </span>
+  </a>
+  <div class="top-right">
+    <button type="button" class="txt-btn" id="back" hidden>All works</button>
+    <a class="txt-btn" id="cvBtn" href="cv/gill-james-arts-cv.pdf" target="_blank" rel="noopener">CV</a>
+  </div>
+</header>
+
+<main id="home" class="page on">
+  <section class="intro">
+    <h1>Gill James</h1>
+    <p class="lede">Work examples for Permanent Impermanence</p>
+  </section>
+
+  <section class="works" aria-label="works">
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <section class="film-sec" id="film" aria-label="Film">
+    <h2>Film</h2>
+    <div class="film-list" id="filmList"></div>
+  </section>
+
+  <p class="studio-line"><a class="txt-btn" id="studioLink" href="#studio/archive" hidden>Studio photographs</a></p>
+
+  <section class="sound-sec" id="sound" aria-label="Sound">
+    <h2>Sound</h2>
+    <div class="sound-list" id="soundList"></div>
+    <p class="studio-line"><a class="txt-btn" href="noise.html">White Noise</a> · Lost in Time can also play as a layer inside it.</p>
+    <div class="player" id="player" hidden>
+      <p class="player-now" id="playerNow"></p>
+      <audio id="audio" controls playsinline></audio>
+    </div>
+  </section>
+</main>
+
+<article id="work" class="page" hidden>
+  <div class="hero" id="hero"></div>
+  <div class="work-copy">
+    <h1 id="workName"></h1>
+    <p class="meta" id="workMeta"></p>
+    <p class="about" id="workAbout"></p>
+  </div>
+  <div class="gallery" id="gallery"></div>
+  <div class="av-block" id="avBlock" hidden></div>
+  <p class="archive-entry"><a class="txt-btn" id="archiveOpen" href="#">Archive</a></p>
+  <nav class="work-nav">
+    <a class="txt-btn" href="#home">All works</a>
+    <div class="pn">
+      <button type="button" class="txt-btn" id="prev">Previous</button>
+      <button type="button" class="txt-btn" id="next">Next</button>
+    </div>
+  </nav>
+</article>
+
+<section id="archive" class="page" hidden>
+  <div class="archive-head">
+    <p class="kicker">Archive</p>
+    <h1 id="archiveTitle"></h1>
+  </div>
+  <div class="archive-grid" id="archiveGrid"></div>
+  <div id="vp" hidden>
+    <canvas id="cv" aria-label="Archive field. Drag to look around, pinch or scroll to zoom, tap a photograph to open it."></canvas>
+  </div>
+  <div id="lt" hidden>
+    <div id="ltbg"></div>
+    <div id="ltfig"></div>
+    <div id="ltbar"><button type="button" class="txt-btn">Close</button></div>
+  </div>
+  <svg id="eye" aria-hidden="true" focusable="false"><path id="eyeMask"/><path id="eyeLine"/></svg>
+  <nav class="work-nav">
+    <button type="button" class="txt-btn" id="archiveClose">Close archive</button>
+  </nav>
+</section>
+
+<div id="lightbox" class="lightbox" hidden>
+  <button type="button" class="txt-btn lightbox-close" id="lightboxClose">Close</button>
+  <div class="lightbox-stage" id="lightboxStage"></div>
+</div>
+
+<div id="listen" class="listen" hidden>
+  <button type="button" class="txt-btn listen-close" id="listenClose">Close</button>
+  <div class="listen-card">
+    <img class="listen-art" id="listenArt" alt="">
+    <h2 id="listenTitle">Lost in Time</h2>
+    <p class="listen-who">Lost Coffee  ·  3:36</p>
+    <button type="button" class="listen-play" id="listenPlay">tap to hear</button>
+    <div class="listen-dials">
+      <label class="listen-row" data-tune="dimmer">Dimmer <input type="range" id="litDim" min="8" max="100" value="100"></label>
+      <label class="listen-row" data-tune="filter">Filter <input type="range" id="litFilter" min="0" max="100" value="70"></label>
+      <label class="listen-row" data-tune="space">Space <input type="range" id="litSpace" min="0" max="100" value="20"></label>
+      <label class="listen-row" data-tune="ambience">Ambience <input type="range" id="litAmb" min="0" max="100" value="15"></label>
+    </div>
+  </div>
+</div>
+
+<button type="button" class="tune-fab" id="tuneOpen" aria-expanded="false" data-tune="panel">tune</button>
+<aside id="tunePanel" class="tune-panel" hidden>
+  <p class="tune-why">Photo size, spacing, type and motion. Colour: night, red, or full red (photographs tint only in full red).</p>
+  <label class="tune-row" data-tune="photo">Photo size <input type="range" id="tPhoto" min="80" max="120" value="100"></label>
+  <label class="tune-row" data-tune="space">Spacing <input type="range" id="tSpace" min="70" max="160" value="100"></label>
+  <label class="tune-row" data-tune="type">Text size <input type="range" id="tType" min="90" max="120" value="100"></label>
+  <label class="tune-row" data-tune="motion">Motion <input type="range" id="tMotion" min="0" max="100" value="100"><span class="tune-note" id="tMotionNote">full</span></label>
+  <div class="tune-row tune-themes" data-tune="colour">
+    <span>Colour</span>
+    <div class="tune-theme-btns" id="tuneTheme">
+      <button type="button" data-theme="night">night</button>
+      <button type="button" data-theme="red">red</button>
+      <button type="button" data-theme="full">full red</button>
+    </div>
+  </div>
+</aside>
+
+<aside id="deepTune" class="deep-tune" hidden>
+  <div class="deep-head">
+    <p class="kicker">Deep tune</p>
+    <button type="button" class="txt-btn" id="deepClose">Close</button>
+  </div>
+  <label class="tune-row" data-tune="dimmer">Dimmer <input type="range" id="tDimmer" min="8" max="100" value="100"><span class="tune-note" id="tDimmerNote">full</span></label>
+  <label class="tune-row" data-tune="density">Density <input type="range" id="tDensity" min="1" max="6" value="3"><span class="tune-note" id="tDensityNote">mid</span></label>
+  <label class="tune-row" data-tune="motion">Motion <input type="range" id="tMotionDeep" min="0" max="100" value="100"><span class="tune-note" id="tMotionDeepNote">full</span></label>
+  <div class="tune-row tune-themes" data-tune="colour">
+    <span>Colour</span>
+    <div class="tune-theme-btns" id="deepTheme">
+      <button type="button" data-theme="night">night</button>
+      <button type="button" data-theme="red">red</button>
+      <button type="button" data-theme="full">full red</button>
+    </div>
+  </div>
+  <p class="tune-why">Red is chrome only. Photographs stay true, except in full red.</p>
+  <div id="nameEdit" class="name-edit">
+    <p class="kicker">Names</p>
+    <div id="nameFields"></div>
+    <button type="button" class="txt-btn" id="textExport">Copy names as text</button>
+  </div>
+</aside>
+
+<div id="holdTune" class="hold-tune" hidden></div>
+
+<footer class="mark-foot"><a class="sig" href="#home" lang="cr" aria-label="Gill James">ᑕᐣᓯ</a></footer>
+<script src="js/ghostdial.js"></script>
+<script src="js/eyepiece.js"></script>
+<script src="js/archive-room.js"></script>
+<script src="js/listen.js"></script>
+<script src="js/scrub.js"></script>
+<script src="js/wash.js"></script>
+<script src="js/app.js"></script>
+<script src="js/moon.js"></script>
+</body>
+</html>

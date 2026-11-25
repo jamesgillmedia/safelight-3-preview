@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en" data-theme="night">
+<head>
+<script>window.CKS_PUBLISH={av:"../t-a3651f5fb300f03d9533/media/av/",stills:"../t-a3651f5fb300f03d9533/media/stills/",posters:"../t-a3651f5fb300f03d9533/media/posters/",audio:"../t-f963431f2ab72fb48d84/media/audio/",wk:"../t-398672743ee65179310e/media/weird-kid/",owtd:"../t-398672743ee65179310e/media/owtd/",photos:"../t-398672743ee65179310e/media/photos/",orbit:"../t-398672743ee65179310e/media/orbit/",se:"../t-398672743ee65179310e/media/spirit-eye/",thumbs:"../t-398672743ee65179310e/media/thumbs/"};</script>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#04070b">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<title>Gill James · One With the Devil</title>
+<link rel="stylesheet" href="css/lab.css">
+<link rel="stylesheet" href="css/site.css">
+<link rel="stylesheet" href="css/tune.css">
+<link rel="stylesheet" href="css/dial.css">
+<link rel="stylesheet" href="css/one.css">
+<link rel="stylesheet" href="css/moon.css">
+<script src="js/tune.js"></script>
+</head>
+<body data-piece="film">
+<div id="wash" aria-hidden="true"></div>
+<header class="top">
+  <a class="brand" href="index.html" aria-label="Gill James, One With the Devil">
+    <span class="sig" lang="cr">ᑕᐣᓯ</span>
+    <span class="brand-text">
+      <span class="brand-name">Gill James</span>
+      <span class="brand-page" id="pageTitle">One With the Devil</span>
+    </span>
+  </a>
+  <div class="top-right">
+    <a class="txt-btn" href="index.html">All works</a>
+    <a class="txt-btn" href="cv/gill-james-arts-cv.pdf" target="_blank" rel="noopener">CV</a>
+  </div>
+</header>
+<main class="one film-page">
+  <section class="intro">
+    <h1>One With the Devil</h1>
+    <p class="lede">Short drama, cinematography. A 1 minute 52 second excerpt from the opening.</p>
+  </section>
+  <figure class="film-stage r235">
+    <video id="filmVid" playsinline controls preload="metadata"></video>
+  </figure>
+  <p class="credits">Gill James, cinematographer. Drew Pollins, director. Leo Award, Best Cinematography in a Short Drama, 2015. CSC Student Cinematography Award, Panavision Canada, 2015.</p>
+  <div class="film-stills" id="stills"></div>
+</main>
+<footer class="mark-foot"><a class="sig" href="index.html" lang="cr" aria-label="Gill James">ᑕᐣᓯ</a></footer>
+<script src="js/ghostdial.js"></script>
+<script src="js/scrub.js"></script>
+<script src="js/wash.js"></script>
+<script>
+(function(){
+  var PUB=window.CKS_PUBLISH||null;
+  function src(path){
+    if(!PUB) return path;
+    if(path.indexOf('media/av/')===0) return PUB.av + path.slice(9);
+    if(path.indexOf('media/owtd/')===0) return PUB.owtd + path.slice(11);
+    if(path.indexOf('media/posters/')===0) return PUB.posters + path.slice(14);
+    if(path.indexOf('media/stills/')===0) return PUB.photos + path.slice(13);
+    return path;
+  }
+  var stills=[
+    'media/owtd/stills/02_dallas_snow.jpg',
+    'media/owtd/stills/03_colton_snow_trees.jpg',
+    'media/owtd/stills/05_lantern_portrait.jpg',
+    'media/owtd/stills/09_landscape.jpg'
+  ];
+  var vid=document.getElementById('filmVid');
+  vid.poster=src('media/owtd/stills/02_dallas_snow.jpg');
+  vid.src=src('media/av/AV1-one-with-the-devil-excerpt-cinematography.mp4');
+  if(window.CKS_WASH) window.CKS_WASH.from(vid.poster);
+  var box=document.getElementById('stills');
+  stills.forEach(function(p){
+    var im=document.createElement('img');
+    im.src=src(p);
+    im.alt='';
+    box.appendChild(im);
+  });
+})();
+</script>
+<script src="js/moon.js"></script>
+</body>
+</html>
