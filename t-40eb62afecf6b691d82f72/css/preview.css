@@ -1,0 +1,51 @@
+/* preview-only: about pills never cover the bio; + menu; typographic tweaks */
+.about-l1{display:flex;flex-direction:column;gap:12px;padding-bottom:24px;max-height:none}
+.about-l1 .bio{max-height:none!important;overflow:visible!important;padding-right:0;padding-bottom:8px;position:relative;z-index:0}
+.about-l1 .bio p{margin:0 0 1em}
+.about-l1 .bio p:last-child{margin-bottom:0}
+.about-l1 > p{position:static!important;margin:12px 0 0;z-index:1;flex-shrink:0}
+.about-l1 .lk, .about-l1 a.lk{position:static!important;display:inline-block;margin:0 8px 8px 0}
+/* keep the dock from sitting on the last lines */
+#about .body, #about-bio, .about-l1{padding-bottom:calc(24px + env(safe-area-inset-bottom,0px))}
+@media (max-width: 500px){
+  .about-l1{padding:10px 10px 72px}
+  .about-l1 .bio{font-size:15px;line-height:1.55}
+}
+
+.plus-wrap{position:relative;display:inline-flex;align-items:center;margin-right:8px}
+.plus-btn{appearance:none;border:0;background:rgba(232,228,220,.08);color:#e8e4dc;width:36px;height:36px;border-radius:18px;font:400 22px/1 Poppins,sans-serif;cursor:pointer}
+.plus-btn[aria-expanded="true"]{background:rgba(232,228,220,.18)}
+.plus-menu{position:absolute;top:42px;right:0;min-width:11rem;padding:8px 0;background:#0b0e14;border:1px solid rgba(232,228,220,.16);border-radius:10px;z-index:80;box-shadow:0 12px 40px rgba(0,0,0,.45)}
+.plus-menu[hidden]{display:none}
+.plus-menu a{display:block;padding:10px 16px;color:#e8e4dc;text-decoration:none;letter-spacing:.08em;text-transform:lowercase}
+.plus-menu a:hover,.plus-menu a:focus{background:rgba(232,228,220,.08)}
+
+/* film slides: make the title a way back to the film tile */
+#film-slides .fs-title{pointer-events:auto}
+
+/* Film stills stay on the piece page as a swipeable tile row.
+   .imm.scoped otherwise hides .imm-f (display:none). */
+.imm .imm-f,
+.imm.scoped .imm-f{
+  display:flex!important;
+  flex-wrap:nowrap;
+  gap:6px;
+  margin:8px 0 4px;
+  overflow-x:auto;
+  overflow-y:hidden;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:thin;
+  max-height:52px;
+}
+.imm .imm-f:empty,
+.imm.scoped .imm-f:empty{display:none!important}
+.imm .imm-f img,
+.imm.scoped .imm-f img{
+  flex:0 0 100px;
+  width:100px;
+  height:42px;
+  object-fit:cover;
+  border-radius:2px;
+  cursor:pointer;
+}
+.imm .frame > img.fs-framepeek{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#000;z-index:3}
