@@ -15,10 +15,10 @@ Web app (interactive work examples):
   More: Spirit Eye, in 3D
     https://jamesgillmedia.github.io/gill-sky/u4-opus-m4/3d/
 
-This set is the v28 work-examples site plus later additions: oz red mode, piece renames, the floating J-crescent moon (dial off by default; Tune can turn it back on), status-bar esc, safelight ii thumbnail, persistent Lost in Time mini player, image wheel/zoom lock, tune "save as default", muted in-view clip autoplay, a silent Weird Kid clip, atmosphere, and find. Play the sky / tour is not shown. The 3D link, the signed letter (in this folder), and every PDF's live URL point at the preview above.
+This set is the v28 work-examples site plus later additions: oz red mode, piece renames, the floating J-crescent moon (dial off by default; Tune can turn it back on), status-bar esc, safelight ii thumbnail, persistent Lost in Time mini player, image wheel/zoom lock, tune "save as default", muted in-view clip autoplay, a silent Weird Kid clip, atmosphere, and find. Play the sky / tour is not shown. The 3D link and the signed letter (in this folder) go with this preview. The PDFs in this folder and in the Download all zip still carry the t-f66f477ead80b8dc5a49 preview link, which stays valid.
 
 Files in this folder:
-  gill-james-work-examples.pdf  (13 pages). Last page points at the preview folder above.
+  gill-james-work-examples.pdf  (13 pages). Last page points at the t-f66f477ead80b8dc5a49 preview, which stays valid.
   gill-james-work-examples-one-page.pdf  (1 page)
   gill-james-one-pager-sky.pdf
   gill-james-one-pager-every-piece.pdf
@@ -32,9 +32,8 @@ Files in this folder:
 
 Notes:
   Lost in Time is the official 3:36 tagged 320 kbps track (8642490 bytes).
-  The Download all zip (cks-submission-files.zip) holds the seven PDFs: work examples, the four one-pagers, and both CVs, all with the live preview URL above. The signed support letter stays in this folder (not inside that zip).
-  All PDFs in this set carry the live preview URL.
+  The Download all zip (cks-submission-files.zip) holds the seven PDFs: work examples, the four one-pagers, and both CVs. Those PDFs still carry the t-f66f477ead80b8dc5a49 preview link, which stays valid. The signed support letter stays in this folder (not inside that zip).
   An earlier untouched v27 preview (v26 plus Fable's v27 files, no additions) lives at:
     https://jamesgillmedia.github.io/safelight-3-preview/t-bdfca74590ad44e03723/
   Earlier previews (do not overwrite): t-f66f477ead80b8dc5a49, t-710a40efe93b32dbc264, t-cbdaaf0046a99ef6a675, t-3da2b1107b265acf4a4b, t-43f1738a744a652baf18, t-a3884dbac916d28ed1f3.
-  Updated 19:02 America/Cambridge_Bay, 25 November 2026.
+  Updated 19:07 America/Cambridge_Bay, 25 November 2026.
