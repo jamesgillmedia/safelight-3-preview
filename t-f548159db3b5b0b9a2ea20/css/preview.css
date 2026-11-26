@@ -1,0 +1,189 @@
+/* preview-only: about pills never cover the bio; + menu; typographic tweaks */
+.about-l1{display:flex;flex-direction:column;gap:12px;padding-bottom:24px;max-height:none}
+.about-l1 .bio{max-height:none!important;overflow:visible!important;padding-right:0;padding-bottom:8px;position:relative;z-index:0}
+.about-l1 .bio p{margin:0 0 1em}
+.about-l1 .bio p:last-child{margin-bottom:0}
+.about-l1 > p{position:static!important;margin:12px 0 0;z-index:1;flex-shrink:0}
+.about-l1 .lk, .about-l1 a.lk{position:static!important;display:inline-block;margin:0 8px 8px 0}
+/* keep the dock from sitting on the last lines */
+#about .body, #about-bio, .about-l1{padding-bottom:calc(24px + env(safe-area-inset-bottom,0px))}
+@media (max-width: 500px){
+  .about-l1{padding:10px 10px 72px}
+  .about-l1 .bio{font-size:15px;line-height:1.55}
+}
+
+.plus-wrap{position:relative;display:inline-flex;align-items:center;margin-right:8px}
+.plus-btn{appearance:none;border:0;background:rgba(232,228,220,.08);color:#e8e4dc;width:36px;height:36px;border-radius:18px;font:400 22px/1 Poppins,sans-serif;cursor:pointer}
+.plus-btn[aria-expanded="true"]{background:rgba(232,228,220,.18)}
+.plus-menu{position:absolute;top:42px;right:0;min-width:11rem;padding:8px 0;background:#0b0e14;border:1px solid rgba(232,228,220,.16);border-radius:10px;z-index:80;box-shadow:0 12px 40px rgba(0,0,0,.45)}
+.plus-menu[hidden]{display:none}
+.plus-menu a{display:block;padding:10px 16px;color:#e8e4dc;text-decoration:none;letter-spacing:.08em;text-transform:lowercase}
+.plus-menu a:hover,.plus-menu a:focus{background:rgba(232,228,220,.08)}
+
+/* film slides: make the title a way back to the film tile */
+#film-slides .fs-title{pointer-events:auto}
+
+/* Film stills stay on the piece page as a swipeable tile row.
+   .imm.scoped otherwise hides .imm-f (display:none). */
+.imm .imm-f,
+.imm.scoped .imm-f{
+  display:flex!important;
+  flex-wrap:nowrap;
+  gap:6px;
+  margin:8px 0 4px;
+  overflow-x:auto;
+  overflow-y:hidden;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:thin;
+  max-height:52px;
+}
+.imm .imm-f:empty,
+.imm.scoped .imm-f:empty{display:none!important}
+.imm .imm-f img,
+.imm.scoped .imm-f img{
+  flex:0 0 100px;
+  width:100px;
+  height:42px;
+  object-fit:cover;
+  border-radius:2px;
+  cursor:pointer;
+}
+.imm .frame > img.fs-framepeek{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#000;z-index:3}
+
+/* A short chapter (Spaces has 2 works) must still fill the view, or inView()
+   thinks we are on About and the dock label desyncs. */
+.ch.lv1,.ch.lv2,.ch.inv{min-height:calc(100dvh - var(--dock, 72px) - var(--sb, 0px) - 12px)}
+
+
+/* ---------- Arrow glass (t-f548…): every arrow control gets a frosted base.
+   Translucent fill + blur so stills show through; a hairline light edge and
+   a little depth. In red mode the glass is safelight red, never mint. */
+:root{
+  --glass-fill:rgba(18,22,28,.34);
+  --glass-fill-hover:rgba(28,32,40,.48);
+  --glass-edge:rgba(232,228,220,.42);
+  --glass-inner:rgba(255,255,255,.16);
+  --glass-ink:#e8e4dc;
+  --glass-blur:16px;
+  --glass-shadow:0 1px 2px rgba(0,0,0,.28), 0 8px 20px rgba(0,0,0,.22);
+}
+html[data-gj-c="red"]{
+  --glass-fill:rgba(72,18,16,.42);
+  --glass-fill-hover:rgba(98,24,20,.55);
+  --glass-edge:rgba(232,150,130,.48);
+  --glass-inner:rgba(255,190,170,.18);
+  --glass-ink:#f3d4ce;
+  --glass-shadow:0 1px 2px rgba(40,0,0,.35), 0 8px 20px rgba(40,0,0,.28);
+}
+
+.ib:not(.play),
+a.ib.ext,
+.imm [data-a="prev"],
+.imm [data-a="next"],
+.imm [data-a="out"],
+.imm [data-a="full"],
+.imm [data-a="ext"],
+.scope .sc-b,
+.zoom .zb,
+.zoom button.zb,
+.more button,
+#film-slides .fs-back,
+#film-slides .fs-nav button,
+.sheet .sx,
+.plus-btn{
+  color:var(--glass-ink);
+  background-color:var(--glass-fill);
+  background-image:linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,0) 46%);
+  border:1px solid var(--glass-edge);
+  box-shadow:var(--glass-shadow), inset 0 1px 0 var(--glass-inner);
+  -webkit-backdrop-filter:blur(var(--glass-blur)) saturate(1.2);
+  backdrop-filter:blur(var(--glass-blur)) saturate(1.2);
+}
+/* beat the landscape "solid black pill" that sat on the frame */
+@media (orientation:landscape) and (max-height:500px){
+  .imm .ib:not(.play){
+    background-color:var(--glass-fill);
+    background-image:linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,0) 46%);
+  }
+}
+.ib:not(.play):hover,
+a.ib.ext:hover,
+.zoom .zb:hover,
+.more button:hover,
+#film-slides .fs-back:hover,
+#film-slides .fs-nav button:hover,
+.plus-btn:hover,
+.scope .sc-b:hover{
+  background-color:var(--glass-fill-hover);
+}
+.ib:not(.play):disabled,
+.zoom .zb:disabled,
+.more button:disabled,
+#film-slides .fs-nav button:disabled,
+.scope .sc-b:disabled{
+  opacity:.38;
+  box-shadow:inset 0 1px 0 var(--glass-inner);
+}
+#film-slides .fs-back,
+#film-slides .fs-nav button{
+  border-radius:22px;
+}
+
+/* Red mode: arrow ink and the nearby player chrome go safelight red. No mint. */
+html[data-gj-c="red"] .imm .play,
+html[data-gj-c="red"] .imm-b .ib.play,
+html[data-gj-c="red"] button.play{
+  background:#8a3a34;
+  color:#f6e6e2;
+  border-color:rgba(232,150,130,.45);
+}
+html[data-gj-c="red"] .imm-b .ff-mode{
+  border-color:rgba(232,150,130,.4);
+}
+html[data-gj-c="red"] .imm-b .ff-mode button{color:#f3d4ce}
+html[data-gj-c="red"] .imm-b .ff-mode button[aria-checked="true"]{
+  background:#8a3a34;color:#f6e6e2;
+}
+html[data-gj-c="red"] .sc-fill{
+  background:linear-gradient(90deg,rgba(168,72,68,.12),rgba(168,72,68,.78));
+}
+html[data-gj-c="red"] .sc-rail .tk.on{
+  background:#c45c54;
+  box-shadow:0 0 6px 2px rgba(168,72,68,.55),0 0 14px 4px rgba(168,72,68,.22);
+}
+html[data-gj-c="red"] .sc-strip .th.on{
+  outline-color:#c45c54;
+  box-shadow:0 0 12px rgba(168,72,68,.4);
+}
+html[data-gj-c="red"] .sc-lab .ff,
+html[data-gj-c="red"] .sc-lab .pl{color:#e8b4ae}
+html[data-gj-c="red"] .tabs a.here,
+html[data-gj-c="red"] .tabs a[aria-current],
+html[data-gj-c="red"] .zoom .dots{color:#e8b4ae}
+
+@media (prefers-reduced-transparency:reduce){
+  .ib:not(.play),
+  a.ib.ext,
+  .zoom .zb,
+  .more button,
+  #film-slides .fs-back,
+  #film-slides .fs-nav button,
+  .sheet .sx,
+  .plus-btn,
+  .scope .sc-b{
+    -webkit-backdrop-filter:none;
+    backdrop-filter:none;
+    background-color:rgba(18,22,28,.72);
+  }
+  html[data-gj-c="red"] .ib:not(.play),
+  html[data-gj-c="red"] a.ib.ext,
+  html[data-gj-c="red"] .zoom .zb,
+  html[data-gj-c="red"] .more button,
+  html[data-gj-c="red"] #film-slides .fs-back,
+  html[data-gj-c="red"] #film-slides .fs-nav button,
+  html[data-gj-c="red"] .sheet .sx,
+  html[data-gj-c="red"] .plus-btn,
+  html[data-gj-c="red"] .scope .sc-b{
+    background-color:rgba(72,18,16,.78);
+  }
+}

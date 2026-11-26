@@ -1,0 +1,464 @@
+{
+  "scoop": [
+    {
+      "src": "media/library/scoop/scoop-in-hand-full.jpg",
+      "thumb": "media/library/scoop/t-scoop-in-hand-full.webp",
+      "w": 1440,
+      "h": 1800,
+      "name": "Ice Cream Scooper"
+    },
+    {
+      "src": "media/library/scoop/scoop-bowl.webp",
+      "thumb": "media/library/scoop/t-scoop-bowl.webp",
+      "w": 403,
+      "h": 468,
+      "name": "Ice Cream Scooper"
+    },
+    {
+      "src": "media/library/scoop/scoop-hand-2aea8932.jpg",
+      "thumb": "media/library/scoop/t-scoop-hand-2aea8932.webp",
+      "w": 1536,
+      "h": 2048,
+      "name": "Ice Cream Scooper"
+    },
+    {
+      "src": "media/library/scoop/scoop-side-full.jpg",
+      "thumb": "media/library/scoop/t-scoop-side-full.webp",
+      "w": 1440,
+      "h": 1800,
+      "name": "Ice Cream Scooper"
+    },
+    {
+      "src": "media/library/scoop/scoop-handle.webp",
+      "thumb": "media/library/scoop/t-scoop-handle.webp",
+      "w": 422,
+      "h": 432,
+      "name": "Ice Cream Scooper"
+    },
+    {
+      "src": "media/library/scoop/scoop-side-bowl.jpg",
+      "thumb": "media/library/scoop/t-scoop-side-bowl.webp",
+      "w": 1440,
+      "h": 1800,
+      "name": "Ice Cream Scooper"
+    },
+    {
+      "src": "media/library/scoop/scoop-cut.webp",
+      "thumb": "media/library/scoop/t-scoop-cut.webp",
+      "w": 361,
+      "h": 699,
+      "name": "Ice Cream Scooper"
+    },
+    {
+      "src": "media/library/scoop/scoop-context-full.jpg",
+      "thumb": "media/library/scoop/t-scoop-context-full.webp",
+      "w": 1350,
+      "h": 1800,
+      "name": "Ice Cream Scooper"
+    },
+    {
+      "src": "media/library/scoop/scoop-surface-side.webp",
+      "thumb": "media/library/scoop/t-scoop-surface-side.webp",
+      "w": 518,
+      "h": 480,
+      "name": "Ice Cream Scooper"
+    }
+  ],
+  "paddle": [
+    {
+      "src": "media/library/paddle/paddle-blade-grain-2023.jpg",
+      "thumb": "media/library/paddle/t-paddle-blade-grain-2023.webp",
+      "w": 1536,
+      "h": 2048,
+      "name": "carved paddle"
+    },
+    {
+      "src": "media/library/paddle/paddle-in-hand.webp",
+      "thumb": "media/library/paddle/t-paddle-in-hand.webp",
+      "w": 960,
+      "h": 1200,
+      "name": "carved paddle"
+    },
+    {
+      "src": "media/library/paddle/paddle-against-wall.webp",
+      "thumb": "media/library/paddle/t-paddle-against-wall.webp",
+      "w": 900,
+      "h": 1200,
+      "name": "carved paddle"
+    },
+    {
+      "src": "media/library/paddle/paddle-window-light.webp",
+      "thumb": "media/library/paddle/t-paddle-window-light.webp",
+      "w": 960,
+      "h": 1200,
+      "name": "carved paddle"
+    },
+    {
+      "src": "media/library/paddle/paddle-product.webp",
+      "thumb": "media/library/paddle/t-paddle-product.webp",
+      "w": 900,
+      "h": 1200,
+      "name": "carved paddle"
+    },
+    {
+      "src": "media/library/paddle/paddle-close-grain.webp",
+      "thumb": "media/library/paddle/t-paddle-close-grain.webp",
+      "w": 900,
+      "h": 1200,
+      "name": "carved paddle"
+    },
+    {
+      "src": "media/library/paddle/paddle-3480.jpg",
+      "thumb": "media/library/paddle/t-paddle-3480.webp",
+      "w": 1536,
+      "h": 2048,
+      "name": "carved paddle"
+    },
+    {
+      "src": "media/library/paddle/paddle-3505.jpg",
+      "thumb": "media/library/paddle/t-paddle-3505.webp",
+      "w": 1536,
+      "h": 2048,
+      "name": "carved paddle"
+    },
+    {
+      "src": "media/library/paddle/paddle-3511.jpg",
+      "thumb": "media/library/paddle/t-paddle-3511.webp",
+      "w": 1536,
+      "h": 2048,
+      "name": "carved paddle"
+    },
+    {
+      "src": "media/library/paddle/paddle-3538.jpg",
+      "thumb": "media/library/paddle/t-paddle-3538.webp",
+      "w": 1536,
+      "h": 2048,
+      "name": "carved paddle"
+    }
+  ],
+  "tray": [
+    {
+      "src": "media/library/tray/tray-0688.jpg",
+      "thumb": "media/library/tray/t-tray-0688.webp",
+      "w": 1512,
+      "h": 2016,
+      "name": "carved tray"
+    },
+    {
+      "src": "media/library/tray/tray-0689.jpg",
+      "thumb": "media/library/tray/t-tray-0689.webp",
+      "w": 1512,
+      "h": 2016,
+      "name": "carved tray"
+    },
+    {
+      "src": "media/library/tray/tray-0690.jpg",
+      "thumb": "media/library/tray/t-tray-0690.webp",
+      "w": 1512,
+      "h": 2016,
+      "name": "carved tray"
+    },
+    {
+      "src": "media/library/tray/tray-0695.jpg",
+      "thumb": "media/library/tray/t-tray-0695.webp",
+      "w": 1512,
+      "h": 2016,
+      "name": "carved tray"
+    },
+    {
+      "src": "media/library/tray/tray-0696.jpg",
+      "thumb": "media/library/tray/t-tray-0696.webp",
+      "w": 1512,
+      "h": 2016,
+      "name": "carved tray"
+    },
+    {
+      "src": "media/library/tray/tray-0698.jpg",
+      "thumb": "media/library/tray/t-tray-0698.webp",
+      "w": 1512,
+      "h": 2016,
+      "name": "carved tray"
+    },
+    {
+      "src": "media/library/tray/tray-0701.jpg",
+      "thumb": "media/library/tray/t-tray-0701.webp",
+      "w": 1512,
+      "h": 2016,
+      "name": "carved tray"
+    },
+    {
+      "src": "media/library/tray/tray-0732.jpg",
+      "thumb": "media/library/tray/t-tray-0732.webp",
+      "w": 1512,
+      "h": 2016,
+      "name": "carved tray"
+    }
+  ],
+  "moss": [
+    {
+      "src": "media/library/moss/moss-vessel.jpg",
+      "thumb": "media/library/moss/t-moss-vessel.webp",
+      "w": 1536,
+      "h": 2048,
+      "name": "Moss in small vessel"
+    },
+    {
+      "src": "media/library/moss/moss-vessel-5192.jpg",
+      "thumb": "media/library/moss/t-moss-vessel-5192.webp",
+      "w": 1536,
+      "h": 2048,
+      "name": "Moss in small vessel"
+    },
+    {
+      "src": "media/library/moss/moss-vessel-5193.jpg",
+      "thumb": "media/library/moss/t-moss-vessel-5193.webp",
+      "w": 1536,
+      "h": 2048,
+      "name": "Moss in small vessel"
+    },
+    {
+      "src": "media/library/moss/moss-vessel-5194.jpg",
+      "thumb": "media/library/moss/t-moss-vessel-5194.webp",
+      "w": 1536,
+      "h": 2048,
+      "name": "Moss in small vessel"
+    },
+    {
+      "src": "media/library/moss/moss-vessel-5196.jpg",
+      "thumb": "media/library/moss/t-moss-vessel-5196.webp",
+      "w": 1536,
+      "h": 2048,
+      "name": "Moss in small vessel"
+    },
+    {
+      "src": "media/library/moss/moss-vessel-5199.jpg",
+      "thumb": "media/library/moss/t-moss-vessel-5199.webp",
+      "w": 1536,
+      "h": 2048,
+      "name": "Moss in small vessel"
+    }
+  ],
+  "rim": [
+    {
+      "src": "media/library/rim/crescent-rim.jpg",
+      "thumb": "media/library/rim/t-crescent-rim.webp",
+      "w": 2048,
+      "h": 2048,
+      "name": "Crescent bowl rim"
+    },
+    {
+      "src": "media/library/rim/crescent-rim-4988.jpg",
+      "thumb": "media/library/rim/t-crescent-rim-4988.webp",
+      "w": 1536,
+      "h": 2048,
+      "name": "Crescent bowl rim"
+    },
+    {
+      "src": "media/library/rim/crescent-rim-4996.jpg",
+      "thumb": "media/library/rim/t-crescent-rim-4996.webp",
+      "w": 1536,
+      "h": 2048,
+      "name": "Crescent bowl rim"
+    },
+    {
+      "src": "media/library/rim/crescent-rim-5001.jpg",
+      "thumb": "media/library/rim/t-crescent-rim-5001.webp",
+      "w": 1536,
+      "h": 2048,
+      "name": "Crescent bowl rim"
+    },
+    {
+      "src": "media/library/rim/crescent-rim-5002.jpg",
+      "thumb": "media/library/rim/t-crescent-rim-5002.webp",
+      "w": 1536,
+      "h": 2048,
+      "name": "Crescent bowl rim"
+    },
+    {
+      "src": "media/library/rim/crescent-rim-5004.jpg",
+      "thumb": "media/library/rim/t-crescent-rim-5004.webp",
+      "w": 1536,
+      "h": 2048,
+      "name": "Crescent bowl rim"
+    },
+    {
+      "src": "media/library/rim/crescent-rim-5098.jpg",
+      "thumb": "media/library/rim/t-crescent-rim-5098.webp",
+      "w": 1536,
+      "h": 2048,
+      "name": "Crescent bowl rim"
+    },
+    {
+      "src": "media/library/rim/crescent-rim-object.webp",
+      "thumb": "media/library/rim/t-crescent-rim-object.webp",
+      "w": 960,
+      "h": 960,
+      "name": "Crescent bowl rim"
+    }
+  ],
+  "cup": [
+    {
+      "src": "media/library/cup/cup-101.jpg",
+      "thumb": "media/library/cup/t-cup-101.webp",
+      "w": 1365,
+      "h": 2048,
+      "name": "joio cup"
+    },
+    {
+      "src": "media/library/cup/cup-4292.jpg",
+      "thumb": "media/library/cup/t-cup-4292.webp",
+      "w": 2048,
+      "h": 1365,
+      "name": "joio cup"
+    },
+    {
+      "src": "media/library/cup/cup-espresso-6153.jpg",
+      "thumb": "media/library/cup/t-cup-espresso-6153.webp",
+      "w": 1350,
+      "h": 1800,
+      "name": "joio cup"
+    },
+    {
+      "src": "media/library/cup/cup-filled-5829.jpg",
+      "thumb": "media/library/cup/t-cup-filled-5829.webp",
+      "w": 1350,
+      "h": 1800,
+      "name": "joio cup"
+    },
+    {
+      "src": "media/library/cup/cup-speckled.jpg",
+      "thumb": "media/library/cup/t-cup-speckled.webp",
+      "w": 1536,
+      "h": 2048,
+      "name": "joio cup"
+    },
+    {
+      "src": "media/library/cup/cup-hand-cd63215d.jpg",
+      "thumb": "media/library/cup/t-cup-hand-cd63215d.webp",
+      "w": 1536,
+      "h": 2048,
+      "name": "joio cup"
+    },
+    {
+      "src": "media/library/cup/cup-surface-img_5841.webp",
+      "thumb": "media/library/cup/t-cup-surface-img_5841.webp",
+      "w": 810,
+      "h": 660,
+      "name": "joio cup"
+    },
+    {
+      "src": "media/library/cup/cup-making-img_5881.webp",
+      "thumb": "media/library/cup/t-cup-making-img_5881.webp",
+      "w": 900,
+      "h": 1200,
+      "name": "joio cup"
+    },
+    {
+      "src": "media/library/cup/cup-use-img_6136.webp",
+      "thumb": "media/library/cup/t-cup-use-img_6136.webp",
+      "w": 900,
+      "h": 1200,
+      "name": "joio cup"
+    }
+  ],
+  "canopy": [
+    {
+      "src": "media/library/canopy/forest-canopy.jpg",
+      "thumb": "media/library/canopy/t-forest-canopy.webp",
+      "w": 1536,
+      "h": 2048,
+      "name": "forest canopy"
+    },
+    {
+      "src": "media/library/canopy/canopy-4774.jpg",
+      "thumb": "media/library/canopy/t-canopy-4774.webp",
+      "w": 1512,
+      "h": 2016,
+      "name": "forest canopy"
+    },
+    {
+      "src": "media/library/canopy/canopy-8867.jpg",
+      "thumb": "media/library/canopy/t-canopy-8867.webp",
+      "w": 1512,
+      "h": 2016,
+      "name": "forest canopy"
+    },
+    {
+      "src": "media/library/canopy/canopy-9463.jpg",
+      "thumb": "media/library/canopy/t-canopy-9463.webp",
+      "w": 2016,
+      "h": 1512,
+      "name": "forest canopy"
+    }
+  ],
+  "rosebuds": [
+    {
+      "src": "media/library/rosebuds/rosebuds.jpg",
+      "thumb": "media/library/rosebuds/t-rosebuds.webp",
+      "w": 1536,
+      "h": 2048,
+      "name": "Rosebuds"
+    },
+    {
+      "src": "media/library/rosebuds/rosebuds-0737.jpg",
+      "thumb": "media/library/rosebuds/t-rosebuds-0737.webp",
+      "w": 2016,
+      "h": 1512,
+      "name": "Rosebuds"
+    },
+    {
+      "src": "media/library/rosebuds/rosebuds-0760.jpg",
+      "thumb": "media/library/rosebuds/t-rosebuds-0760.webp",
+      "w": 2016,
+      "h": 1512,
+      "name": "Rosebuds"
+    },
+    {
+      "src": "media/library/rosebuds/rosebuds-1449.jpg",
+      "thumb": "media/library/rosebuds/t-rosebuds-1449.webp",
+      "w": 1512,
+      "h": 2016,
+      "name": "Rosebuds"
+    },
+    {
+      "src": "media/library/rosebuds/rosebuds-1468.jpg",
+      "thumb": "media/library/rosebuds/t-rosebuds-1468.webp",
+      "w": 1512,
+      "h": 2016,
+      "name": "Rosebuds"
+    },
+    {
+      "src": "media/library/rosebuds/rosebuds-1473.jpg",
+      "thumb": "media/library/rosebuds/t-rosebuds-1473.webp",
+      "w": 1512,
+      "h": 2016,
+      "name": "Rosebuds"
+    }
+  ],
+  "owtd_stills": [
+    "media/films/owtd/stills/00_snow_portrait.jpg",
+    "media/films/owtd/stills/01_wood_chop.jpg",
+    "media/films/owtd/stills/02_dallas_snow.jpg",
+    "media/films/owtd/stills/03_colton_snow_trees.jpg",
+    "media/films/owtd/stills/04_table_twoshot.jpg",
+    "media/films/owtd/stills/05_lantern_portrait.jpg",
+    "media/films/owtd/stills/06_colton_cabin.jpg",
+    "media/films/owtd/stills/07_dallas_cu.jpg",
+    "media/films/owtd/stills/08_rose.jpg",
+    "media/films/owtd/stills/09_landscape.jpg",
+    "media/films/owtd/stills/10_rifle_doorway.jpg",
+    "media/films/owtd/stills/11_night_cabin.jpg",
+    "media/films/owtd/stills/12_candlelight.jpg"
+  ],
+  "wk_stills": [
+    "media/films/weird-kid/stills/wk-forest-floor.jpg",
+    "media/films/weird-kid/stills/wk-forest-path.jpg",
+    "media/films/weird-kid/stills/wk-hobby-horse-sunset.jpg",
+    "media/films/weird-kid/stills/wk-raven.jpg"
+  ],
+  "arc_stills": [
+    "media/films/arc/stills/01-vimeo-official-poster-lantern.jpg",
+    "media/films/arc/stills/02-production-still-driving-rearview.jpg",
+    "media/films/arc/stills/03-production-still-red-window.jpg"
+  ]
+}
