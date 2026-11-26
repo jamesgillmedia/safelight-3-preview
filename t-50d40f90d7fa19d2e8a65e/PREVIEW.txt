@@ -1,0 +1,6 @@
+t-40eb62afecf6b691d82f72
+base: gilljames main site-v3-3d (live match, 13 Nov 2026)
+photos: 68
+objects: 29
+
+t-50d40f90d7fa19d2e8a65e: adds the Spaces chapter (Spirit Eye of skwácháýs + forest garden stills + 3d, and safelight ii) from CKS public work. Ripple bar unchanged. noindex.
