@@ -119,6 +119,7 @@
     doc.addEventListener('click',function(e){
       var t=e.target&&e.target.closest&&e.target.closest('[data-egg="momo"]');
       if(t){e.preventDefault();e.stopPropagation();toggle();return}
+      if(e.target&&e.target.closest&&e.target.closest('#red'))return;
       if(GJ12.momoTapHide)GJ12.momoTapHide();
     },true);
     doc.addEventListener('keydown',function(e){

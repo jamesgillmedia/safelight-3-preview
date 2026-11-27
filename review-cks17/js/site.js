@@ -268,10 +268,38 @@ ready(function(){
 
   b.setAttribute('aria-label','tap to go home, swipe down to go back');
   (function(){
-    var st=null;
-    b.addEventListener('pointerdown',function(e){st={x:e.clientX,y:e.clientY};});
-    function end(e){if(!st)return;var dy=(e.clientY||0)-st.y,dx=(e.clientX||0)-st.x;st=null;if(dy>28&&dy>Math.abs(dx)){if(GJ12.stepBack)GJ12.stepBack();return}if(Math.hypot(dx,dy)<16){if(GJ12.goSky)GJ12.goSky(true);else if(typeof goSky==='function')goSky(true)}}
-    b.addEventListener('pointerup',end);b.addEventListener('pointercancel',function(){st=null});
+    var st=null,lastTap=0,tapT=0,momoAt=0;
+    b.addEventListener('pointerdown',function(e){if(e.pointerType==='mouse'&&e.button!==0)return;st={x:e.clientX,y:e.clientY};try{b.setPointerCapture(e.pointerId)}catch(x){}});
+    function end(e){
+      if(!st)return;
+      var dy=(e.clientY||0)-st.y,dx=(e.clientX||0)-st.x;st=null;
+      if(dy>28&&dy>Math.abs(dx)){clearTimeout(tapT);tapT=0;lastTap=0;if(GJ12.stepBack)GJ12.stepBack();return}
+      if(Math.hypot(dx,dy)<16){
+        var now=Date.now();
+        if(lastTap&&now-lastTap<340){
+          clearTimeout(tapT);tapT=0;lastTap=0;momoAt=now;
+          if(GJ12.momoToggle)GJ12.momoToggle();
+          return;
+        }
+        lastTap=now;clearTimeout(tapT);
+        tapT=setTimeout(function(){
+          tapT=0;lastTap=0;
+          if(GJ12.momoTapHide)GJ12.momoTapHide();
+          if(GJ12.goSky)GJ12.goSky(true);else if(typeof goSky==='function')goSky(true);
+        },280);
+      }
+    }
+    b.addEventListener('pointerup',end);
+    b.addEventListener('pointercancel',function(){st=null});
+    b.addEventListener('dblclick',function(e){
+      e.preventDefault();e.stopPropagation();
+      if(Date.now()-momoAt<400)return;
+      clearTimeout(tapT);tapT=0;lastTap=0;momoAt=Date.now();
+      if(GJ12.momoToggle)GJ12.momoToggle();
+    });
+    b.addEventListener('click',function(e){
+      if(e.detail===0){clearTimeout(tapT);tapT=0;lastTap=0;if(GJ12.goSky)GJ12.goSky(true);else if(typeof goSky==='function')goSky(true)}
+    });
   })();
   b.onclick=null;
 
@@ -2225,16 +2253,11 @@ function escbar(){
   else addEventListener('load',bootTune);
   (function markHold(){
     var mark=$('#corner');if(!mark)return;
-    var t=0,tm=0,pt=null,opened=0;
-    function clr(){if(t){clearTimeout(t);t=0}if(tm){clearTimeout(tm);tm=0}pt=null}
+    var t=0,pt=null,opened=0;
+    function clr(){if(t){clearTimeout(t);t=0}pt=null}
     mark.addEventListener('pointerdown',function(e){
       if(e.button!=null&&e.button!==0)return;
       opened=0;pt={x:e.clientX,y:e.clientY};
-      tm=setTimeout(function(){
-        tm=0;if(!pt)return;opened=1;
-        if(t){clearTimeout(t);t=0}
-        if(GJ12.momoToggle)GJ12.momoToggle();
-      },700);
       t=setTimeout(function(){t=0;if(!pt||opened)return;opened=1;if(!$('#tune'))tune()},Math.round((+val('tunehold')||1.2)*1000));
     });
     mark.addEventListener('pointermove',function(e){if(!pt)return;if(Math.hypot(e.clientX-pt.x,e.clientY-pt.y)>10)clr()});
@@ -2246,25 +2269,18 @@ function escbar(){
   setTimeout(function(){if(GJ12.paintSeye)GJ12.paintSeye()},0);
   (function doubleOut(){
     var last=0,lx=0,ly=0,ptrs=0,pinch=0;
-    function skyTop(){
-      if(de.classList.contains('in')||(typeof CUR!=='undefined'&&CUR))return false;
-      if(de.classList.contains('tune-on')||de.classList.contains('atmos'))return false;
-      if(document.querySelector('#full.on,#lb.on,#tune,#all.on,#wall.on,#find.on,#subframe.on'))return false;
-      return true;
-    }
     document.addEventListener('pointerdown',function(){ptrs++;if(ptrs>=2)pinch=1},true);
     document.addEventListener('pointercancel',function(){ptrs=Math.max(0,ptrs-1);if(!ptrs)setTimeout(function(){pinch=0},400)},true);
     document.addEventListener('pointerup',function(e){
       ptrs=Math.max(0,ptrs-1);
       if(e.pointerType==='mouse'&&e.button!==0)return;
       if(typingIn(e.target))return;
-      if(e.target&&e.target.closest&&e.target.closest('#tune,input,textarea,select,button,.dial,.ticks,.grail,.vrail,.player,.pp,a.st,#find,#ord,#rail,#ozdial,#corner,#top,#now,#airbtn,#esc,#allbtn,#moon,#moonslot,#subframe'))return;
+      if(e.target&&e.target.closest&&e.target.closest('#tune,input,textarea,select,button,.dial,.ticks,.grail,.vrail,.player,.pp,a.st,#room,#find,#ord,#rail,#ozdial,#corner,#red,#top,#now,#airbtn,#esc,#allbtn,#moon,#moonslot,#subframe'))return;
       var now=Date.now();
+      if((GJ12._navLock&&now<GJ12._navLock)||(GJ12._openedAt&&now-GJ12._openedAt<600)){last=0;if(!ptrs)pinch=0;return}
       if(now-last<320&&Math.hypot(e.clientX-lx,e.clientY-ly)<28){
         last=0;
         if(pinch){if(!ptrs)pinch=0;return}
-        /* only the top-level constellation, with nothing to step out to, uses double-tap for Momo */
-        if(skyTop()&&GJ12.momoToggle){GJ12.momoToggle();if(!ptrs)pinch=0;return}
         if(typeof stepBack==='function')stepBack();
         if(!ptrs)pinch=0;
         return;

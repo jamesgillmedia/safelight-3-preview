@@ -121,7 +121,7 @@ html.strip-c .strip button{width:84px;height:84px}
 #lb .nv.p{left:8px}#lb .nv.n{right:8px}#lb .nv[hidden]{display:none}
 #lb .cp{padding:10px 16px calc(14px + var(--sb));color:#c9d3d6;font-size:14px;text-align:center;min-height:44px}
 /* red mode disc */
-#red{position:fixed;left:calc(12px + env(safe-area-inset-left,0px));bottom:calc(12px + var(--sb));z-index:40;width:auto;min-width:44px;height:44px;border:0;background:none;padding:0 8px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+#red{position:fixed;left:calc(12px + env(safe-area-inset-left,0px));bottom:calc(12px + var(--sb));z-index:40;width:auto;min-width:44px;height:44px;border:0;background:none;padding:0 8px;cursor:pointer;display:flex;align-items:center;justify-content:center;touch-action:none}
 #red::after{content:none;display:none}
 #red b{font:700 17px/1 Syl,"Noto Sans Canadian Aboriginal",sans-serif;color:#ff4457;letter-spacing:0;text-shadow:0 0 10px rgba(255,68,87,.75),0 0 22px rgba(255,68,87,.4),0 0 2px rgba(255,68,87,.95);pointer-events:none}
 html.red #red b{color:#ff4457;text-shadow:0 0 12px rgba(255,68,87,.85),0 0 26px rgba(255,68,87,.5),0 0 2px rgba(255,68,87,.95)}
