@@ -2457,7 +2457,7 @@ addEventListener('hashchange',function(){
   function boot(){
     placeBtn();
     if('serviceWorker' in navigator){
-      navigator.serviceWorker.register('./sw.js',{scope:'./'}).catch(function(){});
+      navigator.serviceWorker.register('./sw.js',{scope:'./',updateViaCache:'none'}).catch(function(){});
     }
   }
   if(document.readyState==='complete')setTimeout(boot,0);
