@@ -1,0 +1,25 @@
+/* Hide extras the original simple photo lab (gill-sky@39e02f4) does not have. Nothing new. */
+#dline,
+#togo,
+main.room,
+section.line,
+section.bench,
+section.wall,
+#hang,
+#tray,
+#beam,
+#more,
+#clips,
+#video,
+#stills,
+.rooms,
+label.amb{display:none!important}
+/* On small screens the later lab hid sort/safelight behind a "controls" button. Keep those two visible, like the original header. */
+@media (max-width:620px){
+  .lab-more{display:none!important}
+  .lab-top .lab-modes{display:inline-flex!important;flex:none;width:auto;order:0}
+}
+/* If a title is ever shown, keep Gill's lowercase (do not inherit .ends/.cred uppercase). */
+#now .ttl,
+.cred .ttl,
+.stack figcaption.ttl{text-transform:none}
