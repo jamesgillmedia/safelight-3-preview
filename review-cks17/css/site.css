@@ -1191,7 +1191,8 @@ html.in #findhint,html.all #findhint,html.tune-on #findhint{opacity:0!important;
   .plate .txt,.plate .strip{flex-shrink:0}
   .plate .stage{overflow:hidden;flex:0 1 auto;height:auto;min-height:160px;max-height:calc(var(--vh) - 58px - var(--st,0px) - 250px - var(--sb,0px))}
   .plate .stage img.main,.plate .stage img.clipstill,.plate .stage video{max-width:100%;max-height:calc(var(--vh) - 58px - var(--st,0px) - 250px - var(--sb,0px));object-fit:contain}
-  .plate.hasdial .stage,.plate.hasdial .stage .dial{height:auto;max-height:calc(var(--vh) - 58px - var(--st,0px) - 210px - var(--sb,0px))}
+  .plate.hasdial .stage{height:auto;max-height:calc(var(--vh) - 58px - var(--st,0px) - 210px - var(--sb,0px))}
+  .plate.hasdial .stage .dial{height:min(calc(var(--vh)*.58),calc(var(--vh) - 58px - var(--st,0px) - 210px - var(--sb,0px)));min-height:240px;max-height:calc(var(--vh) - 58px - var(--st,0px) - 210px - var(--sb,0px))}
   .plate .txt{position:relative;z-index:2;margin-top:12px}
   .plate .kick,.plate .wallbtn{position:relative;z-index:2}
 }
@@ -1470,3 +1471,6 @@ html.red #full .full-back{color:#ff4457;border-color:rgba(255,68,87,.42);backgro
 html.red #all .wtop,html.red #wall .wtop,html.red #lb .top,html.red #subframe .sub-bar{background:rgba(10,3,4,.88);border-color:rgba(255,68,87,.18)}
 html.red .dial .dl{color:#ff4457}
 html.red .tdim-track i,html.red .tfeel-track i{background:#ff4457;box-shadow:0 0 12px rgba(255,68,87,.5)}
+/* Prevent per-piece --c (notably #canopy's mint 170,245,212) from leaking into glows, rails, or highlights in red/safelight mode. #disc i uses --mint and is intentionally unaffected. */
+html.red,html.red .plate,html.red #full,html.red #wall,html.red #all .ab,html.red #rail a,html.red #ozdial .ozd-item,html.red #map,html.red #map a{--c:255,68,87!important}
+html.red .holding{box-shadow:0 0 calc(8px + 28px*var(--hold,0)) rgba(255,68,87,calc(.25 + .55*var(--hold,0))),0 0 calc(4px + 16px*var(--hold,0)) rgba(255,68,87,calc(.14*var(--hold,0)))}
