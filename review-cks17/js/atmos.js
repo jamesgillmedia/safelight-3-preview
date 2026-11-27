@@ -6,7 +6,9 @@
   var S={};try{S=JSON.parse(localStorage.getItem(LSK)||'{}')||{}}catch(e){}
   function v(k){return S[k]==null?D[k]:S[k]}
   function save(){try{localStorage.setItem(LSK,JSON.stringify(S))}catch(e){}}
-  var AC=null;function ac(){if(!AC){var C=window.AudioContext||window.webkitAudioContext;if(!C)return null;AC=new C()}if(AC.state==='suspended')AC.resume();return AC}
+  var AC=null;
+  function resumeAC(){if(!AC||AC.state==='running')return;try{var pr=AC.resume();if(pr&&pr.catch)pr.catch(function(){})}catch(e){}}
+  function ac(){if(!AC){var C=window.AudioContext||window.webkitAudioContext;if(!C)return null;AC=new C()}resumeAC();return AC}
 
   /* ---------- atmosphere ---------- */
   var top=$('#top'),esc=$('#esc');
@@ -38,9 +40,12 @@
     var br=c.createGain();br.gain.value=1;lg.connect(br.gain);
     src.connect(hp);hp.connect(lp);lp.connect(br);br.connect(gn);gn.connect(c.destination);src.start();lfo.start();
     N={src:src,lp:lp,gn:gn,lg:lg};return N}
-  function tone(){if(!N)return;var c=AC,col=v('col');N.lp.frequency.setTargetAtTime(col==='a'?14000:col==='b'?2600:650,c.currentTime,.3);N.lg.gain.setTargetAtTime(.35*(+v('breath')),c.currentTime,.3);level()}
-  function level(){if(!N)return;var lit=$('#lit-audio'),duck=lit&&!lit.paused?.35:1,col=v('col'),k=col==='a'?.08:col==='b'?.16:.32;
+  function tone(){if(!N||!AC)return;var c=AC,col=v('col');N.lp.frequency.setTargetAtTime(col==='a'?14000:col==='b'?2600:650,c.currentTime,.3);N.lg.gain.setTargetAtTime(.35*(+v('breath')),c.currentTime,.3);level()}
+  function level(){if(!N||!AC)return;var lit=$('#lit-audio'),duck=lit&&!lit.paused?.35:1,col=v('col'),k=col==='a'?.08:col==='b'?.16:.32;
     N.gn.gain.setTargetAtTime(on?(+v('vol'))*k*duck:0,AC.currentTime,on?.8:1.05)}
+  function unlockAirAudio(){if(!on)return;if(!N)noise();resumeAC();if(N&&AC)tone()}
+  ['pointerdown','touchstart','click','keydown'].forEach(function(ev){document.addEventListener(ev,unlockAirAudio,{capture:true,passive:true})});
+  document.addEventListener('visibilitychange',function(){if(!document.hidden&&on)resumeAC()});
   function setAir(x){on=!!x;de.classList.toggle('atmos',on);ab.setAttribute('aria-pressed',on?'true':'false');ab.classList.toggle('on',on);
     if(on){paint();if(!raf)raf=requestAnimationFrame(draw);noise();tone()}else{level()}}
   ab.addEventListener('click',function(){setAir(!on)});
@@ -134,7 +139,7 @@
   fi.addEventListener('keydown',function(e){if(e.key==='ArrowDown'||e.key==='ArrowUp'){e.preventDefault();if(!res.length)return;sel=(sel+(e.key==='ArrowDown'?1:-1)+res.length)%res.length;$$('li[data-id]',fl).forEach(function(l,i){l.classList.toggle('on',i===sel);l.setAttribute('aria-selected',i===sel?'true':'false')})}
     if(e.key==='Enter'){e.preventDefault();if(res[sel])goTo(res[sel].id)}});
   function pickFind(e){var t=e.target;if(!t||!t.closest)return;var li=t.closest('li[data-id]');if(!li)return;e.preventDefault();e.stopPropagation();if(pickFind._lock)return;pickFind._lock=1;setTimeout(function(){pickFind._lock=0},400);goTo(li.getAttribute('data-id'))}
-  fp.addEventListener('pointerdown',pickFind,true);fl.addEventListener('pointerdown',pickFind,true);fl.addEventListener('click',pickFind);fl.addEventListener('touchend',pickFind,{passive:false});
+  fl.addEventListener('click',pickFind);
   document.addEventListener('keydown',function(e){if(e.key==='Escape'&&fp.classList.contains('on')){e.preventDefault();e.stopImmediatePropagation();closeFind();return}
     if(e.key==='/'&&!fp.classList.contains('on')&&!/input|textarea|select/i.test((document.activeElement||{}).tagName||'')){e.preventDefault();openFind()}},true);
   /* pull down from the top edge only, with a hint; never on hold */
@@ -183,8 +188,8 @@
     if(ok)openFind();
   },{passive:true});
   addEventListener('touchcancel',function(){clearPull()},{passive:true});
-  addEventListener('touchend',function(){py=null},{passive:true});
   window.GJ12=window.GJ12||{};GJ12.air={set:setAir,on:function(){return on},noise:function(){return N?{gain:N.gn.gain.value,lp:N.lp.frequency.value}:null},reset:resetAir};GJ12.find={open:openFind,close:closeFind,on:function(){return fp.classList.contains('on')}};
+  if(GJ12.syncAir)GJ12.syncAir();
 }
 /* run after the site's own start-up, so the player, esc and tune already exist */
 if(document.readyState==='complete')setTimeout(go,0);else addEventListener('load',function(){setTimeout(go,0)});
