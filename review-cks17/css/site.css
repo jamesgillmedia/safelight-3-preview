@@ -1448,3 +1448,25 @@ html[data-skytrace="c"] #belong{opacity:1}
 html.in #belong,html.red #belong{opacity:0}
 
 #room a.st.is-off b{opacity:0!important;visibility:hidden!important}
+
+/* Safelight/red mode: keep every active, hover, and focus state red (except #disc dot which stays mint). */
+html.red #esc:hover,html.red #esc:active,html.red #esc:focus-visible,
+html.red #ord:hover,html.red #ord:active,html.red #ord:focus-visible,
+html.red #airbtn:hover,html.red #airbtn:active,html.red #airbtn:focus-visible,
+html.red #findbtn:hover,html.red #findbtn:active,html.red #findbtn:focus-visible{
+  color:#ff4457;
+  text-shadow:0 0 10px rgba(255,68,87,.55);
+}
+html.red .strip button.on{border-color:#ff4457;box-shadow:0 0 12px rgba(255,68,87,.5)}
+html.red.strip-b .strip button.on{background:#ff4457}
+html.red #rail a.on i,html.red .dial .ticks button.on i{background:#ff4457;box-shadow:0 0 10px 2px rgba(255,68,87,.6)}
+html.red .plate.sound .vrail i,html.red .plate.sound .vol .voltrack b{background:#ff4457;box-shadow:0 0 12px 3px rgba(255,68,87,.55)}
+html.red #holdfan button.hot{background:rgba(255,68,87,.2);border-color:rgba(255,68,87,.7);color:#ff4457;box-shadow:0 0 18px rgba(255,68,87,.45)}
+html.red .plate .stage .vidctl .vidmute{border-color:rgba(255,68,87,.38);background:rgba(16,4,6,.55);color:#ff4457}
+html.red .plate .stage .vidctl .vidmute.on{border-color:rgba(255,68,87,.72);background:rgba(255,68,87,.16)}
+html.red .plate .stage .vidctl .vidmute::after,html.red .plate .stage .vidctl .vidmute:not(.on)::before{background:#ff4457}
+html.red #all .acover:active img,html.red #all .acover:focus img{outline-color:rgba(255,68,87,.6)}
+html.red #full .full-back{color:#ff4457;border-color:rgba(255,68,87,.42);background:rgba(16,4,6,.55)}
+html.red #all .wtop,html.red #wall .wtop,html.red #lb .top,html.red #subframe .sub-bar{background:rgba(10,3,4,.88);border-color:rgba(255,68,87,.18)}
+html.red .dial .dl{color:#ff4457}
+html.red .tdim-track i,html.red .tfeel-track i{background:#ff4457;box-shadow:0 0 12px rgba(255,68,87,.5)}
