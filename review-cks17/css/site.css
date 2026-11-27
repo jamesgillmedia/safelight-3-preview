@@ -42,8 +42,8 @@ html.in #top{opacity:1;transform:none}
 .pill{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:44px;min-width:44px;padding:0 16px;border-radius:999px;border:1px solid var(--line);background:var(--glass);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);text-decoration:none;font-size:14px;cursor:pointer;white-space:nowrap}
 #where{flex:1;text-align:center;font-size:12px;color:var(--dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;pointer-events:none}
 #where b{font-weight:300;color:rgb(var(--tint))}html.red #where b{color:var(--ink)}
-#rail{position:fixed;z-index:20;right:max(4px,env(safe-area-inset-right,0px));top:50%;transform:translateY(-50%);display:flex;flex-direction:column;opacity:0;transition:opacity .35s}
-html.in #rail{opacity:1;touch-action:none;cursor:ns-resize}#rail{padding:8px 6px;width:44px;box-sizing:border-box}
+#rail{position:fixed;z-index:20;right:max(4px,env(safe-area-inset-right,0px));top:50%;transform:translateY(-50%);display:flex;flex-direction:column;opacity:0;pointer-events:none;transition:opacity .35s}
+html.in #rail{opacity:1;pointer-events:auto;touch-action:none;cursor:ns-resize}#rail{padding:8px 6px;width:44px;box-sizing:border-box}
 #rail a{width:32px;height:24px;display:grid;place-items:center}
 #rail a i{width:5px;height:5px;border-radius:50%;background:rgba(var(--c),.55);transition:all .3s}
 #rail a.gap{margin-top:8px}
@@ -1195,7 +1195,7 @@ html.in #findhint,html.all #findhint,html.tune-on #findhint{opacity:0!important;
   .plate .txt{position:relative;z-index:2;margin-top:12px}
   .plate .kick,.plate .wallbtn{position:relative;z-index:2}
 }
-html.in .strip{padding-left:calc(88px + env(safe-area-inset-left,0px));padding-right:calc(72px + env(safe-area-inset-right,0px))}
+.plate .strip{padding-left:calc(88px + env(safe-area-inset-left,0px));padding-right:calc(72px + env(safe-area-inset-right,0px))}
 #sky{overflow:hidden}
 
 /* Air: a quiet header esc, never a large X over the all control */
