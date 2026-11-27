@@ -104,7 +104,7 @@ ready(function(){
 
   GJ12.redPad=rpApi;
 
-  /* left-edge dimmer, oz style: drag up the left edge to brighten, down to dim. Off with the Tune toggle. */
+  /* left-edge dimmer: drag up the left edge to brighten, down to dim. Off with the Tune toggle. */
   (function(){
     var edge=document.createElement('div');edge.id='dimedge';edge.setAttribute('aria-hidden','true');document.body.appendChild(edge);
     var down=null;
@@ -237,7 +237,7 @@ ready(function(){
 
   document.addEventListener('contextmenu',function(e){var t=e.target;if(t&&t.closest&&t.closest('#red,#disc,#typebtn,#allbtn,#esc,#airbtn,button.vidplay,.st'))e.preventDefault()},true);
 
-  /* rail / dial pulse: soft starlight breath. Faster brighter when the dial is moving. Oz ignores reduced motion. */
+  /* rail / dial pulse: soft starlight breath. Faster brighter when the dial is moving. */
   (function(){
     var v=0;
     function kick(x){v=Math.max(v,Math.min(1,Math.abs(+x)||0))}

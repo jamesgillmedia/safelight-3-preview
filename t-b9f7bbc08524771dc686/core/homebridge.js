@@ -8,7 +8,7 @@
 (function (G) {
   'use strict';
   var GJ = G.GJ = G.GJ || {}, html = document.documentElement, Q = new URLSearchParams(location.search);
-  var HOME = 'apps/oz-open/index.html';   // from the app's base (both apps use <base href="../../">)
+  var HOME = 'apps/good-weather/index.html';   // from the app's base (both apps use <base href="../../">)
   /* what each Home place opens here, and how to tell it is still open. room: an app room (GJ.app.enter).
      tool: GJ.<k>.open(). go: the Mark's own opener (GJ.mark.go). Names are the ones Home and the bar show. */
   var T = {

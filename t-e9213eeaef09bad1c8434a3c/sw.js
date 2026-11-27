@@ -11,7 +11,7 @@
    · pictures and atlases are kept as they are first seen.
    Registered by core/home.js, only on the page's own https address (or localhost) and not inside another page. */
 var V = 'oz-2ffe283';   // its own store; a published build stamps its own (pack-alt.py), so builds never mix files
-var APPS = ['apps/oz/index.html', 'apps/good-weather/index.html'];   // the oz family: each app's page names its own files
+var APPS = ['apps/good-weather/index.html'];   // the oz family: each app's page names its own files
 self.addEventListener('install', function (e) {
   self.skipWaiting();
   e.waitUntil(Promise.all(APPS.map(function (p) {
@@ -33,7 +33,7 @@ self.addEventListener('activate', function (e) {
 var DEV = V === 'oz-dev', WAIT = 2500;
 function page(r, u) { return r.mode === 'navigate' || /(\.html|\/|\.webmanifest)$/.test(u.pathname); }
 function keep(r, res) { if (res && res.ok && res.type === 'basic') { var copy = res.clone(); caches.open(V).then(function (c) { c.put(r, copy); }); } return res; }
-function kept(r) { return caches.open(V).then(function (c) { return c.match(r, { ignoreSearch: true }); }).then(function (hit) { return hit || (r.mode === 'navigate' ? caches.open(V).then(function (c) { return c.match(/good-weather/.test(r.url) ? 'apps/good-weather/index.html' : 'apps/oz/index.html'); }) : null); }); }
+function kept(r) { return caches.open(V).then(function (c) { return c.match(r, { ignoreSearch: true }); }).then(function (hit) { return hit || (r.mode === 'navigate' ? caches.open(V).then(function (c) { return c.match(/good-weather/.test(r.url) ? 'apps/good-weather/index.html' : 'apps/good-weather/index.html'); }) : null); }); }
 self.addEventListener('fetch', function (e) {
   var r = e.request; if (r.method !== 'GET') return; var u = new URL(r.url); if (u.origin !== self.location.origin) return;
   if (DEV || page(r, u)) {   // network first (a page: only a short wait, then the kept copy)

@@ -14,8 +14,8 @@
   var MODS = {   // the api name on GJ → its files, in order
     shrink: ['js/shrink.js'], mindex: ['js/mindex.js'], sweep: ['js/sweep.js'], picks: ['js/picks.js'], markup: ['js/markup.js'],
     decide: ['js/decide.js'], aplayer: ['js/aplayer.js'], demos: ['js/demos.js'], objects: ['js/objects.js'],
-    lab: ['js/photolab.js'], planner: ['apps/good-weather/js/planner.js'], welcome: ['js/welcome.js'], balance: ['js/balance.js'], messages: ['js/emoji-data.js', 'js/messages.js', 'js/messages-ours.js', 'js/oz-layers.js'],
-    friends: ['js/friends.js'], mark2: ['js/mark2.js'], oztune: ['js/oztune.js']
+    lab: ['js/photolab.js'], planner: ['apps/good-weather/js/planner.js'], welcome: ['js/welcome.js'], balance: ['js/balance.js'], messages: ['js/emoji-data.js', 'js/messages.js', 'js/messages-ours.js'],
+    friends: ['js/friends.js'], mark2: ['js/mark2.js'], oztune: []
   };
   /* the rooms (Gill, 19 Nov 2:24: "core first"): the page itself loads only the shell, the sky, the Moon dial, the Mark and
      Tune's way in. The rooms' own modules (Loops, the Sky player, the Archive and its board) come right after the first

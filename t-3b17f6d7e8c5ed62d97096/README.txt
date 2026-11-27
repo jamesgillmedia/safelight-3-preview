@@ -15,7 +15,7 @@ Web app (interactive work examples):
   More: Spirit Eye, in 3D
     https://jamesgillmedia.github.io/safelight-3-preview/t-8f03c467f0385e1be2eede/spirit-eye-3d/
 
-This set is the v28 work-examples site plus later additions: oz red mode, piece renames, the floating J-crescent moon (dial off by default; Tune can turn it back on), status-bar esc, safelight ii thumbnail, persistent Lost in Time mini player, image wheel/zoom lock, tune "save as default", muted in-view clip autoplay, a silent Weird Kid clip, atmosphere, and find. Play the sky / tour is not shown. The 3D link and the signed letter (in this folder) go with this preview. The PDFs in this folder and in the Download all zip still carry the t-f66f477ead80b8dc5a49 preview link, which stays valid.
+This set is the v28 work-examples site plus later additions: red mode, piece renames, the floating J-crescent moon (dial off by default; Tune can turn it back on), status-bar esc, safelight ii thumbnail, persistent Lost in Time mini player, image wheel/zoom lock, tune "save as default", muted in-view clip autoplay, a silent Weird Kid clip, atmosphere, and find. Play the sky / tour is not shown. The 3D link and the signed letter (in this folder) go with this preview. The PDFs in this folder and in the Download all zip still carry the t-f66f477ead80b8dc5a49 preview link, which stays valid.
 
 Files in this folder:
   gill-james-work-examples.pdf  (13 pages). Last page points at the t-f66f477ead80b8dc5a49 preview, which stays valid.

@@ -241,7 +241,7 @@ html.in #corner .bk{width:12px;opacity:1}
 #allbtn{top:calc(8px + var(--st));z-index:21;position:fixed}
 html.in #allbtn{display:none}
 #where{text-align:right;opacity:0;transition:opacity .3s}html.in #where{opacity:1}
-/* the sky crescent, same look and a quiet float as on oz. It ignores Reduce Motion. */
+/* the sky crescent, same look and a quiet float. It ignores Reduce Motion. */
 #moonslot{position:fixed;top:calc(168px + var(--st));right:calc(14px + env(safe-area-inset-right,0px));width:var(--moon,46px);height:var(--moon,46px);margin:0;z-index:58;pointer-events:none}
 html.moon-off #moonslot{display:none}
 body:has(#lb.on) #moonslot,body:has(#full.on) #moonslot{opacity:0;pointer-events:none}
@@ -509,7 +509,7 @@ html[data-redctl="a"] #now,html:not([data-redctl]) #now{left:calc(64px + env(saf
 html[data-redctl="b"] #now{left:calc(12px + env(safe-area-inset-left,0px))}
 html.arrows-off .plate .stage .nav,html.arrows-off #lb .nv{display:none!important}
 #sky h1,#sky .sub,#sky .starlight,.plate .txt,#ptitle,.now-name{font-size:calc(1em * var(--type,1))}
-/* Tune: oz glass, visitor on top, sections */
+/* Tune: glass, visitor on top, sections */
 #tune{background:rgba(10,16,22,.55);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid var(--line);width:min(400px,calc(100vw - 24px - env(safe-area-inset-left,0px) - env(safe-area-inset-right,0px)))}
 #tune .tune-bar{background:rgba(10,16,22,.35)}
 #tune.lay-a .tune-simple,#tune.lay-a .tune-allh,#tune.lay-a .tune-grouped{display:none}
@@ -543,7 +543,7 @@ html.red #tune{background:rgba(10,3,4,.55)}
 html.owtd-still #owtd .stage > .vidplay{display:grid!important}
 html.owtd-still #owtd .stage > .vidplay[hidden]{display:none!important}
 
-/* rail pulse: soft starlight breath, no blink. Velocity shortens --pulse-t and raises --pulse-a. Oz ignores reduced motion. */
+/* rail pulse: soft starlight breath, no blink. Velocity shortens --pulse-t and raises --pulse-a. */
 #rail a i,.dial .ticks button i,.grail i,.plate.sound .vrail i{
   animation:railbreath var(--pulse-t,2.8s) ease-in-out infinite;
 }

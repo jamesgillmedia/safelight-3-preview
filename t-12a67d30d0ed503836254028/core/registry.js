@@ -21,7 +21,7 @@
     { kind: 'tool', id: 'threads', name: 'Threads (what’s still open in a conversation)', file: 'js/threads.js', group: 'tools' },
     // Tone Check (Gill, 19 Nov): its public voiceProfile stub, the generic reader and the pack's icons load first; its seam with oz after
     { kind: 'room', id: 'tonecheck', name: 'Tone Check', file: 'js/tonecheck.js',
-      needs: ['modules/voiceProfile/interface.js', 'modules/voiceProfile/stub.js', 'js/tonereader.js', 'js/tonecheck-icons.js'], then: ['js/tonecheck-oz.js'] }
+      needs: ['modules/voiceProfile/interface.js', 'modules/voiceProfile/stub.js', 'js/tonereader.js', 'js/tonecheck-icons.js'], then: [] }
   ];
   var APP = G.GJ_APP || {};
   function owner() { return !!(GJ.core && GJ.core.owner()); }
