@@ -22,6 +22,9 @@ try{if(TUNE&&TUNE.oblur)TUNE.oblur=0}catch(e){}/* orbs never blur: a saved or re
 try{if(TUNE&&TUNE.oblur)TUNE.oblur=0}catch(e){}/* orbs never blur: a saved or restored blur is ignored */
 try{if(TUNE&&TUNE.oblur)TUNE.oblur=0}catch(e){}/* orbs never blur: a saved or restored blur is ignored */
 try{if(TUNE&&TUNE.oblur)TUNE.oblur=0}catch(e){}/* orbs never blur: a saved or restored blur is ignored */
+try{if(TUNE&&TUNE.oblur)TUNE.oblur=0}catch(e){}/* orbs never blur: a saved or restored blur is ignored */
+try{if(TUNE&&TUNE.oblur)TUNE.oblur=0}catch(e){}/* orbs never blur: a saved or restored blur is ignored */
+try{if(TUNE&&TUNE.oblur)TUNE.oblur=0}catch(e){}/* orbs never blur: a saved or restored blur is ignored */
 try{if(LS.get('gj.cks12.skyplay-default-off')!=='1'){if(TUNE&&Object.prototype.hasOwnProperty.call(TUNE,'skyplay'))delete TUNE.skyplay;LS.set('gj.cks12.skyplay-default-off','1')}}catch(e){}
 try{if(LS.get('gj.cks12.moon-off-default')!=='1'){if(TUNE&&Object.prototype.hasOwnProperty.call(TUNE,'moon'))delete TUNE.moon;LS.set('gj.cks12.moon-off-default','1')}}catch(e){}
 try{if(LS.get('gj.cks16.order-default-strongest')!=='1'){var _o=LS.get('gj.cks12.order');if(!_o||_o==='order'){LS.set('gj.cks12.order','strongest')}if(TUNE&&TUNE.order==='order')delete TUNE.order;LS.set('gj.cks16.order-default-strongest','1')}}catch(e){}

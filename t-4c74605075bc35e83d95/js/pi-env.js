@@ -172,7 +172,7 @@ function level(){if(!bed)return;var c=bed.c,on=PI.e('sound')>0&&!!songOn(),v=+PI
   bed.master.gain.setTargetAtTime(on?v:0,c.currentTime,on?1.4:.12);
   if(bed.sf)bed.sf.g.gain.setTargetAtTime(on?.126:0,c.currentTime,on?1.4:.12)}
 PI.level=level;
-function start(){if(started)return;started=1;if(!build())return;level();L('bed start')}
+function start(){/* the second ambient noise bed is removed: only the atmosphere White Noise (A white, B pink, C brown) remains */}
 ['pointerdown','keydown','touchend'].forEach(function(t){document.addEventListener(t,start,{capture:true,passive:true})});
 document.addEventListener('visibilitychange',function(){if(!bed)return;if(document.hidden)bed.c.suspend();else bed.c.resume()});
 /* iOS can interrupt Web Audio when a media element starts; bring the bed back on the song's play and on the next touch, never restarting it */

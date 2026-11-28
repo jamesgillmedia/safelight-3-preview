@@ -207,3 +207,11 @@ html.red #tune [data-pis].is-copied{color:#ff4457;text-shadow:0 0 12px rgba(255,
 #litmoon.is-drag{cursor:grabbing;transition:opacity .35s ease}
 #litmoon i{transition:box-shadow .5s ease}
 body:has(#vtune:not([hidden])) #litmoon,html.mdial-held #litmoon{opacity:0;pointer-events:none;visibility:hidden}
+#now .now-src{flex:1 0 100%;display:none;justify-content:center;flex-wrap:wrap;gap:6px;margin:2px 0 0;padding:0 4px}
+#now.from-moon .now-src,#now.as-card .now-src{display:flex}
+#now .now-src button{background:none;border:1px solid rgba(255,255,255,.28);border-radius:999px;color:var(--ink);padding:3px 10px;min-height:28px;font:300 11px/1 Poppins,sans-serif;letter-spacing:.04em;cursor:pointer}
+#now .now-src button.on{background:#eef3f5;color:#04070b}
+html.red #now .now-src button{border-color:rgba(255,68,87,.3);color:#ff4457}
+html.red #now .now-src button.on{background:#ff4457;color:#060304}
+#now.from-moon{flex-wrap:wrap}
+#wn-card .wn-colors button.on{background:#eef3f5;color:#04070b}
