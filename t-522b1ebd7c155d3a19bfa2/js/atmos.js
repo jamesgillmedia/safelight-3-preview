@@ -94,7 +94,7 @@
     var gn=c.createGain();gn.gain.value=0;var lfo=c.createOscillator(),lg=c.createGain();lfo.frequency.value=.07;lfo.connect(lg);
     var br=c.createGain();br.gain.value=1;lg.connect(br.gain);
     src.connect(hp);hp.connect(lp);lp.connect(br);br.connect(gn);gn.connect(c.destination);src.start();lfo.start();
-    N={src:src,lp:lp,gn:gn,lg:lg};return N}
+    N={src:src,lp:lp,hp:hp,gn:gn,lg:lg};return N}
   function tone(){if(!N)return;var c=AC,col=v('col');N.lp.frequency.setTargetAtTime(col==='a'?14000:col==='b'?2600:650,c.currentTime,.3);N.lg.gain.setTargetAtTime(.35*(+v('breath')),c.currentTime,.3);level()}
   function level(){if(!N)return;var lit=$('#lit-audio'),duck=lit&&!lit.paused?.35:1,col=v('col'),k=col==='a'?.08:col==='b'?.16:.32;
     N.gn.gain.setTargetAtTime(wnOn?(+v('vol'))*k*duck:0,AC.currentTime,wnOn?.8:1.05)}
@@ -328,17 +328,17 @@
     wnCard.id='wn-card';
     wnCard.setAttribute('role','dialog');
     wnCard.setAttribute('aria-label','Lost in Time');
-    wnCard.innerHTML='<div class="wn-inner"><p class="wn-title">Lost in Time</p><div class="wn-colors" role="group"><button type="button" data-wn="a">A white</button><button type="button" data-wn="b">B pink</button><button type="button" data-wn="c">C brown</button></div></div>';
+    wnCard.innerHTML='<div class="wn-inner"><p class="wn-title">Lost in Time</p><div class="wn-colors" role="group"><button type="button" data-wn="a">A white</button><button type="button" data-wn="b">B pink</button><button type="button" data-wn="c">C brown</button><button type="button" data-wn="lit">Lost in Time</button></div></div>';
     document.body.appendChild(wnCard);
   }
   function paintWnBtns(){
-    $$('[data-wn]',wnCard).forEach(function(b){b.classList.toggle('on',b.getAttribute('data-wn')===String(v('col')))});
+    $$('[data-wn]',wnCard).forEach(function(b){b.classList.toggle('on',b.getAttribute('data-wn')===srcNow())});
   }
   wnCard.addEventListener('click',function(e){
     var b=e.target.closest&&e.target.closest('[data-wn]');
     if(!b)return;
     e.preventDefault();e.stopPropagation();
-    setWn(true,b.getAttribute('data-wn'));
+    pickSrc(b.getAttribute('data-wn'));
     paintWnBtns();
   });
   function openWn(){
@@ -364,7 +364,26 @@
   },true);
   window.GJ12=window.GJ12||{};GJ12.air={set:setAir,on:function(){return on},noise:function(){return N?{gain:N.gn.gain.value,lp:N.lp.frequency.value}:null},reset:resetAir,fromDimmer:fromDimmer,toDimmer:toDimmer,setFog:function(o){if(!o)return;['fog','fogheight','fogspeed','fogdx','fogdy'].forEach(function(k){if(o[k]!=null)S[k]=+o[k]});save();F=[];fogLayout();paint()},fog:function(){return {fog:+v('fog')||0,fogheight:+v('fogheight')||0,fogspeed:+v('fogspeed')||0,fogdx:+v('fogdx')||0,fogdy:+v('fogdy')||0}}};
   GJ12.atmosFill={progress:fillProgress,cap:fillCap,speed:fillSpeed,setElapsed:setElapsed,onLitPlay:onLitPlay,onWhiteNoise:onWhiteNoise,apply:applyFillVisual,mins:function(){return {mist:MIN_MIST,light:MIN_LIGHT}},gestured:function(){return !!gestured}};
-  GJ12.wn={open:openWn,close:closeWn,on:function(){return wnCard.classList.contains('on')},set:setWn};
+  GJ12.wn={open:openWn,close:closeWn,on:function(){return wnCard.classList.contains('on')},set:setWn,probe:function(){if(!N)return null;var lit=$('#lit-audio'),duck=lit&&!lit.paused?.35:1,col=v('col'),k=col==='a'?.08:col==='b'?.16:.32;return {lowpass:N.lp.frequency.value,highpass:N.hp.frequency.value,gain:N.gn.gain.value,breath:N.lg.gain.value,col:col,on:wnOn,k:k,duck:duck,vol:+v('vol'),target:wnOn?(+v('vol'))*k*duck:0}}};
+/* sound source selector: Lost in Time (default, #lit-audio) or the live atmosphere noise A white, B pink, C brown. Not saved anywhere, so a restore can never put noise first. */
+  function srcNow(){return wnOn?String(v('col')):'lit'}
+  function paintSrc(){$$('[data-wn]').forEach(function(b){b.classList.toggle('on',b.getAttribute('data-wn')===srcNow())})}
+  function pickSrc(k){
+    var au=$('#lit-audio');
+    if(k==='lit'){var carded=wnCard.classList.contains('on');setWn(false);
+      if(carded){wnCard.classList.remove('on');de.classList.remove('wn-on');if(au){try{au.currentTime=0}catch(e){}GJ12._litUserPause=performance.now();var p=au.play();if(p&&p.catch)p.catch(function(){})}if(window.GJ12&&GJ12.openPiece)GJ12.openPiece('lost-in-time')}}
+    else setWn(true,k);
+    paintSrc()}
+  GJ12.audioSrc={get:srcNow,set:pickSrc,paint:paintSrc};
+  function addNowSel(){var n=document.getElementById('now');if(!n)return false;if(n.querySelector('.now-src'))return true;
+    var d=document.createElement('div');d.className='now-src';d.setAttribute('role','group');d.setAttribute('aria-label','sound');
+    d.innerHTML='<button type="button" data-wn="lit">Lost in Time</button><button type="button" data-wn="a">A white</button><button type="button" data-wn="b">B pink</button><button type="button" data-wn="c">C brown</button>';
+    n.appendChild(d);
+    d.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-wn]');if(!b)return;e.preventDefault();e.stopPropagation();pickSrc(b.getAttribute('data-wn'))});
+    ['pointerdown','pointerup','touchstart'].forEach(function(t){d.addEventListener(t,function(e){e.stopPropagation()},{passive:true})});
+    paintSrc();return true}
+  var _nt=0;(function tryNow(){if(!addNowSel()&&_nt++<60)setTimeout(tryNow,150)})();
+
   GJ12.find={open:openFind,close:closeFind,on:function(){return fp.classList.contains('on')}};
   applyFillVisual();
 
