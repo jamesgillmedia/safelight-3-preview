@@ -2,7 +2,7 @@
    Tune already keeps every change in localStorage. This adds: a settings link (copy, open anywhere to load), a settings file (save, load),
    and the last 12 saved states to step back to. The link is read by the inline boot script in the head before the page starts. */
 (function(){
-var KEYS=['gj.cks12.tune','gj.cks12.red','gj.cks12.order','gj.cks12.vol','gj.cks29.air','gj.cks12.presets.saved','gj.pi.visitor','gj.pi.env','gj.pi.arrange','gj.pi.line','gj.pi.litmoon'];
+var KEYS=['gj.cks12.tune','gj.cks12.red','gj.cks12.order','gj.cks12.vol','gj.cks29.air','gj.cks12.presets.saved','gj.pi.visitor','gj.pi.env','gj.pi.arrange','gj.pi.line','gj.pi.litmoon','gj.cks.e80'];
 var FLAGS=['gj.cks12.skyplay-default-off','gj.cks12.moon-off-default','gj.cks16.order-default-strongest','gj.cks16.type-default-105','gj.cks22.autoplay-all'];
 var SK='gj.pi.settings.snaps',MSG='gj.pi.settings.msg',MAX=12;
 function get(k){try{return localStorage.getItem(k)}catch(e){return null}}

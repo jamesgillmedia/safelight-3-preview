@@ -3,6 +3,11 @@
 var de=document.documentElement,LS={get:function(k){try{return localStorage.getItem(k)}catch(e){return null}},set:function(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
 /* Bake later: paste the JSON from Tune → save as default into DEFAULTS. TUNE falls back to this. */
 var DEFAULTS={glow:.7,stars:.9,drift:1.7,stage:.64,spin:1,depth:1,panel:.9,mx:4,bounce:0,rail:1.7,bloom:.75,spread:.75,oblur:0,osharp:.78,odepth:.9,omin:78,strip:'c',moon:0,moonsize:36,moondial:0,moonspeed:1,moonsmooth:.78,moondist:.65,moonclear:16,momofront:1,feel:'b',finertia:.85,fdamp:.96,fsettle:.08,movepreset:'glide',open:'a',skylook:'b',skydrift:.4,skyfade:.25,skybreath:1.25,cdepth:.8,amb:.55,skyplay:0,dialspd:1,findpull:1,redctl:'b',dimmer:.76,type:1.05,mood:.1,tunelayout:'b',olease:.08,oease:.1,pinchout:.74,pinchfloor:.88,wallpinch:.82,chrome:3.5,arrows:1,tunehold:1.2,redhold:.55,pulledge:60,pulldist:54,filmauto:1,clipauto:1,redtone:1,redlight:.62,owtdauto:0,pulse:1.05,holdmenu:1,holdms:.45,deephold:1.2,redtimer:0,dimedge:1,dialfast:0,railfeel:'b',railsens:1,railsnap:.7,railtick:.45,wkauto:1,markfx:'a',markfxk:.2,order:'strongest',escall:'a',railui:'b',sheetsort:'piece',allui:'covers',glassui:'a',glassk:.3,air:0,skydrifton:1,skyfadeon:1,skybreathon:1,ambon:1,drifton:1,iconglow:.3,pinchzoom:.55,dialwheel:1,seye:'a',eyelift:.35,navfade:0,orbshape:'b',orbmap:{},skytrace:'b',orbdrift:1,afillspd:1,afillcap:.22,archfield:0,spacemode:0,hearts:0,sechide:0,secmin:1};
+/* RED_LAYERS: the shipped default for each red-mode layer. 'red' = safelight red (what red mode does today), 'dim' = dim red, 'off' = not tinted.
+   Change a value here to change the default in one place. Gill's saved choices (Tune > red) override it. */
+var RED_LAYERS={sky:'red',orbs:'red',photolab:'red',lines:'red',glow:'red',text:'red',mark:'red',controls:'red',litorb:'red',media:'red',vignette:'red'};
+var RED_LAYER_LIST=[['sky','sky',[['off','off'],['red','red'],['dim','dim']]],['orbs','orbs',[['off','off'],['red','red'],['dim','dim']]],['photolab','Photo Lab orb',[['off','off'],['red','red'],['dim','dim']]],['lines','lines',[['off','off'],['red','red'],['dim','dim']]],['glow','glow',[['off','off'],['red','red'],['dim','dim']]],['text','text',[['off','off'],['red','red'],['dim','dim']]],['mark','Mark',[['off','off'],['red','red'],['dim','dim']]],['controls','controls',[['off','off'],['red','red'],['dim','dim']]],['litorb','Lost in Time orb',[['off','off'],['red','red'],['dim','dim']]],['media','photos',[['off','off'],['red','red']]],['vignette','vignette',[['off','off'],['red','red'],['dim','dim']]]];
+for(var _rk0 in RED_LAYERS)DEFAULTS['rl_'+_rk0]=RED_LAYERS[_rk0];
 var MOVEPRESETS={
   glide:{feel:'b',finertia:.85,fdamp:.96,fsettle:.08,drift:1.7,drifton:1,skydrift:.4,skydrifton:1,orbdrift:1,depth:1,spread:.75,cdepth:.8,olease:.08,oease:.1,oblur:0,osharp:.78,odepth:.9,bloom:.75},
   quick:{feel:'b',finertia:.7,fdamp:.9,fsettle:.2,drift:.35,drifton:1,skydrift:.15,skydrifton:1,orbdrift:1,depth:1,spread:1,cdepth:.4,olease:.14,oease:.16,oblur:.06,osharp:.86,odepth:.75,bloom:.6},
@@ -18,6 +23,13 @@ var MOVEPRESETS={
 function applyMovePreset(id){var o=MOVEPRESETS[id];if(!o)return;var k;TUNE.movepreset=id;for(k in o)if(Object.prototype.hasOwnProperty.call(o,k))TUNE[k]=o[k]}
 var TUNE={};
 try{TUNE=JSON.parse(LS.get('gj.cks12.tune')||'{}')||{}}catch(e){TUNE={}}
+try{if(TUNE&&TUNE.oblur)TUNE.oblur=0}catch(e){}/* orbs never blur: a saved or restored blur is ignored */
+try{if(TUNE&&TUNE.oblur)TUNE.oblur=0}catch(e){}/* orbs never blur: a saved or restored blur is ignored */
+try{if(TUNE&&TUNE.oblur)TUNE.oblur=0}catch(e){}/* orbs never blur: a saved or restored blur is ignored */
+try{if(TUNE&&TUNE.oblur)TUNE.oblur=0}catch(e){}/* orbs never blur: a saved or restored blur is ignored */
+try{if(TUNE&&TUNE.oblur)TUNE.oblur=0}catch(e){}/* orbs never blur: a saved or restored blur is ignored */
+try{if(TUNE&&TUNE.oblur)TUNE.oblur=0}catch(e){}/* orbs never blur: a saved or restored blur is ignored */
+try{if(TUNE&&TUNE.oblur)TUNE.oblur=0}catch(e){}/* orbs never blur: a saved or restored blur is ignored */
 try{if(TUNE&&TUNE.oblur)TUNE.oblur=0}catch(e){}/* orbs never blur: a saved or restored blur is ignored */
 try{if(TUNE&&TUNE.oblur)TUNE.oblur=0}catch(e){}/* orbs never blur: a saved or restored blur is ignored */
 try{if(TUNE&&TUNE.oblur)TUNE.oblur=0}catch(e){}/* orbs never blur: a saved or restored blur is ignored */
@@ -125,7 +137,7 @@ GJ12.idsForOrder=idsForOrder;GJ12.orderMode=orderMode;GJ12.setOrder=setOrder;GJ1
 
 function apply(){piTag();de.style.setProperty('--glow',live('glow'));de.style.setProperty('--stage',val('stage'));
   ['a','b','c'].forEach(function(x){de.classList.toggle('strip-'+x,val('strip')===x)});
-  de.classList.toggle('moon-off',!(+val('moon')));de.classList.toggle('moon-dial-off',!(+val('moondial')));de.style.setProperty('--moon',(+val('moonsize')||46)+'px');
+  de.classList.toggle('moon-off',!(+val('moon')));de.classList.toggle('moon-dial-off',!(+val('moondial')));de.style.setProperty('--moon',(+val('moonsize')||46)+'px');for(var _rk in RED_LAYERS)de.setAttribute('data-rl-'+_rk,String(val('rl_'+_rk)||RED_LAYERS[_rk]));
   de.classList.toggle('skyplay',+val('skyplay')!==0);de.classList.toggle('arrows-off',!(+val('arrows')));de.classList.toggle('owtd-still',+val('owtdauto')===0);de.classList.toggle('pulse-off',!(+val('pulse')));de.classList.toggle('holdmenu-off',!(+val('holdmenu')));de.classList.toggle('dimedge-off',!(+val('dimedge')));de.setAttribute('data-redctl',String(val('redctl')||'c'));de.setAttribute('data-markfx',String(val('markfx')||'a'));de.style.setProperty('--markfxk',String(+val('markfxk')||.7));de.setAttribute('data-order',orderMode());de.style.setProperty('--type',(+val('type')||1));de.style.setProperty('--dimmer',dimK());de.style.setProperty('--glow',live('glow'));if(GJ12.relit)GJ12.relit();if(GJ12.redPaint)GJ12.redPaint();
   GJ12.tune={spin:+val('spin'),depth:+val('depth'),panel:+val('panel'),bounce:+val('bounce'),rail:+val('rail'),bloom:+live('bloom'),spread:+val('spread'),oblur:0,osharp:+val('osharp'),odepth:+val('odepth'),omin:+val('omin'),glowv:+live('glow'),moon:+val('moon'),moonsize:+val('moonsize'),moondial:+val('moondial'),cdepth:+val('cdepth'),feel:val('feel'),finertia:+val('finertia'),fdamp:+val('fdamp'),fsettle:+val('fsettle'),skylook:val('skylook'),skydrift:+val('skydrift'),skyfade:+val('skyfade'),skybreath:+live('skybreath'),amb:+live('amb'),skyplay:+val('skyplay'),dialspd:+val('dialspd'),findpull:+val('findpull'),redctl:val('redctl'),dimmer:dimK(),type:+val('type'),mood:+val('mood'),olease:+val('olease'),oease:+val('oease'),pinchout:+val('pinchout'),pinchfloor:+val('pinchfloor'),wallpinch:+val('wallpinch'),chrome:+val('chrome'),arrows:+val('arrows'),tunehold:+val('tunehold'),redhold:+val('redhold'),pulledge:+val('pulledge'),pulldist:+val('pulldist'),filmauto:+val('filmauto'),clipauto:+val('clipauto'),redtone:+val('redtone'),redlight:+val('redlight'),owtdauto:+val('owtdauto'),pulse:+val('pulse'),holdmenu:+val('holdmenu'),holdms:+val('holdms'),deephold:+val('deephold'),redtimer:+val('redtimer'),dimedge:+val('dimedge'),dialfast:+val('dialfast'),wkauto:+val('wkauto'),markfx:val('markfx'),markfxk:+val('markfxk'),order:orderMode()};if(GJ12.reroom)GJ12.reroom();if(GJ12.reedge)GJ12.reedge();de.style.setProperty('--mx',val('mx')+'px');try{dispatchEvent(new Event('resize'))}catch(e){}de.style.setProperty('--persp',Math.round(1100/Math.max(.3,val('depth')))+'px');if(window.GJ12.restar)GJ12.restar();if(de.classList.contains('in'))de.style.setProperty('--tint','214,226,236');de.setAttribute('data-escall',String(val('escall')||'a'));de.setAttribute('data-railui',String(val('railui')||'b'));de.setAttribute('data-allui',String(val('allui')||'covers'));de.setAttribute('data-glassui',String(val('glassui')||'a'));de.style.setProperty('--glassk',String(Math.max(0,Math.min(1,+(val('glassk')||.3)))));de.style.setProperty('--iconglow',String(Math.max(0,Math.min(1.5,+(val('iconglow')||.45)))));de.style.setProperty('--navfade',String(Math.max(0,Math.min(1,+(val('navfade')||0)))));de.style.setProperty('--pinchzoom',String(Math.max(0,Math.min(1.5,+(val('pinchzoom')||.55)))));var _el=+val('eyelift');if(isNaN(_el))_el=.35;de.style.setProperty('--eyesize',Math.round(52+_el*36)+'px');de.style.setProperty('--eyeglow',Math.round(8+_el*18)+'px');de.setAttribute('data-seye',String(val('seye')||'a'));de.setAttribute('data-orbshape',String(val('orbshape')||'b'));de.setAttribute('data-skytrace',String(val('skytrace')||'b'));de.setAttribute('data-orbdrift',String(+val('orbdrift')?'1':'0'));if(GJ12.paintSeye)GJ12.paintSeye();if(GJ12.applyOrbShape)GJ12.applyOrbShape();if(GJ12.paintEscall)GJ12.paintEscall();if(GJ12.syncRailUI)GJ12.syncRailUI();if(GJ12.syncAir)GJ12.syncAir();if(GJ12.momoFrontSync)GJ12.momoFrontSync()}
 GJ12._applyX=function(){de.classList.toggle('sec-hide',+val('sechide')===1);de.classList.toggle('sec-min',+val('secmin')!==0)};
@@ -216,11 +228,11 @@ ready(function(){
   }
   GJ12.redPaint=redPaint;redPaint();
   function rpShow(){clearTimeout(rpHide);redPaint();pad.classList.add('on')}
-  function rpLater(){clearTimeout(rpHide);rpHide=setTimeout(function(){pad.classList.remove('on')},1800)}
+  function rpLater(){clearTimeout(rpHide);rpHide=setTimeout(function(){pad.classList.remove('on')},(GJ12.e80&&GJ12.e80.found()?4200:1800))}
   var rpApi={start:function(x,y){var t0=+val('redtone'),l0=+val('redlight');if(isNaN(t0))t0=1;if(isNaN(l0))l0=.62;rpDrag={x:x,y:y,r0:Math.max(0,ORDER.indexOf(t0)),l0:l0,tone0:t0};if(!de.classList.contains('red'))setRed(true);rpShow()},
     move:function(x,y){if(!rpDrag)return;var r=Math.max(0,Math.min(3,Math.round(rpDrag.r0+(y-rpDrag.y)/36)));var l=Math.max(.4,Math.min(1,rpDrag.l0+(x-rpDrag.x)/160*.6));
-      TUNE.redtone=ORDER[r];TUNE.redlight=Math.round(l*100)/100;redPaint()},
-    end:function(){if(!rpDrag)return;var o=rpDrag;rpDrag=null;rpLater();if(o&&(TUNE.redtone!==o.tone0||TUNE.redlight!==o.l0))LS.set('gj.cks12.tune',JSON.stringify(TUNE))},
+      TUNE.redtone=ORDER[r];TUNE.redlight=Math.round(l*100)/100;if(GJ12.e80)GJ12.e80.pad(rpDrag.r0+(y-rpDrag.y)/36,r,TUNE.redlight);redPaint()},
+    end:function(){if(!rpDrag)return;var o=rpDrag;rpDrag=null;if(GJ12.e80)GJ12.e80.pad(null);rpLater();if(o&&(TUNE.redtone!==o.tone0||TUNE.redlight!==o.l0))LS.set('gj.cks12.tune',JSON.stringify(TUNE))},
     open:function(){return pad.classList.contains('on')},
     hide:function(){clearTimeout(rpHide);pad.classList.remove('on')}};
   pad.addEventListener('pointerdown',function(e){e.preventDefault();e.stopPropagation();try{pad.setPointerCapture(e.pointerId)}catch(x){}rpApi.start(e.clientX,e.clientY)});
@@ -1337,11 +1349,13 @@ function plates(){
     if(GJ12._closedAt&&Date.now()-GJ12._closedAt<450&&id===GJ12._closedId)return;
     de.style.scrollBehavior='auto';de.style.scrollSnapType='none';
     p.scrollIntoView();
-    de.style.scrollBehavior='';de.style.scrollSnapType='';
     setCur(p);
     if(GJ12.autoplay)GJ12.autoplay();
     GJ12._navLock=Date.now()+500;
     GJ12._openedAt=Date.now();
+    /* restore snap after the scroll lands so the next tap is not bounced to the wrong plate */
+    if(GJ12._snapT)clearTimeout(GJ12._snapT);
+    GJ12._snapT=setTimeout(function(){de.style.scrollBehavior='';de.style.scrollSnapType='';GJ12._snapT=0},320);
   }
   GJ12.clearCur=function(){setCur(null)};
   GJ12.gotoPlate=gotoPlate;
@@ -1568,7 +1582,8 @@ function lightbox(){
     img.alt=b.getAttribute('data-alt')||'';cap.textContent=b.getAttribute('data-cap')||'';
     num.textContent=(at+1)+' of '+set.length;var one=set.length<2;$('.nv.p',lb).hidden=one;$('.nv.n',lb).hidden=one;if(cb)cb(at)}
   function shut(){lb.classList.remove('on');document.body.style.overflow='';de.style.scrollSnapType=''}
-  function close(){if(history.state&&history.state.lb)history.back();else shut()}
+  var closing=0;
+  function close(){if(closing)return;closing=1;setTimeout(function(){closing=0},400);if(history.state&&history.state.lb)history.back();else shut()}
   LB.open=function(s,i,f){set=s;cb=f;var plate=s&&s[0]&&s[0].closest&&s[0].closest('section.plate');if(plate)lb.setAttribute('data-k',plate.id);else lb.removeAttribute('data-k');de.style.scrollSnapType='none';show(i);lb.classList.add('on');document.body.style.overflow='hidden';try{history.pushState({lb:1},'')}catch(e){}};LB.shut=shut;
   addEventListener('popstate',function(){if(lb.classList.contains('on'))shut()});
   $('.x',lb).addEventListener('click',close);
@@ -1623,7 +1638,7 @@ function lightbox(){
     if(!lb.classList.contains('on'))return;
     e.preventDefault();e.stopPropagation();
     liveT(1);
-    if(e.ctrlKey||z>1&&!(Math.abs(e.deltaX)>Math.abs(e.deltaY)&&!e.ctrlKey)){
+    if(e.ctrlKey||Math.abs(e.deltaY)>=Math.abs(e.deltaX)||(z>1&&!(Math.abs(e.deltaX)>Math.abs(e.deltaY)))){
       var nz=z*Math.exp(-e.deltaY*.01);
       if(nz<0.88&&z<=1.05){fit();liveT(0);if(typeof close==='function')close();return}
       if(!(img.complete&&img.naturalWidth)&&nz>1){nz=z}z=capLZ(nz);if(z===1){px=0;py=0}applyZ();
@@ -1665,10 +1680,38 @@ function lightbox(){
   addEventListener('pointermove',function(e){if(!md||e.pointerType!=='mouse')return;var dx=e.clientX-md.x;if(Math.abs(dx)>8&&Math.abs(dx)>Math.abs(e.clientY-md.y)*1.3){img.style.transition='none';img.style.transform='translateX('+(dx*.5).toFixed(1)+'px)'}});
   addEventListener('pointerup',function(e){if(!md||e.pointerType!=='mouse')return;var dx=e.clientX-md.x,dy=e.clientY-md.y;md=null;img.style.transition='';
     if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)*1.3){moved=1;show(at+(dx<0?1:-1))}else{img.style.transform=z<=1&&!px&&!py?'':img.style.transform;if(Math.abs(dx)>8)moved=1}});
+  function zoomAt(x,y,into){
+    if(into===false||(into==null&&z>1.05)){fit();return}
+    layoutHi();
+    var tmax=lbMaxZ(),nz=Math.min(Math.max(2,Math.min(2.5,tmax)),tmax);
+    if(!(nz>1.05)){fit();return}
+    var r=st.getBoundingClientRect(),f=img._fit||1,rw=img._rw||st.clientWidth||1,rh=img._rh||st.clientHeight||1;
+    var lx=x-r.left,ly=y-r.top;
+    var w1=img._nw*f,h1=img._nh*f,bx1=(rw-w1)/2,by1=(rh-h1)/2;
+    var ix=(lx-bx1)/Math.max(.0001,w1),iy=(ly-by1)/Math.max(.0001,h1);
+    z=nz;
+    var w=img._nw*f*z,h=img._nh*f*z,bx=(rw-w)/2,by=(rh-h)/2;
+    px=lx-(bx+ix*w);py=ly-(by+iy*h);
+    applyZ();
+  }
+  GJ12.lbOn=function(){return !!(lb&&lb.classList.contains('on'))};
+  GJ12.lbZoomed=function(){return !!(lb&&lb.classList.contains('on')&&z>1.05)};
+  GJ12.lbFit=fit;GJ12.lbClose=close;GJ12.lbZoomAt=zoomAt;
+  var tap1=0,tapX=0,tapY=0,closeT=0;
+  function clearClose(){if(closeT){clearTimeout(closeT);closeT=0}}
   st.addEventListener('click',function(e){
     if(e.target.closest&&e.target.closest('.nv,.x,button'))return;
-    if(moved||pinching){moved=0;return}
-    close();
+    if(moved||pinching){moved=0;clearClose();return}
+    var now=Date.now(),x=e.clientX,y=e.clientY;
+    if(tap1&&now-tap1<320&&Math.hypot(x-tapX,y-tapY)<36){
+      clearClose();tap1=0;
+      if(z>1.05)fit();else zoomAt(x,y,true);
+      return;
+    }
+    tap1=now;tapX=x;tapY=y;
+    if(z>1.05)return;
+    clearClose();
+    closeT=setTimeout(function(){closeT=0;close()},300);
   });
   LB.shut=shut;
 }
@@ -2204,7 +2247,7 @@ function tune(){try{sessionStorage.setItem('gj.tuneseen','1')}catch(e){}
     row('pulledge','search edge, px',24,120,2)+row('pulldist','search pull, px',40,140,2)+
     row('navfade','piece fade',0,1,.05)+row('tunehold','tune hold, seconds',.6,2.4,.05)+row('redhold','red dial hold, seconds',.25,1.2,.05)+
     row('holdms','menu hold, seconds',.25,1,.05)+row('deephold','deeper dial, seconds',.7,2,.05)+
-    abc('red tone','redtone',[['0','dim'],['1','rose'],['2','crimson'],['3','bright']])+row('redlight','red lightness',.4,1,.02)+row('redtimer','red auto-off, minutes',0,60,1)+
+    abc('red tone','redtone',[['0','dim'],['1','rose'],['2','crimson'],['3','bright']])+row('redlight','red lightness',.4,1,.02)+RED_LAYER_LIST.map(function(L){return abc(L[1],'rl_'+L[0],L[2])}).join('')+row('redtimer','red auto-off, minutes',0,60,1)+
     abc('air','air',[['1','on'],['0','off']])+row('dimmer','dimmer',0,1,.02)+row('afillspd','atmosphere fill speed',.3,3,.05)+row('afillcap','atmosphere fill cap',.05,1,.02)+'<div class="air-slot"></div>'+
     '<button type="button" class="saveph" data-saveph>save to phone</button><button type="button" data-reset>back to the design</button><button type="button" data-save-preset>save preset</button><button type="button" data-save-default>copy as default</button><p class="tune-note" hidden></p>';
   var grouped=
@@ -2234,7 +2277,7 @@ function tune(){try{sessionStorage.setItem('gj.tuneseen','1')}catch(e){}
       abc('red control','redctl',[['a','A ᑕᐣᓯ'],['b','B'],['c','C both']])+
     abc('mark light','markfx',[['a','A glow'],['b','B glitch'],['c','C both']])+row('markfxk','mark strength',0,1,.05)+
       abc('left dimmer','dimedge',[['1','on'],['0','off']])+
-      abc('red tone','redtone',[['0','dim'],['1','rose'],['2','crimson'],['3','bright']])+row('redlight','red lightness',.4,1,.02)+row('redtimer','red auto-off, minutes',0,60,1))+
+      abc('red tone','redtone',[['0','dim'],['1','rose'],['2','crimson'],['3','bright']])+row('redlight','red lightness',.4,1,.02)+RED_LAYER_LIST.map(function(L){return abc(L[1],'rl_'+L[0],L[2])}).join('')+row('redtimer','red auto-off, minutes',0,60,1))+
     sec('sound','sound, players',
       abc('sky player','skyplay',[['1','on'],['0','off']]))+
     sec('air','atmosphere, white noise',abc('air','air',[['1','on'],['0','off']])+row('dimmer','dimmer',0,1,.02)+row('afillspd','atmosphere fill speed',.3,3,.05)+row('afillcap','atmosphere fill cap',.05,1,.02)+'<div class="air-slot"></div>')+
@@ -2501,7 +2544,7 @@ function stepBack(){
   if(GJ12.closeSub&&document.getElementById('subframe')&&document.getElementById('subframe').classList.contains('on')){GJ12.closeSub();return}
   if(window.GJ12&&GJ12.tuneClose&&de.classList.contains('tune-on')){GJ12.tuneClose();return}
   var t=$('#tune');if(t&&de.classList.contains('tune-on')){var x=t.querySelector('.tune-x,.tune-done');if(x){x.click();return}t.remove();return}
-  var lb=$('#lb');if(lb&&lb.classList.contains('on')){if(GJ12.lbClose)GJ12.lbClose();else{var b=lb.querySelector('.back,button');if(b)b.click();else lb.classList.remove('on')}return}
+  var lb=$('#lb');if(lb&&lb.classList.contains('on')){if(GJ12.lbZoomed&&GJ12.lbZoomed()){GJ12.lbFit();return}if(GJ12.lbClose)GJ12.lbClose();else{var b=lb.querySelector('.back,button');if(b)b.click();else lb.classList.remove('on')}return}
   var f=$('#full');if(f&&f.classList.contains('on')){if(typeof FULL!=='undefined'&&FULL.shut)FULL.shut();else f.classList.remove('on');return}
   var w=$('#wall');if(w&&w.classList.contains('on')){if(typeof WALL!=='undefined'&&WALL.shut)WALL.shut();else w.classList.remove('on');return}
   var a=$('#all');if(a&&a.classList.contains('on')){if(typeof ALLV!=='undefined'&&ALLV.shut)ALLV.shut();else a.classList.remove('on');return}
@@ -2690,6 +2733,8 @@ function goLevel(n){
    double tap shrinks or restores it (scale only, always a full disc). It never sits over a control: it is nudged clear. Position and size are saved in gj.pi.litmoon. */
 /* litmoon v2: the Lost in Time full moon. Tap plays or pauses; press and hold shows or hides the floating player; drag moves it anywhere (position remembered);
    double tap shrinks or restores it (scale only, always a full disc). It never sits over a control: it is nudged clear. Position and size are saved in gj.pi.litmoon. */
+/* litmoon v2: the Lost in Time full moon. Tap plays or pauses; press and hold shows or hides the floating player; drag moves it anywhere (position remembered);
+   double tap shrinks or restores it (scale only, always a full disc). It never sits over a control: it is nudged clear. Position and size are saved in gj.pi.litmoon. */
 function litMoon(){
   var b=document.getElementById('litmoon');
   if(!b){b=document.createElement('button');b.id='litmoon';b.type='button';b.innerHTML='<i></i>'}
@@ -2707,18 +2752,18 @@ function litMoon(){
   var OBS='button,a,input,select,textarea,[role=slider],[role=button]',SKIP='#room,.plate,#all,#wall,#lb,#full,#reader,#stars,#now';
   function obstacles(){var out=[];[].forEach.call(document.querySelectorAll(OBS),function(e){if(e===b||b.contains(e)||e.contains(b)||(e.closest&&e.closest(SKIP)))return;var cs=getComputedStyle(e);if(cs.display==='none'||cs.visibility==='hidden'||+cs.opacity===0)return;var r=e.getBoundingClientRect();if(r.width<2||r.height<2||r.width>W()*.9||r.height>H()*.9||r.right<0||r.bottom<0||r.left>W()||r.top>H())return;out.push(r)});return out}
   function size(){return BASE*(st.min?MINK:1)}
+  function hitAny(obs,cx,cy,h){for(var i=0;i<obs.length;i++){var r=obs[i];if(cx+h>r.left&&cx-h<r.right&&cy+h>r.top&&cy-h<r.bottom)return true}return false}
   function clearOf(cx,cy){
-    var obs=obstacles(),s=size(),h=s/2+PAD,lo=4+s/2,i,j,moved;
-    function cl(){cx=Math.max(lo,Math.min(W()-lo,cx));cy=Math.max(lo,Math.min(H()-lo,cy))}
-    cl();
-    for(i=0;i<10;i++){moved=0;
-      for(j=0;j<obs.length;j++){var r=obs[j];
-        if(cx+h>r.left&&cx-h<r.right&&cy+h>r.top&&cy-h<r.bottom){
-          var c=[[r.left-h-cx,0],[r.right+h-cx,0],[0,r.top-h-cy],[0,r.bottom+h-cy]].filter(function(p){var nx=cx+p[0],ny=cy+p[1];return nx>=lo&&nx<=W()-lo&&ny>=lo&&ny<=H()-lo});
-          if(!c.length)c=[[r.left-h-cx,0],[r.right+h-cx,0],[0,r.top-h-cy],[0,r.bottom+h-cy]];
-          c.sort(function(p,q){return (Math.abs(p[0])+Math.abs(p[1]))-(Math.abs(q[0])+Math.abs(q[1]))});
-          cx+=c[0][0];cy+=c[0][1];cl();moved=1;break}}
-      if(!moved)break}
+    var obs=obstacles(),s=size(),h=s/2+PAD,lo=4+s/2,i,k;
+    function cx_(v){return Math.max(lo,Math.min(W()-lo,v))}
+    function cy_(v){return Math.max(lo,Math.min(H()-lo,v))}
+    cx=cx_(cx);cy=cy_(cy);
+    if(!hitAny(obs,cx,cy,h))return {x:cx,y:cy};
+    var cand=[],best=null,bd=1e9;
+    obs.forEach(function(r){[r.left-h,r.right+h].forEach(function(x){cand.push([x,cy])});[r.top-h,r.bottom+h].forEach(function(y){cand.push([cx,y])})});
+    cand.forEach(function(p){var x=cx_(p[0]),y=cy_(p[1]);if(!hitAny(obs,x,y,h)){var d=Math.abs(x-cx)+Math.abs(y-cy);if(d<bd){bd=d;best={x:x,y:y}}}});
+    if(best)return best;
+    for(i=8;i<Math.max(W(),H());i+=8)for(k=0;k<360;k+=15){var x=cx_(cx+i*Math.cos(k*Math.PI/180)),y=cy_(cy+i*Math.sin(k*Math.PI/180));if(!hitAny(obs,x,y,h))return {x:x,y:y}}
     return {x:cx,y:cy}}
   function centre(){var r=b.getBoundingClientRect();return {x:r.left+r.width/2,y:r.top+r.height/2}}
   function place(c){b.style.left=Math.round((c.x-BASE/2)*10)/10+'px';b.style.top=Math.round((c.y-BASE/2)*10)/10+'px';b.style.right='auto'}
@@ -2922,6 +2967,8 @@ function escbar(){
   document.addEventListener('keydown',function(e){
     if(e.key!=='Escape')return;
     e.preventDefault();e.stopImmediatePropagation();
+    if(GJ12.lbZoomed&&GJ12.lbZoomed()){GJ12.lbFit();return}
+    if(GJ12.lbOn&&GJ12.lbOn()){GJ12.lbClose();return}
     if(GJ12.momoOn&&GJ12.momoOn()){GJ12.momoHide();return}
     escToSky();
   },true);
@@ -2998,7 +3045,7 @@ function escbar(){
     document.addEventListener('pointerup',function(e){
       if(e.pointerType==='mouse'&&e.button!==0)return;
       if(typingIn(e.target))return;
-      if(e.target&&e.target.closest&&e.target.closest('#tune,input,textarea,select,button,.dial,.ticks,.grail,.vrail,.player,.pp,a.st,#find,#ord'))return;
+      if(e.target&&e.target.closest&&e.target.closest('#tune,input,textarea,select,button,.dial,.ticks,.grail,.vrail,.player,.pp,a.st,#find,#ord,#lb,#full'))return;
       var now=Date.now();
       if(now-last<320&&Math.hypot(e.clientX-lx,e.clientY-ly)<28){
         last=0;
