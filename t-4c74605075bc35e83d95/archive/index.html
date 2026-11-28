@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#0a0b0d">
+<title>Permanent Impermanence</title>
+<link rel="preload" href="data/index.json" as="fetch" crossorigin>
+<link rel="icon" href="../icons/icon-192.png"><style>html,body{background:#0a0b0d}</style><script>try{if(localStorage.getItem("gj.cks12.red")==="1")document.documentElement.classList.add("red")}catch(e){}</script><link rel="stylesheet" href="css/archive.css?v=r1">
+</head>
+<body>
+<div id="vp" aria-label="Permanent Impermanence. Drag to move, pinch or scroll to zoom, tap a box to lift it out.">
+  <canvas id="cv"></canvas>
+</div>
+
+<header class="top">
+  <div class="brandw"><h1 class="brand"><b lang="cr">ᑕᐣᓯ</b> Permanent Impermanence</h1><p class="tagline"><span class="gjl">It can be activated or left to rest.</span></p></div><script>/* Gill's line: visitors may write their own, in place. Saved only in this browser (localStorage), never sent anywhere. */
+(function(){if(window.GJLine)return;var KEY='gj.pi.line',CAP=120,BASE='It can be activated or left to rest.',PT=null;
+function get(){try{return localStorage.getItem(KEY)}catch(e){return null}}
+function put(v){try{if(v)localStorage.setItem(KEY,v);else localStorage.removeItem(KEY)}catch(e){}}
+function plainOK(){if(PT!==null)return PT;var d=document.createElement('div');try{d.contentEditable='plaintext-only';PT=d.contentEditable==='plaintext-only'}catch(e){PT=false}return PT}
+function clip(s){return String(s||'').replace(/[\r\n\t]+/g,' ').slice(0,CAP)}
+function caretEnd(el){var s=getSelection(),r=document.createRange();r.selectNodeContents(el);r.collapse(false);s.removeAllRanges();s.addRange(r)}
+function show(){var v=get();return BASE?(v||BASE):''}
+function paintOne(el){var p=el.parentNode,v=show(),rs=p&&p.querySelector('.gjl-reset');if(!el.hasAttribute('data-editing')&&el.textContent!==v)el.textContent=v;if(p)p.hidden=!v;if(rs)rs.hidden=!(v&&get())}
+function paint(base){if(typeof base==='string')BASE=base;[].forEach.call(document.querySelectorAll('.gjl'),function(el){wire(el);paintOne(el)})}
+function end(el){el.removeAttribute('contenteditable');el.removeAttribute('data-editing');el.classList.remove('gjl-on');try{getSelection().removeAllRanges()}catch(e){}paint()}
+function start(el){if(el.hasAttribute('data-editing'))return;el._old=el.textContent;el.setAttribute('data-editing','');el.classList.add('gjl-on');el.contentEditable=plainOK()?'plaintext-only':'true';el.focus();caretEnd(el)}
+function commit(el){if(!el.hasAttribute('data-editing'))return;var v=clip(el.textContent);put(v.trim()&&v!==BASE?v:null);end(el)}
+function cancel(el){if(!el.hasAttribute('data-editing'))return;el.textContent=el._old||'';end(el)}
+function wire(el){if(el._gjl)return;el._gjl=1;el.tabIndex=0;el.setAttribute('role','textbox');el.setAttribute('aria-label','a line you can rewrite; press Enter to keep it, Escape to leave it');el.spellcheck=false;
+  var p=el.parentNode;if(p&&!p.querySelector('.gjl-reset')){var b=document.createElement('button');b.type='button';b.className='gjl-reset';b.hidden=true;b.setAttribute('aria-label','back to the first line');b.title='back to the first line';b.textContent='↺';
+    b.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();put(null);paint()});p.appendChild(b)}
+  el.addEventListener('click',function(e){e.stopPropagation();start(el)});
+  el.addEventListener('blur',function(){commit(el)});
+  el.addEventListener('paste',function(e){e.preventDefault();var t=clip((e.clipboardData||window.clipboardData).getData('text'));document.execCommand('insertText',false,t)});
+  el.addEventListener('drop',function(e){e.preventDefault()});
+  el.addEventListener('input',function(){var t=el.textContent;if(t.length>CAP||/[\r\n\t]/.test(t)||el.children.length){el.textContent=clip(t);caretEnd(el)}})}
+/* keys never reach the page's shortcuts while a visitor writes; Enter keeps, Escape leaves */
+window.addEventListener('keydown',function(e){var el=e.target;if(!el||!el.classList||!el.classList.contains('gjl'))return;
+  if(!el.hasAttribute('data-editing')){if(e.key==='Enter'||e.key===' '){e.preventDefault();e.stopImmediatePropagation();start(el)}return}
+  if(e.key==='Tab')return;e.stopImmediatePropagation();
+  if(e.key==='Enter'){e.preventDefault();commit(el);el.blur()}else if(e.key==='Escape'){e.preventDefault();cancel(el);el.blur()}},true);
+window.GJLine={get:get,put:put,paint:paint,CAP:CAP}})();
+(function(){var b='It can be activated or left to rest.';try{var o=JSON.parse(localStorage.getItem('gj.cks12.tune')||'{}');if(o&&typeof o.pitag==='string')b=o.pitag}catch(err){}GJLine.paint(b)})()</script>
+  <p class="count" id="count"></p>
+  <nav class="modes" aria-label="Order">
+    <button type="button" data-mode="film" aria-pressed="true">by work</button>
+    <button type="button" data-mode="all" aria-pressed="false">continuous</button>
+  </nav>
+  <nav class="modes boxsw" aria-label="Boxes">
+    <button type="button" data-boxes="boxes" aria-pressed="true">boxes</button>
+    <button type="button" data-boxes="dim" aria-pressed="false">dim</button>
+    <button type="button" data-boxes="hide" aria-pressed="false">hide</button>
+  </nav>
+  <div class="topbtns">
+    <button type="button" class="filmsbtn" id="filmsbtn" aria-expanded="false">works</button>
+    <a class="filmsbtn backcks" href="../">cks</a>
+  </div>
+</header>
+
+<aside class="films" id="films" hidden>
+  <ol id="filmlist"></ol>
+</aside>
+
+<div class="corner">
+  <button type="button" id="fit" class="q" aria-label="Whole field">whole field</button>
+  <span class="lvl" id="lvl" aria-hidden="true"></span>
+</div>
+
+<div id="lt" class="lt" hidden role="dialog" aria-modal="true" aria-label="Frame">
+  <div class="lt-bg" id="ltbg"></div>
+  <figure class="lt-fig" id="ltfig">
+    <span class="lt-tag" id="lttag"></span>
+    <div class="lt-box" id="ltbox"><img id="ltlo" alt=""><img id="lthi" alt=""></div>
+    <figcaption class="lt-cap">
+      <span class="lt-num" id="ltnum"></span>
+      <span class="lt-title"><button type="button" id="lttitle" title="Highlight this work's boxes"></button></span>
+      <span class="lt-tc" id="lttc"></span>
+    </figcaption>
+  </figure>
+  <button type="button" class="lt-nav prev" id="ltprev" aria-label="Previous frame">&#8249;</button>
+  <button type="button" class="lt-nav next" id="ltnext" aria-label="Next frame">&#8250;</button>
+  <button type="button" class="lt-x" id="ltx" aria-label="Back to the index">&#215;</button>
+</div>
+
+<script src="js/archive.js?v=r1"></script>
+</body>
+</html>
