@@ -1,0 +1,46 @@
+/* "permanent impermanence" - the new top screen (cks21-pi-top).
+   Own file on purpose: css/pi-top.css + js/pi-top.js + a three-line hook in index.html (see README-pi-top.txt).
+   No visible wording. Dark night, a faint haze, the constellation as stars only (drawn by js/pi-top.js).
+   Red mode: every glow is the safelight red, never mint. */
+:root{--pt-haze:1}
+#pitop{position:relative;height:var(--vh,100svh);min-height:420px;scroll-snap-align:none;pointer-events:none}
+/* the night itself: one fixed veil under the page content and over the site's own star field. It fades out as the sky arrives (opacity set by pi-top.js), so no seam is ever visible. */
+#pitopv{position:fixed;inset:0;z-index:1;pointer-events:none;overflow:hidden;opacity:1;display:none;will-change:opacity;background:
+  radial-gradient(ellipse 130% 58% at 50% 108%,rgba(130,158,200,calc(.33*var(--pt-haze))) 0%,rgba(78,102,144,calc(.16*var(--pt-haze))) 44%,transparent 76%),
+  radial-gradient(ellipse 80% 36% at 22% 88%,rgba(104,130,180,calc(.12*var(--pt-haze))),transparent 72%),
+  radial-gradient(ellipse 70% 32% at 78% 90%,rgba(96,122,170,calc(.09*var(--pt-haze))),transparent 72%),
+  linear-gradient(180deg,rgba(1,3,7,.74) 0%,rgba(2,5,10,.40) 52%,rgba(5,9,16,.12) 100%)}
+html.pt-live #pitopv{display:block}
+/* horizon haze and a slow drifting veil: transform only, no layout. Medium is the starter default (pth=1). */
+#pitopv::before,#pitopv::after{content:"";position:absolute;left:-20%;right:-20%;pointer-events:none;will-change:transform}
+#pitopv::before{bottom:4%;height:42%;background:radial-gradient(ellipse 54% 54% at 36% 64%,rgba(160,182,214,calc(.16*var(--pt-haze))),transparent 70%),radial-gradient(ellipse 46% 50% at 74% 58%,rgba(128,156,200,calc(.13*var(--pt-haze))),transparent 70%);animation:pt-drift 46s ease-in-out infinite alternate}
+#pitopv::after{top:10%;height:42%;background:radial-gradient(ellipse 50% 52% at 62% 50%,rgba(96,120,168,calc(.09*var(--pt-haze))),transparent 72%);animation:pt-drift 62s ease-in-out -20s infinite alternate-reverse}
+@keyframes pt-drift{from{transform:translate3d(-4%,0,0)}to{transform:translate3d(4%,-2%,0)}}
+html.red #pitopv{background:
+  radial-gradient(ellipse 130% 58% at 50% 108%,rgba(255,68,87,calc(.32*var(--pt-haze))) 0%,rgba(150,36,52,calc(.15*var(--pt-haze))) 44%,transparent 76%),
+  radial-gradient(ellipse 80% 36% at 22% 88%,rgba(255,68,87,calc(.10*var(--pt-haze))),transparent 72%),
+  radial-gradient(ellipse 70% 32% at 78% 90%,rgba(255,68,87,calc(.08*var(--pt-haze))),transparent 72%),
+  linear-gradient(180deg,rgba(6,2,3,.78) 0%,rgba(6,3,4,.42) 52%,rgba(8,3,4,.12) 100%)}
+html.red #pitopv::before{background:radial-gradient(ellipse 54% 54% at 36% 64%,rgba(255,68,87,calc(.14*var(--pt-haze))),transparent 70%),radial-gradient(ellipse 46% 50% at 74% 58%,rgba(255,68,87,calc(.11*var(--pt-haze))),transparent 70%)}
+html.red #pitopv::after{background:radial-gradient(ellipse 50% 52% at 62% 50%,rgba(255,68,87,calc(.08*var(--pt-haze))),transparent 72%)}
+/* the star layer: one fixed canvas over the page, under the header; hidden once the sky has arrived */
+#pitopc{position:fixed;left:0;top:0;width:100%;height:100%;z-index:2;pointer-events:none;display:none;background:transparent}
+html.pt-live #pitopc{display:block}
+/* while the constellation rises, the sky it becomes arrives with it (pi-top.js sets #sky opacity inline, only while rising) */
+/* the other worlds that cover the page do not get this screen */
+/* (the parked Momo is held back by pi-top.js while this screen shows) */
+html.pt-free{scroll-snap-type:none!important}
+html.pi-space #pitop{display:none}
+html.pi-space #pitopv{display:none!important}
+html.pi-space #pitopc,html.pi-space #pitopcue{display:none!important}
+
+/* wordless scroll cue: a faint chevron at the bottom, slow-breathing. Red in red mode, never mint. Fades via js once scrolling starts. */
+#pitopcue{position:fixed;left:50%;bottom:calc(22px + var(--sb,0px));width:22px;height:14px;margin:0;z-index:3;pointer-events:none;display:none;opacity:0;transform:translateX(-50%);will-change:opacity,transform}
+html.pt-live #pitopcue{display:block}
+#pitopcue i,#pitopcue b{position:absolute;top:4px;width:12px;height:1.5px;border-radius:1px;background:rgba(232,238,248,.48);box-shadow:0 0 6px rgba(214,226,236,.2);animation:pt-cue-arm 2.8s ease-in-out infinite}
+#pitopcue i{left:50%;top:8px;transform:rotate(-38deg);transform-origin:0 50%}
+#pitopcue b{left:50%;top:8px;transform:rotate(38deg);transform-origin:100% 50%;margin-left:-12px}
+html.red #pitopcue i,html.red #pitopcue b{background:rgba(255,90,107,.7);box-shadow:0 0 7px rgba(255,68,87,.35)}
+@keyframes pt-cue{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(5px)}}
+html.pt-live #pitopcue{animation:pt-cue 2.8s ease-in-out infinite}
+@media (prefers-reduced-motion:reduce){#pitopv::before,#pitopv::after{animation:none}#pitopcue,#pitopcue i,#pitopcue b{animation:none}}

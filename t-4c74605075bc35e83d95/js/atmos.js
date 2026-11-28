@@ -97,8 +97,8 @@
     N={src:src,lp:lp,hp:hp,gn:gn,lg:lg};return N}
   function tone(){if(!N)return;var c=AC,col=v('col');N.lp.frequency.setTargetAtTime(col==='a'?14000:col==='b'?2600:650,c.currentTime,.3);N.lg.gain.setTargetAtTime(.35*(+v('breath')),c.currentTime,.3);level()}
   function level(){if(!N)return;var lit=$('#lit-audio'),duck=lit&&!lit.paused?.35:1,col=v('col'),k=col==='a'?.08:col==='b'?.16:.32;
-    N.gn.gain.setTargetAtTime(wnOn?(+v('vol'))*k*duck:0,AC.currentTime,wnOn?.8:1.05)}
-  var wnOn=false;
+    N.gn.gain.setTargetAtTime((wnOn||wnAuto)?(+v('vol'))*k*duck:0,AC.currentTime,(wnOn||wnAuto)?.8:1.05)}
+  var wnOn=false,wnAuto=0;
   /* atmosphere fill: session-only, slow rise from our minimums toward a modest cap.
      air on = full; air off = dark (minimum + fill). White noise is never started here. */
   var fillStart=Date.now(),fillLit=0,fillWn=0,gestured=0,syncingDim=0;
@@ -292,7 +292,8 @@
   addEventListener('touchstart',function(e){
     clearPull();
     if(e.touches.length!==1)return;
-    if(window.scrollY>2)return;
+    var _sy=window.scrollY||0,_pt=window.GJPT&&GJPT.top?GJPT.top():0;if(_sy>2&&!(_pt&&Math.abs(_sy-_pt)<=2))return;/* cks21-pi-top: the top of the sky counts as the top */
+
     var t=e.touches[0];
     if(t.clientY>pullEdge())return;
     if(pullBlocked(e.target))return;
@@ -364,7 +365,38 @@
   },true);
   window.GJ12=window.GJ12||{};GJ12.air={set:setAir,on:function(){return on},noise:function(){return N?{gain:N.gn.gain.value,lp:N.lp.frequency.value}:null},reset:resetAir,fromDimmer:fromDimmer,toDimmer:toDimmer,setFog:function(o){if(!o)return;['fog','fogheight','fogspeed','fogdx','fogdy'].forEach(function(k){if(o[k]!=null)S[k]=+o[k]});save();F=[];fogLayout();paint()},fog:function(){return {fog:+v('fog')||0,fogheight:+v('fogheight')||0,fogspeed:+v('fogspeed')||0,fogdx:+v('fogdx')||0,fogdy:+v('fogdy')||0}}};
   GJ12.atmosFill={progress:fillProgress,cap:fillCap,speed:fillSpeed,setElapsed:setElapsed,onLitPlay:onLitPlay,onWhiteNoise:onWhiteNoise,apply:applyFillVisual,mins:function(){return {mist:MIN_MIST,light:MIN_LIGHT}},gestured:function(){return !!gestured}};
-  GJ12.wn={open:openWn,close:closeWn,on:function(){return wnCard.classList.contains('on')},set:setWn,probe:function(){if(!N)return null;var lit=$('#lit-audio'),duck=lit&&!lit.paused?.35:1,col=v('col'),k=col==='a'?.08:col==='b'?.16:.32;return {lowpass:N.lp.frequency.value,highpass:N.hp.frequency.value,gain:N.gn.gain.value,breath:N.lg.gain.value,col:col,on:wnOn,k:k,duck:duck,vol:+v('vol'),target:wnOn?(+v('vol'))*k*duck:0}}};
+  GJ12.wn={open:openWn,close:closeWn,on:function(){return wnCard.classList.contains('on')},set:setWn,probe:function(){if(!N)return null;var lit=$('#lit-audio'),duck=lit&&!lit.paused?.35:1,col=v('col'),k=col==='a'?.08:col==='b'?.16:.32;return {lowpass:N.lp.frequency.value,highpass:N.hp.frequency.value,gain:N.gn.gain.value,breath:N.lg.gain.value,col:col,on:wnOn,k:k,duck:duck,vol:+v('vol'),target:(wnOn||wnAuto)?(+v('vol'))*k*duck:0,auto:!!wnAuto,fs:!!(typeof isFs==='function'&&isFs()),pi:!!(typeof isPi==='function'&&isPi()),ctx:AC&&AC.state}}};
+
+  /* auto white noise: on when the site is full screen, or when the permanent-impermanence top screen (#pitop, html.pt-free) is active.
+     Starts on the full-screen request itself (a user gesture) or on the first tap/click/key while on that top screen, then fades in (gain from 0, no click).
+     Fades out on leaving either, unless the person switched the noise on themselves (setWn). Audio only; does not open the card or change the moon source.
+     This is the only override of "white noise is never started here". */
+  var wnAuto=0, piGestured=0;
+  function isFs(){return !!(document.fullscreenElement||document.webkitFullscreenElement||document.msFullscreenElement)}
+  function isPi(){
+    var sec=document.getElementById('pitop')||document.getElementById('pi')||document.getElementById('pi-top')||document.querySelector('[data-pi-top]');
+    if(!sec)return false;
+    if(document.documentElement.classList.contains('pt-free'))return true;
+    var top=(window.GJPT&&typeof GJPT.top==='function')?GJPT.top():(sec.offsetHeight||0);
+    if(!top)return false;
+    return (window.scrollY||0)<top-8}
+  function wantAuto(){return isFs()||isPi()}
+  function autoEnter(){
+    var c=ac();if(!c)return;
+    if(c.state==='suspended'){var p=c.resume();if(p&&p.catch)p.catch(function(){})}
+    if(!N)noise();
+    if(!wnAuto&&N){try{N.gn.gain.cancelScheduledValues(c.currentTime);N.gn.gain.setValueAtTime(N.gn.gain.value||0,c.currentTime)}catch(e){}}
+    wnAuto=1;tone();level()}
+  function autoLeave(){if(!wnAuto)return;wnAuto=0;level()}
+  function autoSync(){if(wantAuto()){if(isFs()||piGestured)autoEnter()}else if(wnAuto)autoLeave()}
+  function wrapFs(proto,name){var orig=proto[name];if(typeof orig!=='function'||orig._wnAuto)return;var w=function(){try{if(!wnOn)autoEnter()}catch(e){}return orig.apply(this,arguments)};w._wnAuto=1;try{proto[name]=w}catch(e){}}
+  wrapFs(Element.prototype,'requestFullscreen');wrapFs(Element.prototype,'webkitRequestFullscreen');wrapFs(Element.prototype,'mozRequestFullScreen');wrapFs(Element.prototype,'msRequestFullscreen');
+  ['fullscreenchange','webkitfullscreenchange','mozfullscreenchange','MSFullscreenChange'].forEach(function(t){document.addEventListener(t,autoSync)});
+  ['pointerdown','click','keydown','touchstart'].forEach(function(t){document.addEventListener(t,function(){if(isPi()){piGestured=1;autoSync()}},true)});
+  addEventListener('scroll',function(){if(isPi()||wnAuto)autoSync()},{passive:true});
+  new MutationObserver(function(){if(isPi()||wnAuto||document.getElementById('pitop')||document.getElementById('pi'))autoSync()}).observe(document.documentElement,{attributes:true,attributeFilter:['class'],childList:true,subtree:true});
+  GJ12.wnAuto={on:function(){return !!wnAuto},manual:function(){return !!wnOn},isFs:isFs,isPi:isPi,sync:autoSync,enter:autoEnter,leave:autoLeave};
+
 /* sound source selector: Lost in Time (default, #lit-audio) or the live atmosphere noise A white, B pink, C brown. Not saved anywhere, so a restore can never put noise first. */
   function srcNow(){return wnOn?String(v('col')):'lit'}
   function paintSrc(){$$('[data-wn]').forEach(function(b){b.classList.toggle('on',b.getAttribute('data-wn')===srcNow())})}

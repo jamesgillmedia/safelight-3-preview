@@ -40,6 +40,8 @@ try{if(TUNE&&TUNE.oblur)TUNE.oblur=0}catch(e){}/* orbs never blur: a saved or re
 try{if(TUNE&&TUNE.oblur)TUNE.oblur=0}catch(e){}/* orbs never blur: a saved or restored blur is ignored */
 try{if(TUNE&&TUNE.oblur)TUNE.oblur=0}catch(e){}/* orbs never blur: a saved or restored blur is ignored */
 try{if(TUNE&&TUNE.oblur)TUNE.oblur=0}catch(e){}/* orbs never blur: a saved or restored blur is ignored */
+try{if(TUNE&&TUNE.oblur)TUNE.oblur=0}catch(e){}/* orbs never blur: a saved or restored blur is ignored */
+try{if(TUNE&&TUNE.oblur)TUNE.oblur=0}catch(e){}/* orbs never blur: a saved or restored blur is ignored */
 try{if(LS.get('gj.cks12.skyplay-default-off')!=='1'){if(TUNE&&Object.prototype.hasOwnProperty.call(TUNE,'skyplay'))delete TUNE.skyplay;LS.set('gj.cks12.skyplay-default-off','1')}}catch(e){}
 try{if(LS.get('gj.cks12.moon-off-default')!=='1'){if(TUNE&&Object.prototype.hasOwnProperty.call(TUNE,'moon'))delete TUNE.moon;LS.set('gj.cks12.moon-off-default','1')}}catch(e){}
 try{if(LS.get('gj.cks16.order-default-strongest')!=='1'){var _o=LS.get('gj.cks12.order');if(!_o||_o==='order'){LS.set('gj.cks12.order','strongest')}if(TUNE&&TUNE.order==='order')delete TUNE.order;LS.set('gj.cks16.order-default-strongest','1')}}catch(e){}
@@ -949,6 +951,7 @@ function room(){
     })()}
   function size(){dpr=Math.min(2,window.devicePixelRatio||1);W=el.clientWidth;H=el.clientHeight;cv.width=W*dpr;cv.height=H*dpr;build();if(!initedHome){var hx=(location.hash||'').replace(/^#/,'');if(!hx||hx==='sky')homePan();else clampPan();initedHome=1}else if(!userPan){var hx=(location.hash||'').replace(/^#/,'');if(!hx||hx==='sky')homePan();else clampPan()}else clampPan();go()}
   function lim(){return N.length?[N[0].x,N[n-1].x]:[0,0]}
+  GJ12.constellation=function(){var l=lim(),yaw=(pan/(Math.max(1,l[1]-l[0])/2))*.32,kd=TT('odepth',1),out=[],i,o,p,q;for(i=0;i<N.length;i++){o=N[i];p=proj(o.x,o.y,o.z,yaw,i);q=o.low?proj(o.x+o.low.dx,o.low.y,o.z,yaw,i):null;out.push({k:o.a.getAttribute('data-k'),eye:!!o.eye,x:p[0],y:p[1],s:p[2],lx:q?q[0]:null,ly:q?q[1]:null,ls:q?q[2]:1,rx:o.x,ry:o.y,rz:o.z*kd})}return {W:W,H:H,stars:out}};/* cks21-pi-top: read-only view of the constellation for js/pi-top.js */
   function clampPan(){var l=lim();tp=Math.max(l[0],Math.min(l[1],tp))}
   var SPR={};function sprite(h){if(SPR[h])return SPR[h];var c=document.createElement('canvas');c.width=c.height=128;var q=c.getContext('2d'),gr=q.createRadialGradient(64,64,0,64,64,64);
     gr.addColorStop(0,'rgba('+h+',.62)');gr.addColorStop(.3,'rgba('+h+',.22)');gr.addColorStop(1,'rgba('+h+',0)');q.fillStyle=gr;q.fillRect(0,0,128,128);SPR[h]=c;return c}
