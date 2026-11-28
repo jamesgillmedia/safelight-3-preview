@@ -1,6 +1,6 @@
 /* 80s mode: written fresh. Hidden in the red pad: slide down past dim, or hold still on the centre notch for ~450 ms, and a small 80s rocker appears in the pad.
    Also a Tune option (on/off plus flavour). Chrome only: it adds classes to <html> and styles panels and text; it never touches photos, video, layout or navigation.
-   Saved in localStorage 'gj.cks.e80' = {found,on,fl}. Red mode wins: every rule is off while html.red is set. */
+   Saved in localStorage 'gj.cks.e80' = {found,on,fl}. Typing 8 then 8 within ~800 ms (ignored in an input, textarea or contenteditable) toggles it and marks it found. Red mode wins: every rule is off while html.red is set. */
 (function(){
 var K='gj.cks.e80',FL=['terminal','neon','mac'],NAMES={terminal:'terminal',neon:'neon',mac:'1-bit Mac'},de=document.documentElement,st={found:0,on:0,fl:'terminal'},holdT=0,holdKey='';
 try{var o=JSON.parse(localStorage.getItem(K)||'null');if(o&&typeof o==='object'){st.found=o.found?1:0;st.on=o.on?1:0;if(FL.indexOf(o.fl)>-1)st.fl=o.fl}}catch(e){}
@@ -42,4 +42,14 @@ function scan(){mountSwitch();var t=document.getElementById('tune');if(t)mountTu
 new MutationObserver(function(){scan();var want=!!st.on&&st.fl==='neon'&&!de.classList.contains('red');if(de.classList.contains('eighties')!==want)de.classList.toggle('eighties',want)}).observe(document.documentElement,{childList:true,subtree:true,attributes:true,attributeFilter:['class']});
 paintHtml();scan();
 addEventListener('storage',function(e){if(e.key===K){try{var o=JSON.parse(e.newValue||'null')||{};st.found=o.found?1:0;st.on=o.on?1:0;if(FL.indexOf(o.fl)>-1)st.fl=o.fl;paintHtml()}catch(x){}}});
+(function(){var t8=0;
+  function inField(el){if(!el||el===document||el===de)return false;var tag=(el.tagName||'').toLowerCase();return tag==='input'||tag==='textarea'||tag==='select'||!!el.isContentEditable}
+  addEventListener('keydown',function(e){
+    if(e.repeat||e.altKey||e.ctrlKey||e.metaKey)return;
+    if(inField(e.target)||inField(document.activeElement)){t8=0;return}
+    if(e.key!=='8'){t8=0;return}
+    var t=performance.now();
+    if(t8&&t-t8<800){t8=0;st.found=1;set({on:!st.on});return}
+    t8=t;
+  },true)})();
 })();
